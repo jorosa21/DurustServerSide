@@ -20,6 +20,11 @@
 
   <ItemGroup>
     <None Remove="..\.dockerignore" />
+    <None Remove="Dockerfile" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="..\.dockerignore" />
   </ItemGroup>
 
 </Project>

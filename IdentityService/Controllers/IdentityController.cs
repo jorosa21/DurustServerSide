@@ -55,8 +55,8 @@ namespace IdentityService.Controllers
         {
             var response = _userService.AuthenticateLogin(model);
 
-            if (response == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
+            if (response.Id == 0)
+                return BadRequest(new { message = response.type});
 
             return Ok(response);
         }

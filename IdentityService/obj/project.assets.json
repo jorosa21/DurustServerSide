@@ -5540,11 +5540,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\HR-ILM\\ILMServerSide\\ILMServerSide\\IdentityService\\IdentityService.csproj",
+      "projectUniqueName": "D:\\Illimitado\\DurustServerSide\\DurustServerSide\\IdentityService\\IdentityService.csproj",
       "projectName": "IdentityService",
-      "projectPath": "D:\\HR-ILM\\ILMServerSide\\ILMServerSide\\IdentityService\\IdentityService.csproj",
+      "projectPath": "D:\\Illimitado\\DurustServerSide\\DurustServerSide\\IdentityService\\IdentityService.csproj",
       "packagesPath": "C:\\Users\\Josef\\.nuget\\packages\\",
-      "outputPath": "D:\\HR-ILM\\ILMServerSide\\ILMServerSide\\IdentityService\\obj\\",
+      "outputPath": "D:\\Illimitado\\DurustServerSide\\DurustServerSide\\IdentityService\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

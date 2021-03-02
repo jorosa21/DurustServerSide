@@ -190,12 +190,14 @@ namespace IdentityService.Services
             {
                 oConn.Close();
             }
+            var token = "";
+            //// return null if user not found
+            if (resp.Id != 0)
+            {
 
-            // return null if user not found
-            if (resp.Id == 0) return null;
-
+                token = generateJwtToken(resp);
+            }
             // authentication successful so generate jwt token
-            var token = generateJwtToken(resp);
 
             return new AuthenticateResponse(resp, token);
         }
