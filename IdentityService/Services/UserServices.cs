@@ -68,7 +68,7 @@ namespace IdentityService.Services
                 oCmd.Parameters.AddWithValue("@user_name", model.Username);
                 oCmd.Parameters.AddWithValue("@user_hash", UserHash);
                 oCmd.Parameters.AddWithValue("@email_address", model.email_address);
-                oCmd.Parameters.AddWithValue("@active", model.active);
+                //oCmd.Parameters.AddWithValue("@active", model.active);
                 SqlDataReader sdr = oCmd.ExecuteReader();
                 while (sdr.Read())
                 {
