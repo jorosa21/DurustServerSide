@@ -111,3 +111,6 @@ D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Debug\net5.0
 D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Debug\net5.0\IdentityService.pdb
 D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Debug\net5.0\IdentityService.genruntimeconfig.cache
 D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\bin\Debug\net5.0\web.config
+D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\bin\Debug\net5.0\MailKit.dll
+D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\bin\Debug\net5.0\MimeKit.dll
+D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\bin\Debug\net5.0\BouncyCastle.Crypto.dll

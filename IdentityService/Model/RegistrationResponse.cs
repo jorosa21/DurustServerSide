@@ -16,9 +16,10 @@ namespace IdentityService.Model
 
         public RegistrationResponse(User user)
         {
-            Username = user.Username;
+            Username = user.username;
             email_address = user.email_address;
             active = user.active;
         }
+
     }
 }

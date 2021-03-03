@@ -9,9 +9,11 @@ namespace IdentityService.Entities
 {
     public class User
     {
-        public int Id { get; set; }
-        public string Username { get; set; }
+        public int id { get; set; }
+        public string guid { get; set; }
+        public string username { get; set; }
         public string email_address { get; set; }
+        public string routing { get; set; }
         public string type { get; set; }
         public bool email_verified { get; set; }
         public bool lock_account { get; set; }

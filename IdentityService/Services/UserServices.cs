@@ -72,11 +72,9 @@ namespace IdentityService.Services
                 SqlDataReader sdr = oCmd.ExecuteReader();
                 while (sdr.Read())
                 {
-                    resp.Id = Convert.ToInt32(sdr["user_id"].ToString());
+                    resp.id = Convert.ToInt32(sdr["user_id"].ToString());
                     resp.email_address = sdr["email_address"].ToString();
-                    //resp.type = sdr["type"].ToString();
-                    //resp.active = Convert.ToBoolean(sdr["active"].ToString());
-                    //resp.Username = sdr["user_name"].ToString();
+                    resp.guid = sdr["guid"].ToString();
                 }
                 sdr.Close();
                 oTrans.Commit();
@@ -118,11 +116,13 @@ namespace IdentityService.Services
                 SqlDataReader sdr = oCmd.ExecuteReader();
                 while (sdr.Read())
                 {
-                    resp.Id = Convert.ToInt32(sdr["user_id"].ToString());
+                    resp.id = Convert.ToInt32(sdr["user_id"].ToString());
                     resp.email_address = sdr["email_address"].ToString();
+                    resp.routing = sdr["routing"].ToString();
+                    resp.guid = sdr["guid"].ToString();
                     resp.type = sdr["type"].ToString();
                     resp.active = Convert.ToBoolean(sdr["active"].ToString());
-                    resp.Username = sdr["user_name"].ToString();
+                    resp.username = sdr["user_name"].ToString();
                     resp.lock_account = Convert.ToBoolean(sdr["lock_account"].ToString());
                     resp.email_verified = Convert.ToBoolean(sdr["email_verified"].ToString());
                 }
@@ -139,7 +139,7 @@ namespace IdentityService.Services
             }
             var token = "";
             //// return null if user not found
-            if (resp.Id != 0)
+            if (resp.id != 0)
             {
 
                 token = generateJwtToken(resp);
@@ -165,7 +165,7 @@ namespace IdentityService.Services
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
+                Subject = new ClaimsIdentity(new[] { new Claim("id", user.id.ToString()) }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
