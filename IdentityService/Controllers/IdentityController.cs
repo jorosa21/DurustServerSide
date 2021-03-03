@@ -12,6 +12,7 @@ using IdentityService.Entities;
 using System.Net.Mail;
 using Microsoft.Extensions.Options;
 
+
 namespace IdentityService.Controllers
 {
     public class IdentityController : APIController
@@ -37,8 +38,9 @@ namespace IdentityService.Controllers
             var response = _userService.AuthenticateLogin(model);
 
             if (response.id == 0)
-                return BadRequest(new { message = response.type });
-
+            {
+                return Ok();
+            }
             return Ok(response);
         }
 
