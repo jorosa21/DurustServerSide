@@ -69,6 +69,7 @@ namespace IdentityService.Controllers
                 client.Credentials = new System.Net.NetworkCredential(email.email_username, email.email_password);
                 client.Port = email.port;
                 client.Host = email.host;
+
                 client.EnableSsl = true;
                 try
                 {
