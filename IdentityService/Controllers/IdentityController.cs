@@ -36,11 +36,6 @@ namespace IdentityService.Controllers
         public IActionResult AuthenticateLogin(AuthenticateRequest model)
         {
             var response = _userService.AuthenticateLogin(model);
-
-            if (response.id == 0)
-            {
-                return Ok();
-            }
             return Ok(response);
         }
 
