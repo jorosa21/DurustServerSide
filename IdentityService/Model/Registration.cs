@@ -19,6 +19,6 @@ namespace IdentityService.Model
         public string email_address { get; set; }
 
         [Required]
-        public string active { get; set; }
+        public bool active { get; set; }
     }
 }

@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <None Remove="..\.dockerignore" />
+    <None Remove="Services\RegistrationService.cs~RF3254cfb.TMP" />
   </ItemGroup>
 
 </Project>

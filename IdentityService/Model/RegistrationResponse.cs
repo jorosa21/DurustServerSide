@@ -9,19 +9,14 @@ namespace IdentityService.Model
     public class RegistrationResponse
     {
 
-        public int Id { get; set; }
         public string email_address { get; set; }
-        public string type { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public string Token { get; set; }
         public bool active { get; set; }
 
         public RegistrationResponse(User user)
         {
-            Id = user.Id;
             Username = user.Username;
-            type = user.type;
             email_address = user.email_address;
             active = user.active;
         }

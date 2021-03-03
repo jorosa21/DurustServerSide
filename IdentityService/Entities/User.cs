@@ -13,6 +13,8 @@ namespace IdentityService.Entities
         public string Username { get; set; }
         public string email_address { get; set; }
         public string type { get; set; }
+        public bool email_verified { get; set; }
+        public bool lock_account { get; set; }
         public bool active { get; set; }
 
         [JsonIgnore]
