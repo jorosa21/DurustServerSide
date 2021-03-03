@@ -10,17 +10,23 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using IdentityService.Entities;
 using System.Net.Mail;
+using Microsoft.Extensions.Options;
 
 namespace IdentityService.Controllers
 {
     public class IdentityController : APIController
     {
         private IUserService _userService;
-        
-        public IdentityController(IUserService userService)
+
+        private EmailSender email;
+        private Default_Url url;
+
+        public IdentityController(IUserService userService, IOptions<EmailSender> appSettings, IOptions<Default_Url> settings)
         {
             _userService = userService;
 
+            email = appSettings.Value;
+            url = settings.Value;
         }
 
 
@@ -48,19 +54,21 @@ namespace IdentityService.Controllers
             }
             else
             {
+
+
                 System.Net.Mail.MailMessage mail = new System.Net.Mail.MailMessage();
                 mail.To.Add(response.email_address);
-                mail.From = new MailAddress("enotififymoko@gmail.com", "User Creation", System.Text.Encoding.UTF8);
+                mail.From = new MailAddress(email.email_username, email.email_name, System.Text.Encoding.UTF8);
                 mail.Subject = "This mail is send from asp.net application";
                 mail.SubjectEncoding = System.Text.Encoding.UTF8;
-                mail.Body = "<a href='#' > button </a>";
+                mail.Body = "<a href='"+ url.name + "/login/" + response.guid + "' > button </a>";
                 mail.BodyEncoding = System.Text.Encoding.UTF8;
                 mail.IsBodyHtml = true;
                 mail.Priority = MailPriority.High;
                 SmtpClient client = new SmtpClient();
-                client.Credentials = new System.Net.NetworkCredential("enotififymoko@gmail.com", "Tade@123");
-                client.Port = 587;
-                client.Host = "smtp.gmail.com";
+                client.Credentials = new System.Net.NetworkCredential(email.email_username, email.email_password);
+                client.Port = email.port;
+                client.Host = email.host;
                 client.EnableSsl = true;
                 try
                 {
@@ -83,6 +91,18 @@ namespace IdentityService.Controllers
             return Ok();
         }
 
+
+
+        [HttpPost("Verification")]
+        public IActionResult Verification(VerificationRequest model)
+        {
+            var response = _userService.Verification(model);
+            if (response.guid == null)
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
         //public IdentityController(IRegistrationService registrationService, IOptions<AppSettings> appsetting)
         //{
         //    //_userService = userService;

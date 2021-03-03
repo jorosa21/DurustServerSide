@@ -27,6 +27,7 @@ namespace IdentityService.Services
         User GetById(int id);
 
         RegistrationResponse Create(Registration model);
+        VerificationResponse Verification(VerificationRequest model);
     }
 
 
@@ -91,6 +92,47 @@ namespace IdentityService.Services
             return new RegistrationResponse(resp);
         }
 
+
+        public VerificationResponse Verification(VerificationRequest model)
+        {
+          
+
+            User resp = new User();
+            string _con = connection._DB_Master;
+            DataTable dt = new DataTable();
+            SqlConnection oConn = new SqlConnection(_con);
+            SqlTransaction oTrans;
+            oConn.Open();
+            oTrans = oConn.BeginTransaction();
+            SqlCommand oCmd = new SqlCommand();
+            oCmd.Connection = oConn;
+            oCmd.Transaction = oTrans;
+            try
+            {
+                oCmd.CommandText = "users_verification";
+                oCmd.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Clear();
+                oCmd.Parameters.AddWithValue("@guid", model.guid);
+
+                SqlDataReader sdr = oCmd.ExecuteReader();
+                while (sdr.Read())
+                {
+                    resp.guid = sdr["guid"].ToString();
+                }
+                sdr.Close();
+                oTrans.Commit();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
+            finally
+            {
+                oConn.Close();
+            }
+
+            return new VerificationResponse(resp);
+        }
 
 
         public AuthenticateResponse AuthenticateLogin(AuthenticateRequest model)
