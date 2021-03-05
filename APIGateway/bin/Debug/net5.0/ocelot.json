@@ -1,15 +1,15 @@
 {
   "Routes": [
     {
-      "DownstreamPathTemplate": "/api/Identity/authenticateLogin",
+      "DownstreamPathTemplate": "/api/Auth/authenticateLogin",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 55999
+          "Port": 65431
         }
       ],
-      "UpstreamPathTemplate": "/api/Identity/authenticateLogin"
+      "UpstreamPathTemplate": "/api/Auth/authenticateLogin"
     },
 
     {

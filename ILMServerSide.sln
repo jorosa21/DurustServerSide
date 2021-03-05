@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterSettingService", "Mas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{40DDACA4-FFF9-4180-AE9C-6F75345C6A0F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService", "AuthService\AuthService.csproj", "{A1BDC95F-4809-4E0C-8184-2C28443646DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{40DDACA4-FFF9-4180-AE9C-6F75345C6A0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40DDACA4-FFF9-4180-AE9C-6F75345C6A0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40DDACA4-FFF9-4180-AE9C-6F75345C6A0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1BDC95F-4809-4E0C-8184-2C28443646DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1BDC95F-4809-4E0C-8184-2C28443646DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1BDC95F-4809-4E0C-8184-2C28443646DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1BDC95F-4809-4E0C-8184-2C28443646DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

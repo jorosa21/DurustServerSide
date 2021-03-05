@@ -35,7 +35,7 @@ namespace MasterSettingService.Controllers
         }
 
 
-        [HttpPost("Dropdown_List")]
+        [HttpGet("Dropdown_List")]
         public List<DropdownResponse> Dropdown_List(DropdownRequest model)
         {
 
