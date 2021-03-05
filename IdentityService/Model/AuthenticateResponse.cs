@@ -29,6 +29,8 @@ namespace IdentityService.Model
 
         public string Token { get; set; }
 
+        public string json { get; set; }
+
         public bool active { get; set; }
 
 
@@ -44,6 +46,7 @@ namespace IdentityService.Model
             email_address = user.email_address;
             active = user.active;
             Token = token;
+            json = user.json;
         }
 
 

@@ -140,7 +140,7 @@ namespace IdentityService.Services
             //User resp = new User();
             string _con = connection._DB_Master;
             DataTable dt = new DataTable();
-            string UserHash = Crypto.password_encrypt(model.Password);
+            string UserHash = Crypto.password_encrypt(model.password);
             SqlConnection oConn = new SqlConnection(_con);
             SqlTransaction oTrans;
             oConn.Open();
@@ -153,7 +153,7 @@ namespace IdentityService.Services
                 oCmd.CommandText = "login_authentication";
                 oCmd.CommandType = CommandType.StoredProcedure;
                 oCmd.Parameters.Clear();
-                oCmd.Parameters.AddWithValue("@user_name", model.Username);
+                oCmd.Parameters.AddWithValue("@user_name", model.username);
                 oCmd.Parameters.AddWithValue("@user_hash", UserHash);
                 SqlDataReader sdr = oCmd.ExecuteReader();
                 while (sdr.Read())
@@ -215,9 +215,5 @@ namespace IdentityService.Services
             return tokenHandler.WriteToken(token);
         }
 
-        public RegistrationResponse Create(RegistrationResponse model)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

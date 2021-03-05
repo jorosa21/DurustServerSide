@@ -19,6 +19,7 @@ namespace IdentityService.Entities
         public bool lock_account { get; set; }
         public bool active { get; set; }
 
+        public string json { get; set; }
         [JsonIgnore]
         public string Password { get; set; }
     }

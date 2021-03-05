@@ -114,3 +114,10 @@ D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\bin\Debug\net5.0
 D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\bin\Debug\net5.0\MailKit.dll
 D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\bin\Debug\net5.0\MimeKit.dll
 D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\bin\Debug\net5.0\BouncyCastle.Crypto.dll
+D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\bin\Debug\net5.0\System.Web.Mvc.dll
+D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\bin\Debug\net5.0\System.Web.Razor.dll
+D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\bin\Debug\net5.0\System.Web.Helpers.dll
+D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\bin\Debug\net5.0\System.Web.WebPages.Deployment.dll
+D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\bin\Debug\net5.0\System.Web.WebPages.Razor.dll
+D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\bin\Debug\net5.0\System.Web.WebPages.dll
+D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\bin\Debug\net5.0\Microsoft.Web.Infrastructure.dll

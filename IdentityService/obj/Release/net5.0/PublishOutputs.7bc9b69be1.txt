@@ -1,9 +1,17 @@
 D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\IdentityService.exe
+D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\web.config
 D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\appsettings.Development.json
 D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\appsettings.json
 D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\IdentityService.dll
 D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\IdentityService.runtimeconfig.json
 D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\IdentityService.pdb
+D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\MailKit.dll
+D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\System.Web.Mvc.dll
+D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\System.Web.Razor.dll
+D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\System.Web.Helpers.dll
+D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\System.Web.WebPages.Deployment.dll
+D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\System.Web.WebPages.Razor.dll
+D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\System.Web.WebPages.dll
 D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\Microsoft.Bcl.AsyncInterfaces.dll
 D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\Microsoft.Bcl.HashCode.dll
 D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\Microsoft.Data.SqlClient.dll
@@ -16,6 +24,9 @@ D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5
 D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\Microsoft.IdentityModel.Logging.dll
 D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\Microsoft.IdentityModel.Tokens.dll
 D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\Microsoft.OpenApi.dll
+D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\Microsoft.Web.Infrastructure.dll
+D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\MimeKit.dll
+D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\BouncyCastle.Crypto.dll
 D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\Swashbuckle.AspNetCore.Swagger.dll
 D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\Illimitado\DurustServerSide\DurustServerSide\IdentityService\obj\Release\net5.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerUI.dll

@@ -1,0 +1,66 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/Identity/authenticateLogin",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 55999
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Identity/authenticateLogin"
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/Identity/Registration",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 55999
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Identity/Registration"
+    },
+
+    {
+      "DownstreamPathTemplate": "/weatherforecast",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 61955
+        }
+      ],
+      "UpstreamPathTemplate": "/weatherforecast"
+    },
+
+    {
+
+      "DownstreamPathTemplate": "/api/MasterSetting/Dropdown_List",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "65478"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/MasterSetting/Dropdown_List",
+
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+
+      "RateLimitOptions": {
+        "ClientWhiteList": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    }
+
+  ]
+}
