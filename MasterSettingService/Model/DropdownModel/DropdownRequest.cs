@@ -12,4 +12,6 @@ namespace MasterSettingService.Model.DropdownModel
 
         public string dropdown_type { get; set; }
     }
+
+   
 }

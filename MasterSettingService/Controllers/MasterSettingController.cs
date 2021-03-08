@@ -44,11 +44,30 @@ namespace MasterSettingService.Controllers
             return result;
         }
 
+
+        [HttpGet("Dropdowntype_List")]
+        public List<DropdownTypeResponse> Dropdowntype_List()
+        {
+
+            var result = _masterServices.Dropdowntype_view();
+            return result;
+        }
+
+
         [HttpPost("CompanyIU")]
         public CompanyIUResponse CompanyIU(CompanyIURequest model)
         {
 
             var result = _masterServices.CompanyIU(model);
+            return result;
+        }
+
+
+        [HttpPost("CompanyIU")]
+        public DropdownIUResponse DropdownIU(DropdownIURequest model)
+        {
+
+            var result = _masterServices.DropdownIU(model);
             return result;
         }
 
