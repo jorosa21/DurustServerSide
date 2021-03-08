@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MasterSettingService.Model.DropdownModel;
+using MasterSettingService.Model.CompanyModel;
 using MasterSettingService.Services;
 using System.Collections;
 using Newtonsoft.Json;
@@ -40,6 +41,14 @@ namespace MasterSettingService.Controllers
         {
 
             var result = _masterServices.Dropdown_List(model);
+            return result;
+        }
+
+        [HttpPost("CompanyIU")]
+        public CompanyIUResponse CompanyIU(CompanyIURequest model)
+        {
+
+            var result = _masterServices.CompanyIU(model);
             return result;
         }
 

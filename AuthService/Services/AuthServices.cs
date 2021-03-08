@@ -66,6 +66,7 @@ namespace AuthService.Services
                 oCmd.Parameters.Clear();
                 oCmd.Parameters.AddWithValue("@user_name", model.username);
                 oCmd.Parameters.AddWithValue("@user_hash", UserHash);
+                oCmd.Parameters.AddWithValue("@company_code", model.company_code);
                 SqlDataReader sdr = oCmd.ExecuteReader();
                 while (sdr.Read())
                 {
@@ -78,6 +79,11 @@ namespace AuthService.Services
                     resp.username = sdr["user_name"].ToString();
                     resp.lock_account = Convert.ToBoolean(sdr["lock_account"].ToString());
                     resp.email_verified = Convert.ToBoolean(sdr["email_verified"].ToString());
+                    resp.company_id = Convert.ToInt32(sdr["company_id"].ToString());
+                    resp.company_code = sdr["company_code"].ToString();
+                    resp.instance_name = sdr["instance_name"].ToString();
+                    resp.company_user_name = sdr["company_user_name"].ToString();
+                    resp.company_user_hash = sdr["company_user_hash"].ToString();
                 }
                 sdr.Close();
                 oConn.Close();

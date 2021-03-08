@@ -32,6 +32,16 @@ namespace AuthService.Model
 
         public bool active { get; set; }
 
+        public int company_id { get; set; }
+
+        public string company_code { get; set; }
+
+        public string instance_name { get; set; }
+
+        public string company_user_name { get; set; }
+
+        public string company_user_hash { get; set; }
+
 
         public AuthenticateResponse(User user, string token)
         {
@@ -44,6 +54,15 @@ namespace AuthService.Model
             type = user.type;
             email_address = user.email_address;
             active = user.active;
+
+            company_id = user.company_id;
+            company_code = user.company_code;
+            instance_name = user.instance_name;
+            company_user_name = user.company_user_name;
+            company_user_hash = user.company_user_hash;
+
+
+
             Token = token;
             json = user.json;
         }
