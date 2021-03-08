@@ -63,7 +63,7 @@ namespace MasterSettingService.Controllers
         }
 
 
-        [HttpPost("CompanyIU")]
+        [HttpPost("DropdownIU")]
         public DropdownIUResponse DropdownIU(DropdownIURequest model)
         {
 
