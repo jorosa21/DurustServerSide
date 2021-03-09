@@ -344,6 +344,55 @@ namespace MasterSettingService.Services
                   
                 }
                 sdr.Close();
+
+
+                if (model.IP_IU != null)
+                {
+                    foreach (var ip in model.IP_IU)
+                    {
+                        oCmd.CommandText = "branch_ip_in";
+                        oCmd.CommandType = CommandType.StoredProcedure;
+                        oCmd.Parameters.Clear();
+                        oCmd.Parameters.AddWithValue("@branch_id", resp.branch_id);
+                        oCmd.Parameters.AddWithValue("@ip_address", ip.ip_address);
+                        oCmd.Parameters.AddWithValue("@created_by", ip.createdBy);
+                        oCmd.ExecuteNonQuery();
+                    }
+                }
+
+
+                if (model.Contact_IU != null)
+                {
+                    foreach (var contact in model.Contact_IU)
+                    {
+                        oCmd.CommandText = "branch_contact_in";
+                        oCmd.CommandType = CommandType.StoredProcedure;
+                        oCmd.Parameters.Clear();
+                        oCmd.Parameters.AddWithValue("@branch_id", resp.branch_id);
+                        oCmd.Parameters.AddWithValue("@contact_type_id", contact.contact_type_id);
+                        oCmd.Parameters.AddWithValue("@contact_number", contact.contact_number);
+                        oCmd.Parameters.AddWithValue("@created_by", contact.createdBy);
+                        oCmd.ExecuteNonQuery();
+                    }
+                }
+
+
+                if (model.Email_IU != null)
+                {
+                    foreach (var email in model.Email_IU)
+                    {
+                        oCmd.CommandText = "branch_email_in";
+                        oCmd.CommandType = CommandType.StoredProcedure;
+                        oCmd.Parameters.Clear();
+                        oCmd.Parameters.AddWithValue("@branch_id", resp.branch_id);
+                        oCmd.Parameters.AddWithValue("@email_type_id", email.email_type_id);
+                        oCmd.Parameters.AddWithValue("@email_address", email.email_address);
+                        oCmd.Parameters.AddWithValue("@created_by", email.createdBy);
+                        oCmd.ExecuteNonQuery();
+                    }
+                }
+
+
                 oTrans.Commit();
             }
             catch (Exception e)
