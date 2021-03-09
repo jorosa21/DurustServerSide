@@ -108,7 +108,7 @@ namespace MasterSettingService.Services
             return resp;
         }
 
-        public List<DropdownResponse> Dropdown_entitlement(string dropdown_type_id, string dropdown_type, string dropdown_type_id)
+        public List<DropdownResponse> Dropdown_entitlement(string dropdown_type_id, string dropdown_type, string dropdowntype_id)
         {
             //DropdownResponse resp = new DropdownResponse();
 
@@ -132,7 +132,7 @@ namespace MasterSettingService.Services
                 oCmd.Parameters.Clear();
                 oCmd.Parameters.AddWithValue("@dropdown_type_id", dropdown_type_id);
                 oCmd.Parameters.AddWithValue("@dropdown_type", dropdown_type);
-                oCmd.Parameters.AddWithValue("@dropdown_type_id_to", dropdown_type_id_to);
+                oCmd.Parameters.AddWithValue("@dropdown_type_id_to", dropdowntype_id);
                 da.Fill(dt);
                 resp = (from DataRow dr in dt.Rows
                         select new DropdownResponse()
@@ -144,6 +144,14 @@ namespace MasterSettingService.Services
                             to_id = Convert.ToInt32(dr["to_id"].ToString()),
                             to_description = dr["to_description"].ToString(),
                             to_type_id = Convert.ToInt32(dr["to_type_id"].ToString()),
+
+                            id_to = Convert.ToInt32(dr["id"].ToString()),
+                            description_to = dr["description"].ToString(),
+                            type_id_to = Convert.ToInt32(dr["type_id"].ToString()),
+
+                            to_id_to = Convert.ToInt32(dr["to_id"].ToString()),
+                            to_description_to = dr["to_description"].ToString(),
+                            to_type_id_to = Convert.ToInt32(dr["to_type_id"].ToString()),
 
                         }).ToList();
                 //while (sdr.Read())
