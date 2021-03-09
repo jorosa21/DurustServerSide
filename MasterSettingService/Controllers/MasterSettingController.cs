@@ -65,6 +65,16 @@ namespace MasterSettingService.Controllers
         }
 
 
+        [HttpPost("BranchIU")]
+        public BranchIUResponse BranchIU(BranchIURequest model)
+        {
+
+            var result = _masterServices.BranchIU(model);
+            return result;
+        }
+
+
+
         [HttpPost("DropdownIU")]
         public DropdownIUResponse DropdownIU(DropdownIURequest model)
         {
@@ -73,21 +83,20 @@ namespace MasterSettingService.Controllers
             return result;
         }
 
-        //public List<DropdownResponse> Dropdown_List(DropdownRequest model)
-        //{
-        //    List<DropdownResponse> result = new List<DropdownResponse>();
-        //     result = _masterServices.Dropdown_List(model);
 
-        //    return result;
-        //    //var response = _masterServices.Dropdown_List(model);
-        //    //return response;
-        //}
-
-        //public JsonResult Dropdown_List(DropdownRequest model)
+        //[HttpPost("CompanyBranchIU")]
+        //public IActionResult CompanyBranchIU(CompanyIURequest model,BranchIURequest branchmodel)
         //{
-        //    var result = JsonConvert.SerializeObject(_masterServices.Dropdown_List(model));
-        //    JsonResult json = Json(result);
-        //    return result;
+
+        //    var result = _masterServices.CompanyIU(model);
+
+        //    branchmodel.instance_name = result.instance_name;
+        //    branchmodel.username = result.user_name;
+        //    branchmodel.password = result.user_hash;
+
+        //    var branch_result = _masterServices.BranchIU(branchmodel);
+            
+        //    return Ok();
         //}
 
     }

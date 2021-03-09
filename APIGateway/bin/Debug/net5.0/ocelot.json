@@ -51,15 +51,8 @@
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
-      },
-
-      "RateLimitOptions": {
-        "ClientWhiteList": [],
-        "EnableRateLimiting": true,
-        "Period": "5s",
-        "PeriodTimespan": 1,
-        "Limit": 1
       }
+
     },
 
     {
@@ -77,14 +70,6 @@
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
-      },
-
-      "RateLimitOptions": {
-        "ClientWhiteList": [],
-        "EnableRateLimiting": true,
-        "Period": "5s",
-        "PeriodTimespan": 1,
-        "Limit": 1
       }
     },
 
@@ -103,14 +88,24 @@
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
-      },
+      }
+    },
 
-      "RateLimitOptions": {
-        "ClientWhiteList": [],
-        "EnableRateLimiting": true,
-        "Period": "5s",
-        "PeriodTimespan": 1,
-        "Limit": 1
+    {
+
+      "DownstreamPathTemplate": "/api/MasterSetting/BranchIU",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "65478"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/MasterSetting/BranchIU",
+
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
       }
     },
 
@@ -129,15 +124,17 @@
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
-      },
-
-      "RateLimitOptions": {
-        "ClientWhiteList": [],
-        "EnableRateLimiting": true,
-        "Period": "5s",
-        "PeriodTimespan": 1,
-        "Limit": 1
       }
+      
+      //,
+
+      //"RateLimitOptions": {
+      //  "ClientWhiteList": [],
+      //  "EnableRateLimiting": true,
+      //  "Period": "5s",
+      //  "PeriodTimespan": 1,
+      //  "Limit": 1
+      //}
     }
 
   ]

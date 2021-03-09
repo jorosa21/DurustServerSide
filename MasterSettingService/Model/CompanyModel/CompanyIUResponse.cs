@@ -48,4 +48,63 @@ namespace MasterSettingService.Model.CompanyModel
 
 
     }
+
+    public class BranchIUResponse
+    {
+        public int branch_id { get; set; }
+
+        public string branch_code { get; set; }
+
+        public string branch_name { get; set; }
+
+        public string unit_floor { get; set; }
+
+        public string building { get; set; }
+
+        public string street { get; set; }
+
+        public string barangay { get; set; }
+
+        public string municipality { get; set; }
+
+        public string city { get; set; }
+
+        public string region { get; set; }
+
+        public int country { get; set; }
+
+        public string zip_code { get; set; }
+
+        public string email_address { get; set; }
+
+        public string sss { get; set; }
+
+        public string philhealth { get; set; }
+
+        public string tin { get; set; }
+
+        public string rdo { get; set; }
+
+        public string pagibig { get; set; }
+
+        public string pagibig_branch { get; set; }
+
+        public string ip_address { get; set; }
+
+        public int industry { get; set; }
+
+        public int bank_id { get; set; }
+
+        public string bank_account { get; set; }
+
+        public int company_id { get; set; }
+
+        public string guid { get; set; }
+
+        public int created_by { get; set; }
+
+        public bool active { get; set; }
+
+
+    }
 }

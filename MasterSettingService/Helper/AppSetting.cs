@@ -13,6 +13,7 @@ namespace MasterSettingService.Helper
     public class connectionString
     {
         public string _DB_Master { get; set; }
+        public string server { get; set; }
 
     }
 
