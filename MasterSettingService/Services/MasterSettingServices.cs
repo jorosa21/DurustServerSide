@@ -20,9 +20,9 @@ namespace MasterSettingService.Services
     public interface IMasterSettingServices
     {
 
-        List<DropdownResponse> Dropdown_List(string dropdowntype_id, string dropdown_type);
+        List<DropdownResponse> Dropdown_List(string dropdowntype_id);
 
-        List<DropdownResponse> Dropdown_entitlement(string dropdowntype_id, string dropdown_type, string dropdowntype_id_to);
+        List<DropdownResponse> Dropdown_entitlement(string dropdowntype_id);
 
         List<DropdownTypeResponse> Dropdowntype_view();
 
@@ -54,7 +54,7 @@ namespace MasterSettingService.Services
             connection = settings.Value;
         }
 
-        public List<DropdownResponse> Dropdown_List(string dropdown_type_id, string dropdown_type)
+        public List<DropdownResponse> Dropdown_List(string dropdown_type_id)
         {
             //DropdownResponse resp = new DropdownResponse();
 
@@ -107,7 +107,7 @@ namespace MasterSettingService.Services
             return resp;
         }
 
-        public List<DropdownResponse> Dropdown_entitlement(string dropdown_type_id, string dropdown_type, string dropdowntype_id)
+        public List<DropdownResponse> Dropdown_entitlement(string dropdown_type_id)
         {
             //DropdownResponse resp = new DropdownResponse();
 
