@@ -21,6 +21,7 @@ namespace MasterSettingService.Services
 
         List<DropdownResponse> Dropdown_List(string dropdowntype_id, string dropdown_type);
 
+        List<DropdownResponse> Dropdown_entitlement(string dropdowntype_id, string dropdown_type);
 
         List<DropdownTypeResponse> Dropdowntype_view();
 
@@ -83,6 +84,64 @@ namespace MasterSettingService.Services
                            type_id = Convert.ToInt32(dr["type_id"].ToString()),
 
                        }).ToList();
+                //while (sdr.Read())
+                //{
+                //    resp.id = Convert.ToInt32(sdr["id"].ToString());
+                //    resp.description = sdr["description"].ToString();
+
+                //}
+                oConn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
+            finally
+            {
+                oConn.Close();
+            }
+
+
+            return resp;
+        }
+
+        public List<DropdownResponse> Dropdown_entitlement(string dropdown_type_id, string dropdown_type)
+        {
+            //DropdownResponse resp = new DropdownResponse();
+
+            List<DropdownResponse> resp = new List<DropdownResponse>();
+            string _con = connection._DB_Master;
+            DataTable dt = new DataTable();
+            SqlConnection oConn = new SqlConnection(_con);
+            SqlTransaction oTrans;
+            oConn.Open();
+            oTrans = oConn.BeginTransaction();
+            SqlCommand oCmd = new SqlCommand();
+            oCmd.Connection = oConn;
+            oCmd.Transaction = oTrans;
+            try
+            {
+
+                SqlDataAdapter da = new SqlDataAdapter();
+                da.SelectCommand = oCmd;
+                oCmd.CommandText = "dropdown_view_entitlement";
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Clear();
+                oCmd.Parameters.AddWithValue("@dropdown_type_id", dropdown_type_id);
+                oCmd.Parameters.AddWithValue("@dropdown_type", dropdown_type);
+                da.Fill(dt);
+                resp = (from DataRow dr in dt.Rows
+                        select new DropdownResponse()
+                        {
+                            id = Convert.ToInt32(dr["id"].ToString()),
+                            description = dr["description"].ToString(),
+                            type_id = Convert.ToInt32(dr["type_id"].ToString()),
+
+                            to_id = Convert.ToInt32(dr["to_id"].ToString()),
+                            to_description = dr["to_description"].ToString(),
+                            to_type_id = Convert.ToInt32(dr["to_type_id"].ToString()),
+
+                        }).ToList();
                 //while (sdr.Read())
                 //{
                 //    resp.id = Convert.ToInt32(sdr["id"].ToString());

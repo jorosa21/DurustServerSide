@@ -57,6 +57,25 @@
 
     {
 
+      "DownstreamPathTemplate": "/api/MasterSetting/Dropdown_entitlement",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "65478"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/MasterSetting/Dropdown_entitlement",
+
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+
+    },
+
+    {
+
       "DownstreamPathTemplate": "/api/MasterSetting/Dropdowntype_List",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
