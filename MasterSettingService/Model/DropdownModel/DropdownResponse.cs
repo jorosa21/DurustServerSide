@@ -11,13 +11,15 @@ namespace MasterSettingService.Model.DropdownModel
         public int id { get; set; }
 
         public string description { get; set; }
-    
+
+        public string type_id { get; set; }
+
 
         //public DropdownResponse(DropdownSetting dropdown)
         //{
         //        id = dropdown.id;
         //        description = dropdown.description;
-            
+
         //}
 
     }
