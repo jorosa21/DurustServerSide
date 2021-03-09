@@ -49,12 +49,12 @@ namespace MasterSettingService.Controllers
 
 
         [HttpGet("Dropdown_entitlement")]
-        public List<DropdownResponse> Dropdown_entitlement(string dropdowntype_id, string dropdown_type)
+        public List<DropdownResponse> Dropdown_entitlement(string dropdowntype_id, string dropdown_type, string dropdown_type_id_to)
         {
             //dropdowntype_id = dropdowntype_id == "null" ? "0" : dropdowntype_id;
             //dropdown_type = dropdown_type == "null" ? "" : dropdown_type;
 
-            var result = _masterServices.Dropdown_entitlement(dropdowntype_id, dropdown_type);
+            var result = _masterServices.Dropdown_entitlement(dropdowntype_id, dropdown_type,dropdown_type_id_to);
             return result;
         }
 

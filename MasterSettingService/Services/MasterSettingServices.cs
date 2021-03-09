@@ -22,7 +22,7 @@ namespace MasterSettingService.Services
 
         List<DropdownResponse> Dropdown_List(string dropdowntype_id, string dropdown_type);
 
-        List<DropdownResponse> Dropdown_entitlement(string dropdowntype_id, string dropdown_type);
+        List<DropdownResponse> Dropdown_entitlement(string dropdowntype_id, string dropdown_type, string dropdowntype_id_to);
 
         List<DropdownTypeResponse> Dropdowntype_view();
 
@@ -108,7 +108,7 @@ namespace MasterSettingService.Services
             return resp;
         }
 
-        public List<DropdownResponse> Dropdown_entitlement(string dropdown_type_id, string dropdown_type)
+        public List<DropdownResponse> Dropdown_entitlement(string dropdown_type_id, string dropdown_type, string dropdown_type_id)
         {
             //DropdownResponse resp = new DropdownResponse();
 
@@ -132,6 +132,7 @@ namespace MasterSettingService.Services
                 oCmd.Parameters.Clear();
                 oCmd.Parameters.AddWithValue("@dropdown_type_id", dropdown_type_id);
                 oCmd.Parameters.AddWithValue("@dropdown_type", dropdown_type);
+                oCmd.Parameters.AddWithValue("@dropdown_type_id_to", dropdown_type_id_to);
                 da.Fill(dt);
                 resp = (from DataRow dr in dt.Rows
                         select new DropdownResponse()

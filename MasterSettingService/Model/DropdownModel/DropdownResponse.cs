@@ -22,6 +22,20 @@ namespace MasterSettingService.Model.DropdownModel
         public int to_type_id { get; set; }
 
 
+        public int id_to { get; set; }
+
+        public string description_to { get; set; }
+
+        public int type_id_to { get; set; }
+
+
+        public int to_id_to { get; set; }
+
+        public string to_description_to { get; set; }
+
+        public int to_type_id_to { get; set; }
+
+
         //public DropdownResponse(DropdownSetting dropdown)
         //{
         //        id = dropdown.id;
