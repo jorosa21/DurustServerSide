@@ -15,7 +15,7 @@ namespace AuthService.Model
         [Required]
         public string password { get; set; }
 
-        [Required]
+
         public string company_code { get; set; }
     }
 }

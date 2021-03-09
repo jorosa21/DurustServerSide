@@ -19,7 +19,7 @@ namespace MasterSettingService.Services
     public interface IMasterSettingServices
     {
 
-        List<DropdownResponse> Dropdown_List(DropdownRequest model);
+        List<DropdownResponse> Dropdown_List(string dropdowntype_id, string dropdown_type);
 
 
         List<DropdownTypeResponse> Dropdowntype_view();
@@ -45,7 +45,7 @@ namespace MasterSettingService.Services
             connection = settings.Value;
         }
 
-        public List<DropdownResponse> Dropdown_List(DropdownRequest model)
+        public List<DropdownResponse> Dropdown_List(string dropdown_type_id, string dropdown_type)
         {
             //DropdownResponse resp = new DropdownResponse();
 
@@ -67,8 +67,8 @@ namespace MasterSettingService.Services
                 oCmd.CommandText = "dropdown_view";
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 oCmd.Parameters.Clear();
-                oCmd.Parameters.AddWithValue("@dropdown_type_id", model.dropdown_type_id);
-                oCmd.Parameters.AddWithValue("@dropdown_type", model.dropdown_type);
+                oCmd.Parameters.AddWithValue("@dropdown_type_id", dropdown_type_id);
+                oCmd.Parameters.AddWithValue("@dropdown_type", dropdown_type);
                 da.Fill(dt);
                 resp = (from DataRow dr in dt.Rows
                        select new DropdownResponse()

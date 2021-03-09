@@ -37,10 +37,12 @@ namespace MasterSettingService.Controllers
 
 
         [HttpGet("Dropdown_List")]
-        public List<DropdownResponse> Dropdown_List(DropdownRequest model)
+        public List<DropdownResponse> Dropdown_List(string dropdowntype_id, string dropdown_type)
         {
+            //dropdowntype_id = dropdowntype_id == "null" ? "0" : dropdowntype_id;
+            //dropdown_type = dropdown_type == "null" ? "" : dropdown_type;
 
-            var result = _masterServices.Dropdown_List(model);
+            var result = _masterServices.Dropdown_List(dropdowntype_id, dropdown_type);
             return result;
         }
 
