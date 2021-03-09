@@ -12,7 +12,7 @@ namespace MasterSettingService.Model.DropdownModel
 
         public string description { get; set; }
 
-        public string type_id { get; set; }
+        public int type_id { get; set; }
 
 
         //public DropdownResponse(DropdownSetting dropdown)

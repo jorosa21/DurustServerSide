@@ -75,7 +75,7 @@ namespace MasterSettingService.Services
                        {
                            id = Convert.ToInt32(dr["id"].ToString()),
                            description = dr["description"].ToString(),
-                           type_id = dr["type_id"].ToString(),
+                           type_id = Convert.ToInt32(dr["type_id"].ToString()),
 
                        }).ToList();
                 //while (sdr.Read())
