@@ -100,6 +100,44 @@ namespace MasterSettingService.Model.CompanyModel
         public string username { get; set; }
         public string password { get; set; }
 
+
+        public IPIU[] IP_IU { get; set; }
+        public ContactIU[] Contact_IU { get; set; }
+        public EmailIU[] Email_IU { get; set; }
+
+    }
+
+    public class IPIU
+    {
+        public int branch_id { get; set; }
+
+        public string ip_address { get; set; }
+
+        public Guid createdBy { get; set; }
+    }
+
+
+    public class ContactIU
+    {
+        public int branch_id { get; set; }
+
+        public string contact_type_id { get; set; }
+
+        public string contact_number { get; set; }
+
+        public Guid createdBy { get; set; }
+    }
+
+
+    public class EmailIU
+    {
+        public int branch_id { get; set; }
+
+        public string email_type_id { get; set; }
+
+        public string email_address { get; set; }
+
+        public Guid createdBy { get; set; }
     }
 
     public class CompanyBranchIU

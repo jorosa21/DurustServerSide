@@ -365,16 +365,19 @@ namespace MasterSettingService.Services
             string instance_name = model[0].instance_name;
             string username = model[0].username;
             string password = model[0].password;
+            int branch = 0;
+
 
             BranchIUResponse resp = new BranchIUResponse();
             string _con;
             if (instance_name is null)
             {
-                _con = "Data Source=" + connection.server + ";Initial Catalog=" + instance_name + ";User ID=" + username + ";Password=" + password + ";MultipleActiveResultSets=True;";
+                _con = connection._DB_Master;
             }
             else
             {
-                _con = connection._DB_Master;
+                _con = "Data Source=" + instance_name + ";Initial Catalog=mastersetupdb;User ID=" + username + ";Password=" + password + ";MultipleActiveResultSets=True;";
+          
             }
             DataTable dt = new DataTable();
             SqlConnection oConn = new SqlConnection(_con);
@@ -418,7 +421,65 @@ namespace MasterSettingService.Services
                         oCmd.Parameters.AddWithValue("@bank_account", item.bank_account);
                         oCmd.Parameters.AddWithValue("@company_id", item.company_id);
                         oCmd.Parameters.AddWithValue("@created_by", item.created_by);
-                        oCmd.ExecuteNonQuery();
+                        //oCmd.ExecuteNonQuery();
+                        SqlDataReader sdr = oCmd.ExecuteReader();
+                        while (sdr.Read())
+                        {
+                            resp.branch_id = Convert.ToInt32(sdr["branch_id"].ToString());
+                            resp.guid = sdr["guid"].ToString();
+                            resp.created_by = Convert.ToInt32(sdr["created_by"].ToString());
+
+                            branch = Convert.ToInt32(sdr["branch_id"].ToString());
+
+                        }
+                        sdr.Close();
+
+                        if (item.IP_IU != null)
+                        {
+                            foreach (var ip in item.IP_IU)
+                            {
+                                oCmd.CommandText = "branch_ip_in";
+                                oCmd.CommandType = CommandType.StoredProcedure;
+                                oCmd.Parameters.Clear();
+                                oCmd.Parameters.AddWithValue("@branch_id", branch);
+                                oCmd.Parameters.AddWithValue("@ip_address", ip.ip_address);
+                                oCmd.Parameters.AddWithValue("@created_by", ip.createdBy);
+                                oCmd.ExecuteNonQuery();
+                            }
+                        }
+
+
+                        if (item.Contact_IU != null)
+                        {
+                            foreach (var contact in item.Contact_IU)
+                            {
+                                oCmd.CommandText = "branch_contact_in";
+                                oCmd.CommandType = CommandType.StoredProcedure;
+                                oCmd.Parameters.Clear();
+                                oCmd.Parameters.AddWithValue("@branch_id", branch);
+                                oCmd.Parameters.AddWithValue("@contact_type_id", contact.contact_type_id);
+                                oCmd.Parameters.AddWithValue("@contact_number", contact.contact_number);
+                                oCmd.Parameters.AddWithValue("@created_by", contact.createdBy);
+                                oCmd.ExecuteNonQuery();
+                            }
+                        }
+
+
+                        if (item.Email_IU != null)
+                        {
+                            foreach (var email in item.Email_IU)
+                            {
+                                oCmd.CommandText = "branch_email_in";
+                                oCmd.CommandType = CommandType.StoredProcedure;
+                                oCmd.Parameters.Clear();
+                                oCmd.Parameters.AddWithValue("@branch_id", branch);
+                                oCmd.Parameters.AddWithValue("@email_type_id", email.email_type_id);
+                                oCmd.Parameters.AddWithValue("@email_address", email.email_address);
+                                oCmd.Parameters.AddWithValue("@created_by", email.createdBy);
+                                oCmd.ExecuteNonQuery();
+                            }
+                        }
+
                     }
                 }
 
