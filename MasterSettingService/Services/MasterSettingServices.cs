@@ -28,6 +28,7 @@ namespace MasterSettingService.Services
 
 
         BranchIUResponse BranchIU(BranchIURequest model);
+        BranchIUResponse MultipleBranchIU(BranchIURequest[] model);
 
         DropdownIUResponse DropdownIU(DropdownIURequest model);
     }
@@ -217,7 +218,6 @@ namespace MasterSettingService.Services
 
         public BranchIUResponse BranchIU(BranchIURequest model)
         {
-
             BranchIUResponse resp = new BranchIUResponse();
             string _con;
                 if (model.instance_name is null)
@@ -291,6 +291,93 @@ namespace MasterSettingService.Services
         }
 
 
+
+        public BranchIUResponse MultipleBranchIU(BranchIURequest[] model)
+        {
+            string instance_name = model[0].instance_name;
+            string username = model[0].username;
+            string password = model[0].password;
+
+            BranchIUResponse resp = new BranchIUResponse();
+            string _con;
+            if (instance_name is null)
+            {
+                _con = "Data Source=" + connection.server + ";Initial Catalog=" + instance_name + ";User ID=" + username + ";Password=" + password + ";MultipleActiveResultSets=True;";
+            }
+            else
+            {
+                _con = connection._DB_Master;
+            }
+            DataTable dt = new DataTable();
+            SqlConnection oConn = new SqlConnection(_con);
+            SqlTransaction oTrans;
+            oConn.Open();
+            oTrans = oConn.BeginTransaction();
+            SqlCommand oCmd = new SqlCommand();
+            oCmd.Connection = oConn;
+            oCmd.Transaction = oTrans;
+            try
+            {
+                if (model != null)
+                {
+                    foreach (var item in model)
+                    {
+                        oCmd.CommandText = "branch_in_up";
+                        oCmd.CommandType = CommandType.StoredProcedure;
+                        oCmd.Parameters.Clear();
+                        oCmd.Parameters.AddWithValue("@branch_id", item.branch_id);
+                        oCmd.Parameters.AddWithValue("@branch_code", item.branch_code);
+                        oCmd.Parameters.AddWithValue("@branch_name", item.branch_name);
+                        oCmd.Parameters.AddWithValue("@unit_floor", item.unit_floor);
+                        oCmd.Parameters.AddWithValue("@building", item.building);
+                        oCmd.Parameters.AddWithValue("@street", item.street);
+                        oCmd.Parameters.AddWithValue("@barangay", item.barangay);
+                        oCmd.Parameters.AddWithValue("@municipality", item.municipality);
+                        oCmd.Parameters.AddWithValue("@city", item.city);
+                        oCmd.Parameters.AddWithValue("@region", item.region);
+                        oCmd.Parameters.AddWithValue("@country", item.country);
+                        oCmd.Parameters.AddWithValue("@zip_code", item.zip_code);
+                        oCmd.Parameters.AddWithValue("@email_address", item.email_address);
+                        oCmd.Parameters.AddWithValue("@sss", item.sss);
+                        oCmd.Parameters.AddWithValue("@philhealth", item.philhealth);
+                        oCmd.Parameters.AddWithValue("@tin", item.tin);
+                        oCmd.Parameters.AddWithValue("@rdo", item.rdo);
+                        oCmd.Parameters.AddWithValue("@pagibig", item.pagibig);
+                        oCmd.Parameters.AddWithValue("@pagibig_branch", item.pagibig_branch);
+                        oCmd.Parameters.AddWithValue("@ip_address", item.ip_address);
+                        oCmd.Parameters.AddWithValue("@industry", item.industry);
+                        oCmd.Parameters.AddWithValue("@bank_id", item.bank_id);
+                        oCmd.Parameters.AddWithValue("@bank_account", item.bank_account);
+                        oCmd.Parameters.AddWithValue("@company_id", item.company_id);
+                        oCmd.Parameters.AddWithValue("@created_by", item.created_by);
+                        oCmd.ExecuteNonQuery();
+                    }
+                }
+
+               
+                ////oCmd.Parameters.AddWithValue("@active", model.active);
+                //SqlDataReader sdr = oCmd.ExecuteReader();
+                //while (sdr.Read())
+                //{
+                //    resp.branch_id = Convert.ToInt32(sdr["branch_id"].ToString());
+                //    resp.guid = sdr["guid"].ToString();
+                //    resp.created_by = Convert.ToInt32(sdr["created_by"].ToString());
+
+                //}
+                //sdr.Close();
+                oTrans.Commit();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
+            finally
+            {
+                oConn.Close();
+            }
+
+            return resp;
+        }
 
         public DropdownIUResponse DropdownIU(DropdownIURequest model)
         {

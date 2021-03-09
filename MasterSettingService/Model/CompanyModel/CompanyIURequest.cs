@@ -23,9 +23,9 @@ namespace MasterSettingService.Model.CompanyModel
 
         public string municipality { get; set; }
 
-        public string city { get; set; }
+        public int city { get; set; }
 
-        public string region { get; set; }
+        public int region { get; set; }
 
         public int selectedCompanyCountry { get; set; }
 
@@ -58,9 +58,9 @@ namespace MasterSettingService.Model.CompanyModel
 
         public string municipality { get; set; }
 
-        public string city { get; set; }
+        public int city { get; set; }
 
-        public string region { get; set; }
+        public int region { get; set; }
 
         public int country { get; set; }
 
@@ -102,4 +102,13 @@ namespace MasterSettingService.Model.CompanyModel
 
     }
 
+    public class CompanyBranchIU
+    {
+
+        public CompanyIURequest company_IU { get; set; }
+
+        public BranchIURequest[] Branch_IU { get; set; }
+    }
 }
+
+

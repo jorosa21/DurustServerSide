@@ -111,6 +111,24 @@
 
     {
 
+      "DownstreamPathTemplate": "/api/MasterSetting/CompanyBranchIU",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "65478"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/MasterSetting/CompanyBranchIU",
+
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+    {
+
       "DownstreamPathTemplate": "/api/MasterSetting/DropdownIU",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -125,7 +143,7 @@
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
-      
+
       //,
 
       //"RateLimitOptions": {

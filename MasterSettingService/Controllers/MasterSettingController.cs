@@ -84,20 +84,23 @@ namespace MasterSettingService.Controllers
         }
 
 
-        //[HttpPost("CompanyBranchIU")]
-        //public IActionResult CompanyBranchIU(CompanyIURequest model,BranchIURequest branchmodel)
-        //{
+        [HttpPost("CompanyBranchIU")]
+        public IActionResult CompanyBranchIU(CompanyBranchIU model)
+        {
 
-        //    var result = _masterServices.CompanyIU(model);
+            var result = _masterServices.CompanyIU(model.company_IU);
 
-        //    branchmodel.instance_name = result.instance_name;
-        //    branchmodel.username = result.user_name;
-        //    branchmodel.password = result.user_hash;
+            if (model.Branch_IU[0].instance_name is null)
+            {
+                model.Branch_IU[0].instance_name = result.instance_name;
+                model.Branch_IU[0].username = result.user_name;
+                model.Branch_IU[0].password = result.user_hash;
+            }
 
-        //    var branch_result = _masterServices.BranchIU(branchmodel);
-            
-        //    return Ok();
-        //}
+            var branch_result = _masterServices.MultipleBranchIU(model.Branch_IU);
+
+            return Ok();
+        }
 
     }
 }
