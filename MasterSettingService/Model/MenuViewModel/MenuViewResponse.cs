@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace MasterSettingService.Model.MenuViewModel
 {
-    public class MenuViewRequest
+    public class MenuViewResponse
     {
+        public string menu_view { get; set; }
     }
 }

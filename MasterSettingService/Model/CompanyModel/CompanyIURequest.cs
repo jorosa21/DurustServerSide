@@ -33,7 +33,7 @@ namespace MasterSettingService.Model.CompanyModel
 
         public string img { get; set; }
 
-        public int createdBy { get; set; }
+        public Guid createdBy { get; set; }
 
         public bool active { get; set; }
 
@@ -92,7 +92,7 @@ namespace MasterSettingService.Model.CompanyModel
 
         public string guid { get; set; }
 
-        public int created_by { get; set; }
+        public Guid created_by { get; set; }
 
         public bool active { get; set; }
 

@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.ServiceModel;
+using MasterSettingService.Model.MenuViewModel;
 
 
 
@@ -112,6 +113,20 @@ namespace MasterSettingService.Controllers
 
             return Ok();
         }
+
+
+
+        [HttpGet("Menu_view")]
+        public MenuViewResponse Menu_view()
+        {
+            //dropdowntype_id = dropdowntype_id == "null" ? "0" : dropdowntype_id;
+            //dropdown_type = dropdown_type == "null" ? "" : dropdown_type;
+
+            var result = _masterServices.Menu_view();
+            return result;
+        }
+
+
 
     }
 }

@@ -10,6 +10,7 @@ using MasterSettingService.Model.CompanyModel;
 using MasterSettingService.Model.DropdownModel;
 using System.Data;
 using System.Data.SqlClient;
+using MasterSettingService.Model.MenuViewModel;
 
 namespace MasterSettingService.Services
 
@@ -32,6 +33,8 @@ namespace MasterSettingService.Services
         BranchIUResponse MultipleBranchIU(BranchIURequest[] model);
 
         DropdownIUResponse DropdownIU(DropdownIURequest model);
+
+        MenuViewResponse Menu_view();
     }
 
 
@@ -478,6 +481,50 @@ namespace MasterSettingService.Services
             {
                 oConn.Close();
             }
+
+            return resp;
+        }
+
+
+        public MenuViewResponse Menu_view()
+        {
+            //DropdownResponse resp = new DropdownResponse();
+
+            MenuViewResponse resp = new MenuViewResponse();
+            string _con = connection._DB_Master;
+            DataTable dt = new DataTable();
+            SqlConnection oConn = new SqlConnection(_con);
+            SqlTransaction oTrans;
+            oConn.Open();
+            oTrans = oConn.BeginTransaction();
+            SqlCommand oCmd = new SqlCommand();
+            oCmd.Connection = oConn;
+            oCmd.Transaction = oTrans;
+            try
+            {
+
+                SqlDataAdapter da = new SqlDataAdapter();
+                da.SelectCommand = oCmd;
+                oCmd.CommandText = "dynamic_menu_view";
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Clear();
+                SqlDataReader sdr = oCmd.ExecuteReader();
+                while (sdr.Read())
+                {
+                    resp.menu_view = sdr["menu_view"].ToString();
+
+                }
+                oConn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
+            finally
+            {
+                oConn.Close();
+            }
+
 
             return resp;
         }
