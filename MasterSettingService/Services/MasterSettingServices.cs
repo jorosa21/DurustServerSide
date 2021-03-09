@@ -77,7 +77,6 @@ namespace MasterSettingService.Services
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 oCmd.Parameters.Clear();
                 oCmd.Parameters.AddWithValue("@dropdown_type_id", dropdown_type_id);
-                oCmd.Parameters.AddWithValue("@dropdown_type", dropdown_type);
                 da.Fill(dt);
                 resp = (from DataRow dr in dt.Rows
                        select new DropdownResponse()
@@ -131,8 +130,6 @@ namespace MasterSettingService.Services
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 oCmd.Parameters.Clear();
                 oCmd.Parameters.AddWithValue("@dropdown_type_id", dropdown_type_id);
-                oCmd.Parameters.AddWithValue("@dropdown_type", dropdown_type);
-                oCmd.Parameters.AddWithValue("@dropdown_type_id_to", dropdowntype_id);
                 da.Fill(dt);
                 resp = (from DataRow dr in dt.Rows
                         select new DropdownResponse()
@@ -145,13 +142,13 @@ namespace MasterSettingService.Services
                             to_description = dr["to_description"].ToString(),
                             to_type_id = Convert.ToInt32(dr["to_type_id"].ToString()),
 
-                            id_to = Convert.ToInt32(dr["id"].ToString()),
-                            description_to = dr["description"].ToString(),
-                            type_id_to = Convert.ToInt32(dr["type_id"].ToString()),
+                            id_to = Convert.ToInt32(dr["id_to"].ToString()),
+                            description_to = dr["description_to"].ToString(),
+                            type_id_to = Convert.ToInt32(dr["type_id_to"].ToString()),
 
-                            to_id_to = Convert.ToInt32(dr["to_id"].ToString()),
-                            to_description_to = dr["to_description"].ToString(),
-                            to_type_id_to = Convert.ToInt32(dr["to_type_id"].ToString()),
+                            to_id_to = Convert.ToInt32(dr["to_id_to"].ToString()),
+                            to_description_to = dr["to_description_to"].ToString(),
+                            to_type_id_to = Convert.ToInt32(dr["to_type_id_to"].ToString()),
 
                         }).ToList();
                 //while (sdr.Read())
