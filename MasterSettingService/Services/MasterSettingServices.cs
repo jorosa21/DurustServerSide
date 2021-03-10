@@ -11,6 +11,7 @@ using MasterSettingService.Model.DropdownModel;
 using System.Data;
 using System.Data.SqlClient;
 using MasterSettingService.Model.MenuViewModel;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace MasterSettingService.Services
 
@@ -26,7 +27,6 @@ namespace MasterSettingService.Services
 
         List<DropdownTypeResponse> Dropdowntype_view();
 
-
         DropdownIUResponse DropdownIU(DropdownIURequest model);
 
         MenuViewResponse Menu_view();
@@ -36,22 +36,68 @@ namespace MasterSettingService.Services
 
     public class MasterSettingServices : IMasterSettingServices
     {
-        //public DropdownSetting resp = new DropdownSetting();
 
         private connectionString connection { get; set; }
         private readonly AppSettings _appSettings;
         private string instance_name { get; set; }
+        private readonly IDataProtector _protector;
 
         public MasterSettingServices(IOptions<AppSettings> appSettings,
-            IOptions<connectionString> settings)
+            IOptions<connectionString> settings, IDataProtectionProvider provider)
         {
             _appSettings = appSettings.Value;
             connection = settings.Value;
+            _protector = provider.CreateProtector("mysecretkey");
+        }
+
+
+        public DropdownIUResponse DropdownIU(DropdownIURequest model)
+        {
+
+            DropdownIUResponse resp = new DropdownIUResponse();
+            string _con = connection._DB_Master;
+            DataTable dt = new DataTable();
+            SqlConnection oConn = new SqlConnection(_con);
+            SqlTransaction oTrans;
+            oConn.Open();
+            oTrans = oConn.BeginTransaction();
+            SqlCommand oCmd = new SqlCommand();
+            oCmd.Connection = oConn;
+            oCmd.Transaction = oTrans;
+            try
+            {
+                oCmd.CommandText = "dropdown_in_up";
+                oCmd.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Clear();
+                oCmd.Parameters.AddWithValue("@dropdown_id", model.dropdown_id);
+                oCmd.Parameters.AddWithValue("@dropdown_type_id", model.dropdown_type_id);
+                oCmd.Parameters.AddWithValue("@dropdown_description", model.dropdown_description);
+                oCmd.Parameters.AddWithValue("@created_by", model.created_by);
+                //oCmd.Parameters.AddWithValue("@active", model.active);
+                SqlDataReader sdr = oCmd.ExecuteReader();
+                while (sdr.Read())
+                {
+                    resp.dropdown_id = Convert.ToInt32(sdr["dropdown_id"].ToString());
+                    resp.dropdown_type_id = Convert.ToInt32(sdr["dropdown_type_id"].ToString());
+                }
+                sdr.Close();
+                oTrans.Commit();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
+            finally
+            {
+                oConn.Close();
+            }
+
+            return resp;
         }
 
         public List<DropdownResponse> Dropdown_List(string dropdown_type_id)
         {
-            //DropdownResponse resp = new DropdownResponse();
+
 
             List<DropdownResponse> resp = new List<DropdownResponse>();
             string _con = connection._DB_Master;
@@ -81,12 +127,6 @@ namespace MasterSettingService.Services
                            type_id = Convert.ToInt32(dr["type_id"].ToString()),
 
                        }).ToList();
-                //while (sdr.Read())
-                //{
-                //    resp.id = Convert.ToInt32(sdr["id"].ToString());
-                //    resp.description = sdr["description"].ToString();
-
-                //}
                 oConn.Close();
             }
             catch (Exception e)
@@ -217,51 +257,6 @@ namespace MasterSettingService.Services
 
             return resp;
         }
-
-        public DropdownIUResponse DropdownIU(DropdownIURequest model)
-        {
-
-            DropdownIUResponse resp = new DropdownIUResponse();
-            string _con = connection._DB_Master;
-            DataTable dt = new DataTable();
-            SqlConnection oConn = new SqlConnection(_con);
-            SqlTransaction oTrans;
-            oConn.Open();
-            oTrans = oConn.BeginTransaction();
-            SqlCommand oCmd = new SqlCommand();
-            oCmd.Connection = oConn;
-            oCmd.Transaction = oTrans;
-            try
-            {
-                oCmd.CommandText = "dropdown_in_up";
-                oCmd.CommandType = CommandType.StoredProcedure;
-                oCmd.Parameters.Clear();
-                oCmd.Parameters.AddWithValue("@dropdown_id", model.dropdown_id);
-                oCmd.Parameters.AddWithValue("@dropdown_type_id", model.dropdown_type_id);
-                oCmd.Parameters.AddWithValue("@dropdown_description", model.dropdown_description);
-                oCmd.Parameters.AddWithValue("@created_by", model.created_by);
-                //oCmd.Parameters.AddWithValue("@active", model.active);
-                SqlDataReader sdr = oCmd.ExecuteReader();
-                while (sdr.Read())
-                {
-                    resp.dropdown_id = Convert.ToInt32(sdr["dropdown_id"].ToString());
-                    resp.dropdown_type_id = Convert.ToInt32(sdr["dropdown_type_id"].ToString());
-                }
-                sdr.Close();
-                oTrans.Commit();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error: " + e.Message);
-            }
-            finally
-            {
-                oConn.Close();
-            }
-
-            return resp;
-        }
-
 
         public MenuViewResponse Menu_view()
         {

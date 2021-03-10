@@ -33,7 +33,7 @@ namespace TenantManagementService.Model.CompanyModel
 
         public string img { get; set; }
 
-        public Guid createdBy { get; set; }
+        public string createdBy { get; set; }
 
         public bool active { get; set; }
 
@@ -94,7 +94,7 @@ namespace TenantManagementService.Model.CompanyModel
 
         public string guid { get; set; }
 
-        public Guid CreatedBy { get; set; }
+        public string CreatedBy { get; set; }
 
         public bool active { get; set; }
 
@@ -115,7 +115,7 @@ namespace TenantManagementService.Model.CompanyModel
 
         public string description { get; set; }
 
-        public Guid createdBy { get; set; }
+        public string createdBy { get; set; }
     }
 
 
@@ -123,11 +123,11 @@ namespace TenantManagementService.Model.CompanyModel
     {
         public int branch_id { get; set; }
 
-        public string id { get; set; }
+        public int id { get; set; }
 
         public string number { get; set; }
 
-        public Guid createdBy { get; set; }
+        public string createdBy { get; set; }
     }
 
 
@@ -135,11 +135,11 @@ namespace TenantManagementService.Model.CompanyModel
     {
         public int branch_id { get; set; }
 
-        public string id { get; set; }
+        public int id { get; set; }
 
         public string email_address { get; set; }
 
-        public Guid createdBy { get; set; }
+        public string createdBy { get; set; }
     }
 
     public class CompanyBranchIU
@@ -149,4 +149,9 @@ namespace TenantManagementService.Model.CompanyModel
 
         public BranchIURequest[] Branch_IU { get; set; }
     }
+
+
+
+
+
 }

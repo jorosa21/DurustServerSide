@@ -9,7 +9,7 @@ namespace IdentityService.Entities
 {
     public class User
     {
-        public int id { get; set; }
+        public string id { get; set; }
         public string guid { get; set; }
         public string username { get; set; }
         public string email_address { get; set; }

@@ -26,54 +26,17 @@ namespace IdentityService.Controllers
     {
         private IUserService _userService;
 
-        private IOptions<Audience> _settings;
         private EmailSender email;
         private Default_Url url;
 
-        public IdentityController(IUserService userService, IOptions<EmailSender> appSettings, IOptions<Default_Url> settings, IOptions<Audience> _audience)
+        public IdentityController(IUserService userService, IOptions<EmailSender> appSettings, IOptions<Default_Url> settings)
         {
 
-            this._settings = _audience;
             _userService = userService;
 
             email = appSettings.Value;
             url = settings.Value;
         }
-
-       // private static readonly string[] Summaries = new[]
-       //{
-       //     "JOSEF", "BON", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-       // };
-
-       // private readonly ILogger<IdentityController> _logger;
-
-        //public IdentityController(ILogger<IdentityController> logger)
-        //{
-        //    _logger = logger;
-        //}
-
-        //[HttpGet("authenticateLogin")]
-        //public IEnumerable<WeatherForecast> authenticateLogin()
-        //{
-        //    var rng = new Random();
-        //    return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        //    {
-        //        Date = DateTime.Now.AddDays(index),
-        //        TemperatureC = rng.Next(-20, 55),
-        //        Summary = Summaries[rng.Next(Summaries.Length)]
-        //    })
-        //    .ToArray();
-        //}
-
-
-
-        [HttpPost("authenticateLogin")]
-        public IActionResult authenticateLogin(AuthenticateRequest model)
-        {
-            var response = _userService.AuthenticateLogin(model);
-            return Ok(response);
-        }
-
 
 
         [HttpPost("Registration")]
@@ -93,7 +56,7 @@ namespace IdentityService.Controllers
                 mail.From = new MailAddress(email.email_username, email.email_name, System.Text.Encoding.UTF8);
                 mail.Subject = "This mail is send from asp.net application";
                 mail.SubjectEncoding = System.Text.Encoding.UTF8;
-                mail.Body = "<a href='" + url.name + "/login/" + response.guid + "' > button </a>";
+                mail.Body = "<a href='" + url.name + "/login/" + response.id + "' > button </a>";
                 mail.BodyEncoding = System.Text.Encoding.UTF8;
                 mail.IsBodyHtml = true;
                 mail.Priority = MailPriority.High;
@@ -126,64 +89,20 @@ namespace IdentityService.Controllers
 
 
 
-        //[HttpPost("Verification")]
-        //public IActionResult Verification(VerificationRequest model)
-        //{
-        //    var response = _userService.Verification(model);
-        //    if (response.guid == null)
-        //    {
-        //        return BadRequest();
-        //    }
-        //    return Ok();
-        //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //public IdentityController(IRegistrationService registrationService, IOptions<AppSettings> appsetting)
-        //{
-        //    //_userService = userService;
-        //    _RegistrationService = registrationService;
-
-        //}
-
-        //[HttpPost("Registration")]
-        //public IActionResult Register(Registration model)
-        //{
-        //    var user = new User
-        //    {
-        //        Username = model.Username,
-        //        email_address = model.email_address,
-        //        active = model.active
-
-        //    };
-        //    var result = _RegistrationService.Registration(user);
-
-        //    return ((IActionResult)result);
-        //}
+        [HttpPost("Verification")]
+        public IActionResult Verification(VerificationRequest model)
+        {
+            var response = _userService.Verification(model);
+            if (response.guid == null)
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
 
 
 
 
     }
 
-    public class Audience
-    {
-        public string Secret { get; set; }
-        public string Iss { get; set; }
-        public string Aud { get; set; }
-    }
 }

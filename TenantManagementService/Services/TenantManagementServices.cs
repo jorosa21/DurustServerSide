@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,6 +10,7 @@ using System.Threading.Tasks;
 using TenantManagementService.Helper;
 using TenantManagementService.Model;
 using TenantManagementService.Model.CompanyModel;
+using TenantManagementService.Model.DropdownModel;
 
 namespace TenantManagementService.Services
 {
@@ -15,13 +18,18 @@ namespace TenantManagementService.Services
     public interface ITenantManagementServices
     {
 
-
-
         CompanyIUResponse CompanyIU(CompanyIURequest model);
 
-
         BranchIUResponse BranchIU(BranchIURequest model);
+
         BranchIUResponse MultipleBranchIU(BranchIURequest[] model);
+
+
+
+        List<DropdownResponse> Dropdown_List(string dropdowntype_id);
+
+        DropdownIUResponse DropdownIU(DropdownIURequest model);
+
 
     }
 
@@ -29,17 +37,18 @@ namespace TenantManagementService.Services
 
     public class TenantManagementServices : ITenantManagementServices
     {
-        //public DropdownSetting resp = new DropdownSetting();
 
         private connectionString connection { get; set; }
         private readonly AppSetting _appSettings;
         private string instance_name { get; set; }
+        private readonly IDataProtector _protector;
 
         public TenantManagementServices(IOptions<AppSetting> appSettings,
-            IOptions<connectionString> settings)
+            IOptions<connectionString> settings, IDataProtectionProvider provider)
         {
             _appSettings = appSettings.Value;
             connection = settings.Value;
+            _protector = provider.CreateProtector("mysecretkey");
         }
 
 
@@ -235,13 +244,13 @@ namespace TenantManagementService.Services
         }
 
 
-
         public BranchIUResponse MultipleBranchIU(BranchIURequest[] model)
         {
             string instance_name = model[0].instance_name;
             string username = model[0].username;
             string password = model[0].password;
             int branch = 0;
+            int company_id = model[0].company_id;
 
 
             BranchIUResponse resp = new BranchIUResponse();
@@ -272,29 +281,29 @@ namespace TenantManagementService.Services
                         oCmd.CommandText = "branch_in_up";
                         oCmd.CommandType = CommandType.StoredProcedure;
                         oCmd.Parameters.Clear(); oCmd.Parameters.AddWithValue("@branch_id", item.branch_id);
-                        oCmd.Parameters.AddWithValue("@bankAccount", item.bankAccount);
+                        oCmd.Parameters.AddWithValue("@bank_account", item.bankAccount);
                         oCmd.Parameters.AddWithValue("@barangay", item.barangay);
-                        oCmd.Parameters.AddWithValue("@branchName", item.branchName);
+                        oCmd.Parameters.AddWithValue("@branch_name", item.branchName);
                         oCmd.Parameters.AddWithValue("@building", item.building);
                         oCmd.Parameters.AddWithValue("@municipality", item.municipality);
                         oCmd.Parameters.AddWithValue("@pagibig", item.pagibig);
                         oCmd.Parameters.AddWithValue("@philhealth", item.philhealth);
-                        oCmd.Parameters.AddWithValue("@SelectedBank", item.SelectedBank);
-                        oCmd.Parameters.AddWithValue("@SelectedBranchCountry", item.SelectedBranchCountry);
-                        oCmd.Parameters.AddWithValue("@SelectedCity", item.SelectedCity);
-                        oCmd.Parameters.AddWithValue("@SelectedIndustry", item.SelectedIndustry);
-                        oCmd.Parameters.AddWithValue("@SelectedPCity", item.SelectedPCity);
-                        oCmd.Parameters.AddWithValue("@SelectedPCode", item.SelectedPCode);
-                        oCmd.Parameters.AddWithValue("@SelectedPRegion", item.SelectedPRegion);
-                        oCmd.Parameters.AddWithValue("@SelectedRdoBranch", item.SelectedRdoBranch);
-                        oCmd.Parameters.AddWithValue("@SelectedRdoOffice", item.SelectedRdoOffice);
-                        oCmd.Parameters.AddWithValue("@SelectedRegion", item.SelectedRegion);
+                        oCmd.Parameters.AddWithValue("@bank_id", item.SelectedBank);
+                        oCmd.Parameters.AddWithValue("@country", item.SelectedBranchCountry);
+                        oCmd.Parameters.AddWithValue("@city", item.SelectedCity);
+                        oCmd.Parameters.AddWithValue("@industry", item.SelectedIndustry);
+                        oCmd.Parameters.AddWithValue("@pagibig_branch", item.SelectedPCity);
+                        oCmd.Parameters.AddWithValue("@pagibig_code", item.SelectedPCode);
+                        oCmd.Parameters.AddWithValue("@pagibig_region", item.SelectedPRegion);
+                        oCmd.Parameters.AddWithValue("@rdo", item.SelectedRdoBranch);
+                        oCmd.Parameters.AddWithValue("@rdo_branch", item.SelectedRdoOffice);
+                        oCmd.Parameters.AddWithValue("@region", item.SelectedRegion);
                         oCmd.Parameters.AddWithValue("@sss", item.sss);
                         oCmd.Parameters.AddWithValue("@street", item.street);
                         oCmd.Parameters.AddWithValue("@tin", item.tin);
-                        oCmd.Parameters.AddWithValue("@unit", item.unit);
-                        oCmd.Parameters.AddWithValue("@zipCode", item.zipCode);
-                        oCmd.Parameters.AddWithValue("@company_id", item.company_id);
+                        oCmd.Parameters.AddWithValue("@unit_floor", item.unit);
+                        oCmd.Parameters.AddWithValue("@zip_code", item.zipCode);
+                        oCmd.Parameters.AddWithValue("@company_id", company_id);
                         oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
                         //oCmd.ExecuteNonQuery();
                         SqlDataReader sdr = oCmd.ExecuteReader();
@@ -302,7 +311,6 @@ namespace TenantManagementService.Services
                         {
                             resp.branch_id = Convert.ToInt32(sdr["branch_id"].ToString());
                             resp.guid = sdr["guid"].ToString();
-                            resp.created_by = Convert.ToInt32(sdr["created_by"].ToString());
 
                             branch = Convert.ToInt32(sdr["branch_id"].ToString());
 
@@ -318,7 +326,7 @@ namespace TenantManagementService.Services
                                 oCmd.Parameters.Clear();
                                 oCmd.Parameters.AddWithValue("@branch_id", branch);
                                 oCmd.Parameters.AddWithValue("@ip_address", ip.description);
-                                oCmd.Parameters.AddWithValue("@created_by", ip.createdBy);
+                                oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
                                 oCmd.ExecuteNonQuery();
                             }
                         }
@@ -334,7 +342,7 @@ namespace TenantManagementService.Services
                                 oCmd.Parameters.AddWithValue("@branch_id", branch);
                                 oCmd.Parameters.AddWithValue("@contact_type_id", contact.id);
                                 oCmd.Parameters.AddWithValue("@contact_number", contact.number);
-                                oCmd.Parameters.AddWithValue("@created_by", contact.createdBy);
+                                oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
                                 oCmd.ExecuteNonQuery();
                             }
                         }
@@ -350,7 +358,7 @@ namespace TenantManagementService.Services
                                 oCmd.Parameters.AddWithValue("@branch_id", branch);
                                 oCmd.Parameters.AddWithValue("@email_type_id", email.id);
                                 oCmd.Parameters.AddWithValue("@email_address", email.email_address);
-                                oCmd.Parameters.AddWithValue("@created_by", email.createdBy);
+                                oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
                                 oCmd.ExecuteNonQuery();
                             }
                         }
@@ -374,6 +382,7 @@ namespace TenantManagementService.Services
             catch (Exception e)
             {
                 Console.WriteLine("Error: " + e.Message);
+                oTrans.Rollback();
             }
             finally
             {
@@ -383,7 +392,491 @@ namespace TenantManagementService.Services
             return resp;
         }
 
+        public List<CompanyIURequest> company_view_sel(string company_id,string company_code,string created_by)
+        {
+            //DropdownResponse resp = new DropdownResponse();
 
+            List<CompanyIURequest> resp = new List<CompanyIURequest>();
+            string _con = connection._DB_Master;
+            DataTable dt = new DataTable();
+            SqlConnection oConn = new SqlConnection(_con);
+            SqlTransaction oTrans;
+            oConn.Open();
+            oTrans = oConn.BeginTransaction();
+            SqlCommand oCmd = new SqlCommand();
+            oCmd.Connection = oConn;
+            oCmd.Transaction = oTrans;
+            try
+            {
+
+                SqlDataAdapter da = new SqlDataAdapter();
+                da.SelectCommand = oCmd;
+                oCmd.CommandText = "company_view_sel";
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Clear();
+                oCmd.Parameters.AddWithValue("@company_id", company_id);
+                oCmd.Parameters.AddWithValue("@company_code", company_code);
+                oCmd.Parameters.AddWithValue("@created_by", created_by);
+                da.Fill(dt);
+                resp = (from DataRow dr in dt.Rows
+                        select new CompanyIURequest()
+                        {
+                            companyID = Convert.ToInt32(dr["id"].ToString()),
+                            companyCode = dr["description"].ToString(),
+                            createdBy = dr["type_id"].ToString(),
+
+                        }).ToList();
+                //while (sdr.Read())
+                //{
+                //    resp.id = Convert.ToInt32(sdr["id"].ToString());
+                //    resp.description = sdr["description"].ToString();
+
+                //}
+                oConn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
+            finally
+            {
+                oConn.Close();
+            }
+
+
+            return resp;
+        }
+
+
+
+
+
+        public DropdownIUResponse DropdownIU(DropdownIURequest model)
+        {
+
+            DropdownIUResponse resp = new DropdownIUResponse();
+            string _con = connection._DB_Master;
+            DataTable dt = new DataTable();
+            SqlConnection oConn = new SqlConnection(_con);
+            SqlTransaction oTrans;
+            oConn.Open();
+            oTrans = oConn.BeginTransaction();
+            SqlCommand oCmd = new SqlCommand();
+            oCmd.Connection = oConn;
+            oCmd.Transaction = oTrans;
+            try
+            {
+                oCmd.CommandText = "dropdown_in_up";
+                oCmd.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Clear();
+                oCmd.Parameters.AddWithValue("@dropdown_id", model.dropdown_id);
+                oCmd.Parameters.AddWithValue("@dropdown_type_id", model.dropdown_type_id);
+                oCmd.Parameters.AddWithValue("@dropdown_description", model.dropdown_description);
+                oCmd.Parameters.AddWithValue("@created_by", model.created_by);
+                //oCmd.Parameters.AddWithValue("@active", model.active);
+                SqlDataReader sdr = oCmd.ExecuteReader();
+                while (sdr.Read())
+                {
+                    resp.dropdown_id = Convert.ToInt32(sdr["dropdown_id"].ToString());
+                    resp.dropdown_type_id = Convert.ToInt32(sdr["dropdown_type_id"].ToString());
+                }
+                sdr.Close();
+                oTrans.Commit();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
+            finally
+            {
+                oConn.Close();
+            }
+
+            return resp;
+        }
+
+        public List<DropdownResponse> Dropdown_List(string dropdown_type_id)
+        {
+
+
+            List<DropdownResponse> resp = new List<DropdownResponse>();
+            string _con = connection._DB_Master;
+            DataTable dt = new DataTable();
+            SqlConnection oConn = new SqlConnection(_con);
+            SqlTransaction oTrans;
+            oConn.Open();
+            oTrans = oConn.BeginTransaction();
+            SqlCommand oCmd = new SqlCommand();
+            oCmd.Connection = oConn;
+            oCmd.Transaction = oTrans;
+            try
+            {
+
+                SqlDataAdapter da = new SqlDataAdapter();
+                da.SelectCommand = oCmd;
+                oCmd.CommandText = "dropdown_view";
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Clear();
+                oCmd.Parameters.AddWithValue("@dropdown_type_id", dropdown_type_id);
+                da.Fill(dt);
+                resp = (from DataRow dr in dt.Rows
+                        select new DropdownResponse()
+                        {
+                            id = Convert.ToInt32(dr["id"].ToString()),
+                            description = dr["description"].ToString(),
+                            type_id = Convert.ToInt32(dr["type_id"].ToString()),
+
+                        }).ToList();
+                oConn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
+            finally
+            {
+                oConn.Close();
+            }
+
+
+            return resp;
+        }
+
+
+
+        //public CompanyBranchIU CompanyBranchIU(CompanyBranchIU model)
+        //{
+
+        //    CompanyIURequest company_data = new CompanyIURequest();
+        //    CompanyIUResponse resp_comp = new CompanyIUResponse();
+        //    BranchIUResponse resp = new BranchIUResponse();
+
+        //    company_data = model.company_IU;
+        //    string _con = connection._DB_Master;
+        //    DataTable dt = new DataTable();
+        //    SqlConnection oConn = new SqlConnection(_con);
+        //    SqlTransaction oTrans;
+        //    oConn.Open();
+        //    oTrans = oConn.BeginTransaction();
+        //    SqlCommand oCmd = new SqlCommand();
+        //    oCmd.Connection = oConn;
+        //    oCmd.Transaction = oTrans;
+        //    try
+        //    {
+        //        oCmd.CommandText = "company_in_up";
+        //        oCmd.CommandType = CommandType.StoredProcedure;
+        //        oCmd.Parameters.Clear();
+        //        oCmd.Parameters.AddWithValue("@company_id", 0);
+        //        oCmd.Parameters.AddWithValue("@company_code", company_data.companyCode);
+        //        oCmd.Parameters.AddWithValue("@company_name", company_data.companyName);
+        //        oCmd.Parameters.AddWithValue("@unit_floor", company_data.unit);
+        //        oCmd.Parameters.AddWithValue("@building", company_data.building);
+        //        oCmd.Parameters.AddWithValue("@street", company_data.street);
+        //        oCmd.Parameters.AddWithValue("@barangay", company_data.barangay);
+        //        oCmd.Parameters.AddWithValue("@municipality", company_data.municipality);
+        //        oCmd.Parameters.AddWithValue("@city", company_data.SelectedCity);
+        //        oCmd.Parameters.AddWithValue("@region", company_data.SelectedRegion);
+        //        oCmd.Parameters.AddWithValue("@country", company_data.selectedCompanyCountry);
+        //        oCmd.Parameters.AddWithValue("@zip_code", company_data.zipCode);
+        //        oCmd.Parameters.AddWithValue("@company_logo", company_data.img);
+        //        oCmd.Parameters.AddWithValue("@created_by", _protector.Unprotect(company_data.createdBy));
+        //        //oCmd.Parameters.AddWithValue("@active", model.active);
+        //        SqlDataReader sdr = oCmd.ExecuteReader();
+        //        while (sdr.Read())
+        //        {
+        //            resp_comp.company_id = _protector.Protect(sdr["company_id"].ToString());
+        //            resp_comp.created_by = _protector.Protect(sdr["created_by"].ToString());
+        //            resp_comp.company_code = sdr["company_code"].ToString();
+        //            resp_comp.instance_name = sdr["instance_name"].ToString();
+        //            resp_comp.user_hash = sdr["user_hash"].ToString();
+        //            resp_comp.user_name = sdr["user_name"].ToString();
+
+
+        //            string _branchcon;
+        //            if (resp_comp.instance_name is null)
+        //            {
+        //                _branchcon = connection._DB_Master;
+        //            }
+        //            else
+        //            {
+        //                _branchcon = "Data Source=" + resp_comp.instance_name + ";Initial Catalog=mastersetupdb;User ID=" + resp_comp.user_name + ";Password=" + resp_comp.user_hash + ";MultipleActiveResultSets=True;";
+
+        //            }
+
+        //            SqlConnection oBranchConn = new SqlConnection(_branchcon);
+        //            SqlTransaction oTrans;
+        //            oConn.Open();
+        //            oTrans = oConn.BeginTransaction();
+        //            SqlCommand oCmd = new SqlCommand();
+        //            oCmd.Connection = oConn;
+        //            oCmd.Transaction = oTrans;
+        //            try
+        //            {
+        //                if (model != null)
+        //                {
+        //                    foreach (var item in model)
+        //                    {
+        //                        oCmd.CommandText = "branch_in_up";
+        //                        oCmd.CommandType = CommandType.StoredProcedure;
+        //                        oCmd.Parameters.Clear(); oCmd.Parameters.AddWithValue("@branch_id", item.branch_id);
+        //                        oCmd.Parameters.AddWithValue("@bank_account", item.bankAccount);
+        //                        oCmd.Parameters.AddWithValue("@barangay", item.barangay);
+        //                        oCmd.Parameters.AddWithValue("@branch_name", item.branchName);
+        //                        oCmd.Parameters.AddWithValue("@building", item.building);
+        //                        oCmd.Parameters.AddWithValue("@municipality", item.municipality);
+        //                        oCmd.Parameters.AddWithValue("@pagibig", item.pagibig);
+        //                        oCmd.Parameters.AddWithValue("@philhealth", item.philhealth);
+        //                        oCmd.Parameters.AddWithValue("@bank_id", item.SelectedBank);
+        //                        oCmd.Parameters.AddWithValue("@country", item.SelectedBranchCountry);
+        //                        oCmd.Parameters.AddWithValue("@city", item.SelectedCity);
+        //                        oCmd.Parameters.AddWithValue("@industry", item.SelectedIndustry);
+        //                        oCmd.Parameters.AddWithValue("@pagibig_branch", item.SelectedPCity);
+        //                        oCmd.Parameters.AddWithValue("@pagibig_code", item.SelectedPCode);
+        //                        oCmd.Parameters.AddWithValue("@pagibig_region", item.SelectedPRegion);
+        //                        oCmd.Parameters.AddWithValue("@rdo", item.SelectedRdoBranch);
+        //                        oCmd.Parameters.AddWithValue("@rdo_branch", item.SelectedRdoOffice);
+        //                        oCmd.Parameters.AddWithValue("@region", item.SelectedRegion);
+        //                        oCmd.Parameters.AddWithValue("@sss", item.sss);
+        //                        oCmd.Parameters.AddWithValue("@street", item.street);
+        //                        oCmd.Parameters.AddWithValue("@tin", item.tin);
+        //                        oCmd.Parameters.AddWithValue("@unit_floor", item.unit);
+        //                        oCmd.Parameters.AddWithValue("@zip_code", item.zipCode);
+        //                        oCmd.Parameters.AddWithValue("@company_id", company_id);
+        //                        oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
+        //                        //oCmd.ExecuteNonQuery();
+        //                        SqlDataReader sdr = oCmd.ExecuteReader();
+        //                        while (sdr.Read())
+        //                        {
+        //                            resp.branch_id = Convert.ToInt32(sdr["branch_id"].ToString());
+        //                            resp.guid = sdr["guid"].ToString();
+
+        //                            branch = Convert.ToInt32(sdr["branch_id"].ToString());
+
+        //                        }
+        //                        sdr.Close();
+
+        //                        if (item.iP_IU != null)
+        //                        {
+        //                            foreach (var ip in item.iP_IU)
+        //                            {
+        //                                oCmd.CommandText = "branch_ip_in";
+        //                                oCmd.CommandType = CommandType.StoredProcedure;
+        //                                oCmd.Parameters.Clear();
+        //                                oCmd.Parameters.AddWithValue("@branch_id", branch);
+        //                                oCmd.Parameters.AddWithValue("@ip_address", ip.description);
+        //                                oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
+        //                                oCmd.ExecuteNonQuery();
+        //                            }
+        //                        }
+
+
+        //                        if (item.Contact_IU != null)
+        //                        {
+        //                            foreach (var contact in item.Contact_IU)
+        //                            {
+        //                                oCmd.CommandText = "branch_contact_in";
+        //                                oCmd.CommandType = CommandType.StoredProcedure;
+        //                                oCmd.Parameters.Clear();
+        //                                oCmd.Parameters.AddWithValue("@branch_id", branch);
+        //                                oCmd.Parameters.AddWithValue("@contact_type_id", contact.id);
+        //                                oCmd.Parameters.AddWithValue("@contact_number", contact.number);
+        //                                oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
+        //                                oCmd.ExecuteNonQuery();
+        //                            }
+        //                        }
+
+
+        //                        if (item.Email_IU != null)
+        //                        {
+        //                            foreach (var email in item.Email_IU)
+        //                            {
+        //                                oCmd.CommandText = "branch_email_in";
+        //                                oCmd.CommandType = CommandType.StoredProcedure;
+        //                                oCmd.Parameters.Clear();
+        //                                oCmd.Parameters.AddWithValue("@branch_id", branch);
+        //                                oCmd.Parameters.AddWithValue("@email_type_id", email.id);
+        //                                oCmd.Parameters.AddWithValue("@email_address", email.email_address);
+        //                                oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
+        //                                oCmd.ExecuteNonQuery();
+        //                            }
+        //                        }
+
+        //                    }
+        //                }
+
+
+
+        //            }
+        //        sdr.Close();
+        //        oTrans.Commit();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine("Error: " + e.Message);
+        //    }
+        //    finally
+        //    {
+        //        oConn.Close();
+        //    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //    string instance_name = model[0].instance_name;
+        //    string username = model[0].username;
+        //    string password = model[0].password;
+        //    int branch = 0;
+        //    int company_id = model[0].company_id;
+
+
+        //    BranchIUResponse resp = new BranchIUResponse();
+        //    string _con;
+        //    if (instance_name is null)
+        //    {
+        //        _con = connection._DB_Master;
+        //    }
+        //    else
+        //    {
+        //        _con = "Data Source=" + instance_name + ";Initial Catalog=mastersetupdb;User ID=" + username + ";Password=" + password + ";MultipleActiveResultSets=True;";
+
+        //    }
+        //    DataTable dt = new DataTable();
+        //    SqlConnection oConn = new SqlConnection(_con);
+        //    SqlTransaction oTrans;
+        //    oConn.Open();
+        //    oTrans = oConn.BeginTransaction();
+        //    SqlCommand oCmd = new SqlCommand();
+        //    oCmd.Connection = oConn;
+        //    oCmd.Transaction = oTrans;
+        //    try
+        //    {
+        //        if (model != null)
+        //        {
+        //            foreach (var item in model)
+        //            {
+        //                oCmd.CommandText = "branch_in_up";
+        //                oCmd.CommandType = CommandType.StoredProcedure;
+        //                oCmd.Parameters.Clear(); oCmd.Parameters.AddWithValue("@branch_id", item.branch_id);
+        //                oCmd.Parameters.AddWithValue("@bank_account", item.bankAccount);
+        //                oCmd.Parameters.AddWithValue("@barangay", item.barangay);
+        //                oCmd.Parameters.AddWithValue("@branch_name", item.branchName);
+        //                oCmd.Parameters.AddWithValue("@building", item.building);
+        //                oCmd.Parameters.AddWithValue("@municipality", item.municipality);
+        //                oCmd.Parameters.AddWithValue("@pagibig", item.pagibig);
+        //                oCmd.Parameters.AddWithValue("@philhealth", item.philhealth);
+        //                oCmd.Parameters.AddWithValue("@bank_id", item.SelectedBank);
+        //                oCmd.Parameters.AddWithValue("@country", item.SelectedBranchCountry);
+        //                oCmd.Parameters.AddWithValue("@city", item.SelectedCity);
+        //                oCmd.Parameters.AddWithValue("@industry", item.SelectedIndustry);
+        //                oCmd.Parameters.AddWithValue("@pagibig_branch", item.SelectedPCity);
+        //                oCmd.Parameters.AddWithValue("@pagibig_code", item.SelectedPCode);
+        //                oCmd.Parameters.AddWithValue("@pagibig_region", item.SelectedPRegion);
+        //                oCmd.Parameters.AddWithValue("@rdo", item.SelectedRdoBranch);
+        //                oCmd.Parameters.AddWithValue("@rdo_branch", item.SelectedRdoOffice);
+        //                oCmd.Parameters.AddWithValue("@region", item.SelectedRegion);
+        //                oCmd.Parameters.AddWithValue("@sss", item.sss);
+        //                oCmd.Parameters.AddWithValue("@street", item.street);
+        //                oCmd.Parameters.AddWithValue("@tin", item.tin);
+        //                oCmd.Parameters.AddWithValue("@unit_floor", item.unit);
+        //                oCmd.Parameters.AddWithValue("@zip_code", item.zipCode);
+        //                oCmd.Parameters.AddWithValue("@company_id", company_id);
+        //                oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
+        //                //oCmd.ExecuteNonQuery();
+        //                SqlDataReader sdr = oCmd.ExecuteReader();
+        //                while (sdr.Read())
+        //                {
+        //                    resp.branch_id = Convert.ToInt32(sdr["branch_id"].ToString());
+        //                    resp.guid = sdr["guid"].ToString();
+
+        //                    branch = Convert.ToInt32(sdr["branch_id"].ToString());
+
+        //                }
+        //                sdr.Close();
+
+        //                if (item.iP_IU != null)
+        //                {
+        //                    foreach (var ip in item.iP_IU)
+        //                    {
+        //                        oCmd.CommandText = "branch_ip_in";
+        //                        oCmd.CommandType = CommandType.StoredProcedure;
+        //                        oCmd.Parameters.Clear();
+        //                        oCmd.Parameters.AddWithValue("@branch_id", branch);
+        //                        oCmd.Parameters.AddWithValue("@ip_address", ip.description);
+        //                        oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
+        //                        oCmd.ExecuteNonQuery();
+        //                    }
+        //                }
+
+
+        //                if (item.Contact_IU != null)
+        //                {
+        //                    foreach (var contact in item.Contact_IU)
+        //                    {
+        //                        oCmd.CommandText = "branch_contact_in";
+        //                        oCmd.CommandType = CommandType.StoredProcedure;
+        //                        oCmd.Parameters.Clear();
+        //                        oCmd.Parameters.AddWithValue("@branch_id", branch);
+        //                        oCmd.Parameters.AddWithValue("@contact_type_id", contact.id);
+        //                        oCmd.Parameters.AddWithValue("@contact_number", contact.number);
+        //                        oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
+        //                        oCmd.ExecuteNonQuery();
+        //                    }
+        //                }
+
+
+        //                if (item.Email_IU != null)
+        //                {
+        //                    foreach (var email in item.Email_IU)
+        //                    {
+        //                        oCmd.CommandText = "branch_email_in";
+        //                        oCmd.CommandType = CommandType.StoredProcedure;
+        //                        oCmd.Parameters.Clear();
+        //                        oCmd.Parameters.AddWithValue("@branch_id", branch);
+        //                        oCmd.Parameters.AddWithValue("@email_type_id", email.id);
+        //                        oCmd.Parameters.AddWithValue("@email_address", email.email_address);
+        //                        oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
+        //                        oCmd.ExecuteNonQuery();
+        //                    }
+        //                }
+
+        //            }
+        //        }
+
+
+        //        ////oCmd.Parameters.AddWithValue("@active", model.active);
+        //        //SqlDataReader sdr = oCmd.ExecuteReader();
+        //        //while (sdr.Read())
+        //        //{
+        //        //    resp.branch_id = Convert.ToInt32(sdr["branch_id"].ToString());
+        //        //    resp.guid = sdr["guid"].ToString();
+        //        //    resp.created_by = Convert.ToInt32(sdr["created_by"].ToString());
+
+        //        //}
+        //        //sdr.Close();
+        //        oTrans.Commit();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine("Error: " + e.Message);
+        //        oTrans.Rollback();
+        //    }
+        //    finally
+        //    {
+        //        oConn.Close();
+        //    }
+
+        //    return resp;
+        //}
     }
 
 }

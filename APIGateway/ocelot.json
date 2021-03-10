@@ -99,7 +99,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "51388"
+          "Port": "53188"
         }
       ],
       "UpstreamPathTemplate": "/api/TenantManagement/CompanyIU",
@@ -117,7 +117,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "51388"
+          "Port": "53188"
         }
       ],
       "UpstreamPathTemplate": "/api/TenantManagement/BranchIU",
@@ -135,7 +135,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "51388"
+          "Port": "53188"
         }
       ],
       "UpstreamPathTemplate": "/api/TenantManagement/CompanyBranchIU",

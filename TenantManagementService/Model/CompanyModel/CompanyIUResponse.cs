@@ -39,7 +39,7 @@ namespace TenantManagementService.Model.CompanyModel
 
         public bool active { get; set; }
 
-        public int company_id { get; set; }
+        public string company_id { get; set; }
 
         public string company_code { get; set; }
 
@@ -58,7 +58,7 @@ namespace TenantManagementService.Model.CompanyModel
 
         public string company_logo { get; set; }
 
-        public int created_by { get; set; }
+        public string created_by { get; set; }
 
      
         public string guid { get; set; }

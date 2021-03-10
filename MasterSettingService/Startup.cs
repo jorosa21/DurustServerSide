@@ -41,6 +41,7 @@ namespace MasterSettingService
             services.Configure<EmailSender>(Configuration.GetSection("EmailSender"));
             services.Configure<Default_Url>(Configuration.GetSection("URLDefault"));
             services.AddScoped<IMasterSettingServices, MasterSettingServices>();
+            services.AddDataProtection();
 
         }
 

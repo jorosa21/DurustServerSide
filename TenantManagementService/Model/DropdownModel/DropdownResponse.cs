@@ -2,10 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MasterSettingService.Entities;
 
-namespace MasterSettingService.Model.DropdownModel
+namespace TenantManagementService.Model.DropdownModel
 {
+    public class DropdownIUResponse
+    {
+
+        public int dropdown_id { get; set; }
+
+        public int dropdown_type_id { get; set; }
+
+        public string dropdown_description { get; set; }
+
+        public Guid created_by { get; set; }
+
+        public bool active { get; set; }
+    }
+
     public class DropdownResponse
     {
         public int id { get; set; }
@@ -34,18 +47,7 @@ namespace MasterSettingService.Model.DropdownModel
         public string to_description_to { get; set; }
 
         public int to_type_id_to { get; set; }
-
-
-       
     }
 
-    public class DropdownTypeResponse
-    {
-        public int id { get; set; }
 
-        public string description { get; set; }
-
-
-
-    }
 }

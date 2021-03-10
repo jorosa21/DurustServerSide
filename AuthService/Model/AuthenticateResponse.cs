@@ -1,4 +1,4 @@
-﻿using AuthService.Entities;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ namespace AuthService.Model
 {
     public class AuthenticateResponse
     {
-        public int id { get; set; }
+        public string id { get; set; }
 
         public string username { get; set; }
 
@@ -32,7 +32,7 @@ namespace AuthService.Model
 
         public bool active { get; set; }
 
-        public int company_id { get; set; }
+        public string company_id { get; set; }
 
         public string company_code { get; set; }
 
@@ -43,29 +43,29 @@ namespace AuthService.Model
         public string company_user_hash { get; set; }
 
 
-        public AuthenticateResponse(User user, string token)
-        {
-            id = user.id;
-            username = user.username;
-            routing = user.routing;
-            guid = user.guid;
-            email_verified = user.email_verified;
-            lock_account = user.lock_account;
-            type = user.type;
-            email_address = user.email_address;
-            active = user.active;
+        //public AuthenticateResponse(User user, string token)
+        //{
+        //    id = user.id;
+        //    username = user.username;
+        //    routing = user.routing;
+        //    guid = user.guid;
+        //    email_verified = user.email_verified;
+        //    lock_account = user.lock_account;
+        //    type = user.type;
+        //    email_address = user.email_address;
+        //    active = user.active;
 
-            company_id = user.company_id;
-            company_code = user.company_code;
-            instance_name = user.instance_name;
-            company_user_name = user.company_user_name;
-            company_user_hash = user.company_user_hash;
+        //    company_id = user.company_id;
+        //    company_code = user.company_code;
+        //    instance_name = user.instance_name;
+        //    company_user_name = user.company_user_name;
+        //    company_user_hash = user.company_user_hash;
 
 
 
-            Token = token;
-            json = user.json;
-        }
+        //    Token = token;
+        //    json = user.json;
+        //}
 
     }
 }

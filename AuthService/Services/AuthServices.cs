@@ -1,6 +1,7 @@
-﻿using AuthService.Entities;
+﻿
 using AuthService.Helper;
 using AuthService.Model;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -20,35 +21,28 @@ namespace AuthService.Services
     {
 
         AuthenticateResponse AuthenticateLogin(AuthenticateRequest model);
-
-        //User AuthenticateRsponse(AuthenticateRequest model)
-
-        User GetById(int id);
-
+        AuthenticateResponse GetById( int userId);
     }
 
     public class AuthServices :  IAuthService
     {
-        public User resp = new User();
 
         private connectionString connection { get; set; }
         private readonly AppSettings _appSettings;
+        private readonly IDataProtector _protector;
 
-        public AuthServices(IOptions<AppSettings> appSettings, IOptions<connectionString> settings)
+        public AuthServices(IOptions<AppSettings> appSettings, IOptions<connectionString> settings,IDataProtectionProvider provider)
         {
             _appSettings = appSettings.Value;
             connection = settings.Value;
+            _protector = provider.CreateProtector("mysecretkey");
         }
 
 
-        public User GetById(int id)
-        {
-            return resp;
-        }
 
         public AuthenticateResponse AuthenticateLogin(AuthenticateRequest model)
         {
-            //User resp = new User();
+            AuthenticateResponse resp = new AuthenticateResponse();
             string _con = connection._DB_Master;
             DataTable dt = new DataTable();
             string UserHash = Crypto.password_encrypt(model.password);
@@ -70,20 +64,19 @@ namespace AuthService.Services
                 SqlDataReader sdr = oCmd.ExecuteReader();
                 while (sdr.Read())
                 {
-                    resp.id = Convert.ToInt32(sdr["user_id"].ToString());
+
+                    resp.id = _protector.Protect(sdr["user_id"].ToString());
                     resp.email_address = sdr["email_address"].ToString();
                     resp.routing = sdr["routing"].ToString();
-                    resp.guid = sdr["guid"].ToString();
                     resp.type = sdr["type"].ToString();
                     resp.active = Convert.ToBoolean(sdr["active"].ToString());
-                    resp.username = sdr["user_name"].ToString();
                     resp.lock_account = Convert.ToBoolean(sdr["lock_account"].ToString());
                     resp.email_verified = Convert.ToBoolean(sdr["email_verified"].ToString());
-                    resp.company_id = Convert.ToInt32(sdr["company_id"].ToString());
+                    resp.company_id = _protector.Protect(sdr["company_id"].ToString());
                     resp.company_code = sdr["company_code"].ToString();
-                    resp.instance_name = sdr["instance_name"].ToString();
-                    resp.company_user_name = sdr["company_user_name"].ToString();
-                    resp.company_user_hash = sdr["company_user_hash"].ToString();
+                    resp.instance_name = _protector.Protect(sdr["instance_name"].ToString());
+                    resp.company_user_name = _protector.Protect(sdr["company_user_name"].ToString());
+                    resp.company_user_hash = _protector.Protect(sdr["company_user_hash"].ToString());
                 }
                 sdr.Close();
                 oConn.Close();
@@ -96,35 +89,36 @@ namespace AuthService.Services
             {
                 oConn.Close();
             }
-            var token = "";
-            //// return null if user not found
-            if (resp.id != 0)
+
+            if (resp.id != "")
             {
 
-                token = generateJwtToken(resp);
+                resp.Token = generateJwtToken(resp);
             }
-            // authentication successful so generate jwt token
 
-            return new AuthenticateResponse(resp, token);
+
+            return resp;
         }
 
 
-        private string generateJwtToken(User user)
+        private string generateJwtToken(AuthenticateResponse user)
         {
-            // generate token that is valid for 7 days
+            // generate token that is valid for 1 days
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] { new Claim("id", user.id.ToString()) }),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
 
-
-
+        public AuthenticateResponse GetById(int userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

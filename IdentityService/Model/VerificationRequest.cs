@@ -9,7 +9,7 @@ namespace IdentityService.Model
     public class VerificationRequest
     {
         [Required]
-        public string guid { get; set; }
+        public string id { get; set; }
 
     }
 }

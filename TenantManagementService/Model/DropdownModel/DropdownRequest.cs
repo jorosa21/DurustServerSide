@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MasterSettingService.Model.DropdownModel
+namespace TenantManagementService.Model.DropdownModel
 {
     public class DropdownIURequest
     {
@@ -16,6 +16,14 @@ namespace MasterSettingService.Model.DropdownModel
         public string created_by { get; set; }
 
         public bool active { get; set; }
+
+    }
+    public class DropdownRequest
+    {
+
+        public int dropdown_type_id { get; set; }
+
+        public string dropdown_type { get; set; }
 
     }
 }

@@ -39,6 +39,7 @@ namespace AuthService
             services.Configure<EmailSender>(Configuration.GetSection("EmailSender"));
             services.Configure<Default_Url>(Configuration.GetSection("URLDefault"));
             services.AddScoped<IAuthService, AuthServices>();
+            services.AddDataProtection();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

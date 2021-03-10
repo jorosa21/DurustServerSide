@@ -94,15 +94,15 @@
 
     {
 
-      "DownstreamPathTemplate": "/api/MasterSetting/CompanyIU",
+      "DownstreamPathTemplate": "/api/TenantManagement/CompanyIU",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "65478"
+          "Port": "53188"
         }
       ],
-      "UpstreamPathTemplate": "/api/MasterSetting/CompanyIU",
+      "UpstreamPathTemplate": "/api/TenantManagement/CompanyIU",
 
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
@@ -112,15 +112,15 @@
 
     {
 
-      "DownstreamPathTemplate": "/api/MasterSetting/BranchIU",
+      "DownstreamPathTemplate": "/api/TenantManagement/BranchIU",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "65478"
+          "Port": "53188"
         }
       ],
-      "UpstreamPathTemplate": "/api/MasterSetting/BranchIU",
+      "UpstreamPathTemplate": "/api/TenantManagement/BranchIU",
 
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
@@ -130,15 +130,15 @@
 
     {
 
-      "DownstreamPathTemplate": "/api/MasterSetting/CompanyBranchIU",
+      "DownstreamPathTemplate": "/api/TenantManagement/CompanyBranchIU",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "65478"
+          "Port": "53188"
         }
       ],
-      "UpstreamPathTemplate": "/api/MasterSetting/CompanyBranchIU",
+      "UpstreamPathTemplate": "/api/TenantManagement/CompanyBranchIU",
 
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",

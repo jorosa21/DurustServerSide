@@ -38,10 +38,10 @@ namespace IdentityService
             services.AddCors();
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.Configure<connectionString>(Configuration.GetSection("ConnectionStrings"));
-            services.Configure<Controllers.Audience>(Configuration.GetSection("Audience"));
             services.Configure<EmailSender>(Configuration.GetSection("EmailSender"));
             services.Configure<Default_Url>(Configuration.GetSection("URLDefault"));
             services.AddScoped<IUserService, UserService>();
+            services.AddDataProtection();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

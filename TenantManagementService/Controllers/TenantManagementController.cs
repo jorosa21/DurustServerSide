@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TenantManagementService.Model.CompanyModel;
+using TenantManagementService.Model.DropdownModel;
 using TenantManagementService.Services;
 
 namespace TenantManagementService.Controllers
@@ -11,7 +12,7 @@ namespace TenantManagementService.Controllers
 
 
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class TenantManagementController : Controller
     {
 
@@ -31,6 +32,7 @@ namespace TenantManagementService.Controllers
         [HttpPost("CompanyIU")]
         public CompanyIUResponse CompanyIU(CompanyIURequest model)
         {
+            
 
             var result = _tenantmanagementServices.CompanyIU(model);
             return result;
@@ -59,12 +61,36 @@ namespace TenantManagementService.Controllers
                 model.Branch_IU[0].username = result.user_name;
                 model.Branch_IU[0].password = result.user_hash;
             }
+            model.Branch_IU[0].company_id = result.company_id;
+
 
             var branch_result = _tenantmanagementServices.MultipleBranchIU(model.Branch_IU);
 
             return Ok();
         }
 
+
+
+
+        [HttpGet("Dropdown_List")]
+        public List<DropdownResponse> Dropdown_List(string dropdowntype_id)
+        {
+            //dropdowntype_id = dropdowntype_id == "null" ? "0" : dropdowntype_id;
+            //dropdown_type = dropdown_type == "null" ? "" : dropdown_type;
+
+            var result = _tenantmanagementServices.Dropdown_List(dropdowntype_id);
+            return result;
+        }
+
+
+
+        [HttpPost("DropdownIU")]
+        public DropdownIUResponse DropdownIU(DropdownIURequest model)
+        {
+
+            var result = _tenantmanagementServices.DropdownIU(model);
+            return result;
+        }
 
 
     }

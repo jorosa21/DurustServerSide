@@ -10,7 +10,7 @@ namespace IdentityService.Model
     {
 
         public string email_address { get; set; }
-        public string guid { get; set; }
+        public string id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public bool active { get; set; }
@@ -19,7 +19,7 @@ namespace IdentityService.Model
         {
             Username = user.username;
             email_address = user.email_address;
-            guid = user.guid;
+            id = user.id;
             active = user.active;
         }
 

@@ -40,7 +40,8 @@ namespace TenantManagementService
             services.Configure<connectionString>(Configuration.GetSection("ConnectionStrings"));
             services.Configure<EmailSender>(Configuration.GetSection("EmailSender"));
             services.Configure<Default_Url>(Configuration.GetSection("URLDefault"));
-            //services.AddScoped<IMasterSettingServices, MasterSettingServices>();
+            services.AddScoped<ITenantManagementServices, TenantManagementServices>();
+            services.AddDataProtection();
 
         }
 
