@@ -13,7 +13,7 @@ namespace MasterSettingService.Model.DropdownModel
 
         public string dropdown_description { get; set; }
 
-        public int created_by { get; set; }
+        public Guid created_by { get; set; }
 
         public bool active { get; set; }
 

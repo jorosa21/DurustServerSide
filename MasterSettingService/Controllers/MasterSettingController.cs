@@ -68,25 +68,6 @@ namespace MasterSettingService.Controllers
         }
 
 
-        [HttpPost("CompanyIU")]
-        public CompanyIUResponse CompanyIU(CompanyIURequest model)
-        {
-
-            var result = _masterServices.CompanyIU(model);
-            return result;
-        }
-
-
-        [HttpPost("BranchIU")]
-        public BranchIUResponse BranchIU(BranchIURequest model)
-        {
-
-            var result = _masterServices.BranchIU(model);
-            return result;
-        }
-
-
-
         [HttpPost("DropdownIU")]
         public DropdownIUResponse DropdownIU(DropdownIURequest model)
         {
@@ -94,26 +75,6 @@ namespace MasterSettingService.Controllers
             var result = _masterServices.DropdownIU(model);
             return result;
         }
-
-
-        [HttpPost("CompanyBranchIU")]
-        public IActionResult CompanyBranchIU(CompanyBranchIU model)
-        {
-
-            var result = _masterServices.CompanyIU(model.company_IU);
-
-            if (model.Branch_IU[0].instance_name is null)
-            {
-                model.Branch_IU[0].instance_name = result.instance_name;
-                model.Branch_IU[0].username = result.user_name;
-                model.Branch_IU[0].password = result.user_hash;
-            }
-
-            var branch_result = _masterServices.MultipleBranchIU(model.Branch_IU);
-
-            return Ok();
-        }
-
 
 
         [HttpGet("Menu_view")]

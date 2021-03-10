@@ -5,15 +5,15 @@ VisualStudioVersion = 16.0.31019.35
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityService", "IdentityService\IdentityService.csproj", "{9205E863-3FCC-4BC6-B347-44CAC2EC1370}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TenantManagementService", "TenantManagementService\TenantManagementService.csproj", "{E4BB0F94-8FF2-4CD7-AF1B-1CDBBD7CF035}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIGateway", "APIGateway\APIGateway.csproj", "{482619E8-2485-4678-865E-D19DF3707135}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterSettingService", "MasterSettingService\MasterSettingService.csproj", "{20644433-E7BD-44BF-94EF-07368CAA173E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{40DDACA4-FFF9-4180-AE9C-6F75345C6A0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{40DDACA4-FFF9-4180-AE9C-6F75345C6A0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService", "AuthService\AuthService.csproj", "{A1BDC95F-4809-4E0C-8184-2C28443646DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthService", "AuthService\AuthService.csproj", "{A1BDC95F-4809-4E0C-8184-2C28443646DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TenantManagementService", "TenantManagementService\TenantManagementService.csproj", "{7E7FE874-7BED-47ED-A044-AFB17ED08B79}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +25,6 @@ Global
 		{9205E863-3FCC-4BC6-B347-44CAC2EC1370}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9205E863-3FCC-4BC6-B347-44CAC2EC1370}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9205E863-3FCC-4BC6-B347-44CAC2EC1370}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E4BB0F94-8FF2-4CD7-AF1B-1CDBBD7CF035}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E4BB0F94-8FF2-4CD7-AF1B-1CDBBD7CF035}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E4BB0F94-8FF2-4CD7-AF1B-1CDBBD7CF035}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E4BB0F94-8FF2-4CD7-AF1B-1CDBBD7CF035}.Release|Any CPU.Build.0 = Release|Any CPU
 		{482619E8-2485-4678-865E-D19DF3707135}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{482619E8-2485-4678-865E-D19DF3707135}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{482619E8-2485-4678-865E-D19DF3707135}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +41,10 @@ Global
 		{A1BDC95F-4809-4E0C-8184-2C28443646DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1BDC95F-4809-4E0C-8184-2C28443646DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1BDC95F-4809-4E0C-8184-2C28443646DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E7FE874-7BED-47ED-A044-AFB17ED08B79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E7FE874-7BED-47ED-A044-AFB17ED08B79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E7FE874-7BED-47ED-A044-AFB17ED08B79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E7FE874-7BED-47ED-A044-AFB17ED08B79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
