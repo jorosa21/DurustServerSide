@@ -31,6 +31,7 @@ namespace TenantManagementService.Services
 
         DropdownIUResponse DropdownIU(DropdownIURequest model);
 
+        List<CompanyResponse> company_view_sel(string company_id, string company_code, string created_by);
 
     }
 

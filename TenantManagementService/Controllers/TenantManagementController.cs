@@ -71,6 +71,17 @@ namespace TenantManagementService.Controllers
 
 
 
+        [HttpGet("company_view_sel")]
+        public List<CompanyResponse> company_view_sel(string company_id, string company_code, string created_by)
+        {
+            //dropdowntype_id = dropdowntype_id == "null" ? "0" : dropdowntype_id;
+            //dropdown_type = dropdown_type == "null" ? "" : dropdown_type;
+
+            var result = _tenantmanagementServices.company_view_sel(company_code,company_code,created_by);
+            return result;
+        }
+
+
 
         [HttpGet("Dropdown_List")]
         public List<DropdownResponse> Dropdown_List(string dropdowntype_id)
