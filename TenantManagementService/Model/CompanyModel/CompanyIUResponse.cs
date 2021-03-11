@@ -74,7 +74,7 @@ namespace TenantManagementService.Model.CompanyModel
 
     public class BranchIUResponse
     {
-        public int branch_id { get; set; }
+        public string branch_id { get; set; }
 
         public string branch_code { get; set; }
 
@@ -124,7 +124,7 @@ namespace TenantManagementService.Model.CompanyModel
 
         public string guid { get; set; }
 
-        public int created_by { get; set; }
+        public string created_by { get; set; }
 
         public bool active { get; set; }
 

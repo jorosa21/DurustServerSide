@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using TenantManagementService.Helper;
 using TenantManagementService.Model;
@@ -56,19 +57,6 @@ namespace TenantManagementService.Services
         public CompanyIUResponse CompanyIU(CompanyIURequest model)
         {
 
-            var c = _protector.Protect("7");
-            var b = _protector.Unprotect(c);
-            var a = _protector.Unprotect(model.createdBy);
-
-            IPersistedDataProtector ipersistprotector = _protector as IPersistedDataProtector;
-
-            //bool requiresMigration, wasRevoked;
-            //var unprotectedPayload = ipersistprotector.DangerousUnprotect(protectedData: protectedData,
-            //    ignoreRevocationErrors: true,
-            //    requiresMigration: out requiresMigration,
-            //    wasRevoked: out wasRevoked);
-            //var d = _protector.Unprotect(model.createdBy);
-
             CompanyIUResponse resp = new CompanyIUResponse();
             string _con = connection._DB_Master;
             DataTable dt = new DataTable();
@@ -84,7 +72,7 @@ namespace TenantManagementService.Services
                 oCmd.CommandText = "company_in_up";
                 oCmd.CommandType = CommandType.StoredProcedure;
                 oCmd.Parameters.Clear();
-                oCmd.Parameters.AddWithValue("@company_id", model.companyID == "0" ? 0 : _protector.Unprotect(model.companyID));
+                oCmd.Parameters.AddWithValue("@company_id", model.companyID == "0" ? 0 : Crypto.url_decrypt(model.companyID));
                 oCmd.Parameters.AddWithValue("@company_code", model.companyCode);
                 oCmd.Parameters.AddWithValue("@company_name", model.companyName);
                 oCmd.Parameters.AddWithValue("@unit_floor", model.unit);
@@ -97,17 +85,17 @@ namespace TenantManagementService.Services
                 oCmd.Parameters.AddWithValue("@country", model.selectedCompanyCountry);
                 oCmd.Parameters.AddWithValue("@zip_code", model.zipCode);
                 oCmd.Parameters.AddWithValue("@company_logo", model.img);
-                oCmd.Parameters.AddWithValue("@created_by", 1);
+                oCmd.Parameters.AddWithValue("@created_by", Crypto.url_decrypt(model.createdBy));
                 //oCmd.Parameters.AddWithValue("@active", model.active);
                 SqlDataReader sdr = oCmd.ExecuteReader();
                 while (sdr.Read())
                 {
-                    resp.company_id = _protector.Protect(sdr["company_id"].ToString());
-                    resp.created_by = _protector.Protect(sdr["created_by"].ToString());
+                    resp.company_id = Crypto.url_encrypt(sdr["company_id"].ToString());
+                    resp.created_by = Crypto.url_encrypt(sdr["created_by"].ToString());
                     resp.company_code = sdr["company_code"].ToString();
-                    resp.instance_name = sdr["instance_name"].ToString();
-                    resp.user_hash = sdr["user_hash"].ToString();
-                    resp.user_name = sdr["user_name"].ToString();
+                    resp.instance_name = Crypto.url_encrypt(sdr["instance_name"].ToString());
+                    resp.user_hash = Crypto.url_encrypt(sdr["user_hash"].ToString());
+                    resp.user_name = Crypto.url_encrypt(sdr["user_name"].ToString());
                 }
                 sdr.Close();
                 oTrans.Commit();
@@ -186,9 +174,9 @@ namespace TenantManagementService.Services
                 SqlDataReader sdr = oCmd.ExecuteReader();
                 while (sdr.Read())
                 {
-                    resp.branch_id = Convert.ToInt32(sdr["branch_id"].ToString());
+                    resp.branch_id = Crypto.url_decrypt(sdr["branch_id"].ToString());
                     resp.guid = sdr["guid"].ToString();
-                    resp.created_by = Convert.ToInt32(sdr["created_by"].ToString());
+                    resp.created_by = Crypto.url_decrypt(sdr["created_by"].ToString());
 
                 }
                 sdr.Close();
@@ -258,11 +246,11 @@ namespace TenantManagementService.Services
 
         public BranchIUResponse MultipleBranchIU(BranchIURequest[] model)
         {
-            string instance_name = model[0].instance_name;
-            string username = model[0].username;
-            string password = model[0].password;
+            string instance_name = Crypto.url_decrypt(model[0].instance_name);
+            string username = Crypto.url_decrypt(model[0].username);
+            string password = Crypto.url_decrypt(model[0].password);
             int branch = 0;
-            string company_id = model[0].company_id;
+            string company_id = Crypto.url_decrypt(model[0].company_id);
 
 
             BranchIUResponse resp = new BranchIUResponse();
@@ -316,13 +304,12 @@ namespace TenantManagementService.Services
                         oCmd.Parameters.AddWithValue("@unit_floor", item.unit);
                         oCmd.Parameters.AddWithValue("@zip_code", item.zipCode);
                         oCmd.Parameters.AddWithValue("@company_id", company_id);
-                        oCmd.Parameters.AddWithValue("@created_by", 1);
+                        oCmd.Parameters.AddWithValue("@created_by", Crypto.url_decrypt(item.CreatedBy));
                         //oCmd.ExecuteNonQuery();
                         SqlDataReader sdr = oCmd.ExecuteReader();
                         while (sdr.Read())
                         {
-                            resp.branch_id = Convert.ToInt32(sdr["branch_id"].ToString());
-                            resp.guid = sdr["guid"].ToString();
+                            resp.branch_id = Crypto.url_encrypt(sdr["branch_id"].ToString());
 
                             branch = Convert.ToInt32(sdr["branch_id"].ToString());
 
@@ -426,16 +413,16 @@ namespace TenantManagementService.Services
                 oCmd.CommandText = "company_view_sel";
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 oCmd.Parameters.Clear();
-                oCmd.Parameters.AddWithValue("@company_id", company_id);
+                oCmd.Parameters.AddWithValue("@company_id", Crypto.url_decrypt(company_id));
                 oCmd.Parameters.AddWithValue("@company_code", company_code);
                 oCmd.Parameters.AddWithValue("@created_by", created_by);
                 da.Fill(dt);
                 resp = (from DataRow dr in dt.Rows
                         select new CompanyIURequest()
                         {
-                            companyID = _protector.Protect(dr["id"].ToString()),
+                            companyID = Crypto.url_decrypt(dr["id"].ToString()),
                             companyCode = dr["description"].ToString(),
-                            createdBy = _protector.Protect(dr["type_id"].ToString()),
+                            createdBy = Crypto.url_decrypt(dr["type_id"].ToString()),
 
                         }).ToList();
                 //while (sdr.Read())

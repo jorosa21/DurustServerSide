@@ -14,6 +14,9 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
+using AuthService;
+using System.Security.Cryptography;
+
 namespace AuthService.Services
 {
 
@@ -30,26 +33,23 @@ namespace AuthService.Services
         private connectionString connection { get; set; }
         private readonly AppSettings _appSettings;
         private readonly IDataProtector _protector;
+        //private readonly IDataProtector _isprotector;
 
-        public AuthServices(IOptions<AppSettings> appSettings, IOptions<connectionString> settings,IDataProtectionProvider provider)
+        public AuthServices(IOptions<AppSettings> appSettings, IOptions<connectionString> settings,IDataProtectionProvider provider, IDataProtectionProvider isprovider)
         {
             _appSettings = appSettings.Value;
             connection = settings.Value;
-            _protector = provider.CreateProtector("mysecretkey");
+            //_protector = provider.CreateProtector("mysecretkey");
         }
 
 
 
         public AuthenticateResponse AuthenticateLogin(AuthenticateRequest model)
         {
-
+            //var josef = EncryptDecrypt.SymmetricEncryptionDemo();
 
             AuthenticateResponse resp = new AuthenticateResponse();
-
-
-            //var c = _protector.Protect("7");
-            //var b = _protector.Unprotect(c);
-            //resp.id = _protector.Unprotect(model.company_code);
+           
 
             string _con = connection._DB_Master;
             DataTable dt = new DataTable();
@@ -74,7 +74,7 @@ namespace AuthService.Services
                 while (sdr.Read())
                 {
 
-                    resp.id = _protector.Protect(sdr["user_id"].ToString());
+                    resp.id = Crypto.url_encrypt(sdr["user_id"].ToString());
                     resp.email_address = sdr["email_address"].ToString();
                     resp.routing = sdr["routing"].ToString();
                     resp.type = sdr["type"].ToString();
@@ -83,9 +83,9 @@ namespace AuthService.Services
                     resp.email_verified = Convert.ToBoolean(sdr["email_verified"].ToString());
                     resp.company_id = _protector.Protect(sdr["company_id"].ToString());
                     resp.company_code = sdr["company_code"].ToString();
-                    resp.instance_name = _protector.Protect(sdr["instance_name"].ToString());
-                    resp.company_user_name = _protector.Protect(sdr["company_user_name"].ToString());
-                    resp.company_user_hash = _protector.Protect(sdr["company_user_hash"].ToString());
+                    resp.instance_name = Crypto.url_encrypt(sdr["instance_name"].ToString());
+                    resp.company_user_name = Crypto.url_encrypt(sdr["company_user_name"].ToString());
+                    resp.company_user_hash = Crypto.url_encrypt(sdr["company_user_hash"].ToString());
                 }
                 sdr.Close();
                 oConn.Close();

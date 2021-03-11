@@ -42,8 +42,7 @@ namespace TenantManagementService
             services.Configure<EmailSender>(Configuration.GetSection("EmailSender"));
             services.Configure<Default_Url>(Configuration.GetSection("URLDefault"));
             services.AddScoped<ITenantManagementServices, TenantManagementServices>();
-            services.AddDataProtection()
-                .SetApplicationName("AuthService");
+            services.AddDataProtection();
 
         }
 
