@@ -33,7 +33,7 @@ namespace TenantManagementService.Services
 
         List<CompanyResponse> company_view_sel(string company_id, string company_code, string created_by);
 
-        List<BranchResponse> branch_view_sel(string instance_name, string user_name, string user_hash, string company_id, string branch_id, string created_by)
+        List<BranchResponse> branch_view_sel(string instance_name, string user_name, string user_hash, string company_id, string branch_id, string created_by);
     }
 
 
@@ -416,7 +416,7 @@ namespace TenantManagementService.Services
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 oCmd.Parameters.Clear();
                 oCmd.Parameters.AddWithValue("@company_id", Crypto.url_decrypt(company_id));
-                oCmd.Parameters.AddWithValue("@company_code", company_code);
+                oCmd.Parameters.AddWithValue("@company_code", Crypto.url_decrypt(company_code));
                 oCmd.Parameters.AddWithValue("@created_by", Crypto.url_decrypt(created_by));
                 da.Fill(dt);
                 resp = (from DataRow dr in dt.Rows

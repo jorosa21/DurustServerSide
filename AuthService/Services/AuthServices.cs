@@ -77,7 +77,7 @@ namespace AuthService.Services
                     resp.lock_account = Convert.ToBoolean(sdr["lock_account"].ToString());
                     resp.email_verified = Convert.ToBoolean(sdr["email_verified"].ToString());
                     resp.company_id = Crypto.url_encrypt(sdr["company_id"].ToString());
-                    resp.company_code = sdr["company_code"].ToString();
+                    resp.company_code = Crypto.url_encrypt(sdr["company_code"].ToString());
                     resp.instance_name = Crypto.url_encrypt(sdr["instance_name"].ToString());
                     resp.company_user_name = Crypto.url_encrypt(sdr["company_user_name"].ToString());
                     resp.company_user_hash = Crypto.url_encrypt(sdr["company_user_hash"].ToString());
