@@ -30,7 +30,7 @@ namespace TenantManagementService.Controllers
 
 
         [HttpPost("CompanyIU")]
-        public CompanyIUResponse CompanyIU(CompanyIURequest model)
+        public CompanyResponse CompanyIU(CompanyIURequest model)
         {
             
 
@@ -40,7 +40,7 @@ namespace TenantManagementService.Controllers
 
 
         [HttpPost("BranchIU")]
-        public BranchIUResponse BranchIU(BranchIURequest model)
+        public BranchResponse BranchIU(BranchIURequest model)
         {
 
             var result = _tenantmanagementServices.BranchIU(model);
@@ -58,10 +58,10 @@ namespace TenantManagementService.Controllers
             if (model.Branch_IU[0].instance_name is null)
             {
                 model.Branch_IU[0].instance_name = result.instance_name;
-                model.Branch_IU[0].username = result.user_name;
-                model.Branch_IU[0].password = result.user_hash;
+                model.Branch_IU[0].username = result.username;
+                model.Branch_IU[0].password = result.password;
             }
-            model.Branch_IU[0].company_id = result.company_id;
+            model.Branch_IU[0].company_id = result.companyID;
 
 
             var branch_result = _tenantmanagementServices.MultipleBranchIU(model.Branch_IU);
