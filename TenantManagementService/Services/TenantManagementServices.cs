@@ -325,7 +325,7 @@ namespace TenantManagementService.Services
                                 oCmd.Parameters.Clear();
                                 oCmd.Parameters.AddWithValue("@branch_id", branch);
                                 oCmd.Parameters.AddWithValue("@ip_address", ip.description);
-                                oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
+                                oCmd.Parameters.AddWithValue("@created_by", Crypto.url_decrypt(item.CreatedBy));
                                 oCmd.ExecuteNonQuery();
                             }
                         }
@@ -341,7 +341,7 @@ namespace TenantManagementService.Services
                                 oCmd.Parameters.AddWithValue("@branch_id", branch);
                                 oCmd.Parameters.AddWithValue("@contact_type_id", contact.id);
                                 oCmd.Parameters.AddWithValue("@contact_number", contact.number);
-                                oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
+                                oCmd.Parameters.AddWithValue("@created_by", Crypto.url_decrypt(item.CreatedBy));
                                 oCmd.ExecuteNonQuery();
                             }
                         }
@@ -357,7 +357,7 @@ namespace TenantManagementService.Services
                                 oCmd.Parameters.AddWithValue("@branch_id", branch);
                                 oCmd.Parameters.AddWithValue("@email_type_id", email.id);
                                 oCmd.Parameters.AddWithValue("@email_address", email.email_address);
-                                oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
+                                oCmd.Parameters.AddWithValue("@created_by", Crypto.url_decrypt(item.CreatedBy));
                                 oCmd.ExecuteNonQuery();
                             }
                         }
