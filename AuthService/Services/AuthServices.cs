@@ -32,22 +32,17 @@ namespace AuthService.Services
 
         private connectionString connection { get; set; }
         private readonly AppSettings _appSettings;
-        private readonly IDataProtector _protector;
-        //private readonly IDataProtector _isprotector;
 
-        public AuthServices(IOptions<AppSettings> appSettings, IOptions<connectionString> settings,IDataProtectionProvider provider, IDataProtectionProvider isprovider)
+        public AuthServices(IOptions<AppSettings> appSettings, IOptions<connectionString> settings)
         {
             _appSettings = appSettings.Value;
             connection = settings.Value;
-            //_protector = provider.CreateProtector("mysecretkey");
         }
 
 
 
         public AuthenticateResponse AuthenticateLogin(AuthenticateRequest model)
         {
-            //var josef = EncryptDecrypt.SymmetricEncryptionDemo();
-
             AuthenticateResponse resp = new AuthenticateResponse();
            
 
@@ -74,14 +69,14 @@ namespace AuthService.Services
                 while (sdr.Read())
                 {
 
-                    resp.id = Crypto.url_encrypt(sdr["user_id"].ToString());
+                    resp.id = sdr["user_id"].ToString() == "0"? "0" : Crypto.url_encrypt(sdr["user_id"].ToString());
                     resp.email_address = sdr["email_address"].ToString();
                     resp.routing = sdr["routing"].ToString();
                     resp.type = sdr["type"].ToString();
                     resp.active = Convert.ToBoolean(sdr["active"].ToString());
                     resp.lock_account = Convert.ToBoolean(sdr["lock_account"].ToString());
                     resp.email_verified = Convert.ToBoolean(sdr["email_verified"].ToString());
-                    resp.company_id = _protector.Protect(sdr["company_id"].ToString());
+                    resp.company_id = Crypto.url_encrypt(sdr["company_id"].ToString());
                     resp.company_code = sdr["company_code"].ToString();
                     resp.instance_name = Crypto.url_encrypt(sdr["instance_name"].ToString());
                     resp.company_user_name = Crypto.url_encrypt(sdr["company_user_name"].ToString());

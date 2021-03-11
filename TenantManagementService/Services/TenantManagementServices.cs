@@ -471,7 +471,7 @@ namespace TenantManagementService.Services
                 oCmd.Parameters.AddWithValue("@dropdown_type_id", model.dropdown_type_id);
                 oCmd.Parameters.AddWithValue("@dropdown_description", model.dropdown_description);
                 oCmd.Parameters.AddWithValue("@created_by", model.created_by);
-                //oCmd.Parameters.AddWithValue("@active", model.active);
+                oCmd.Parameters.AddWithValue("@active", model.active);
                 SqlDataReader sdr = oCmd.ExecuteReader();
                 while (sdr.Read())
                 {
@@ -523,6 +523,7 @@ namespace TenantManagementService.Services
                             id = Convert.ToInt32(dr["id"].ToString()),
                             description = dr["description"].ToString(),
                             type_id = Convert.ToInt32(dr["type_id"].ToString()),
+                            active = Convert.ToBoolean(dr["active"].ToString()),
 
                         }).ToList();
                 oConn.Close();
