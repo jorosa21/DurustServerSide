@@ -33,6 +33,7 @@ namespace TenantManagementService.Services
 
         List<CompanyResponse> company_view_sel(string company_id, string company_code, string created_by);
 
+        List<BranchResponse> branch_view_sel(string instance_name, string user_name, string user_hash, string company_id, string branch_id, string created_by)
     }
 
 
@@ -462,6 +463,106 @@ namespace TenantManagementService.Services
         }
 
 
+        public List<BranchResponse> branch_view_sel(string instance_name,string user_name, string user_hash,string company_id, string branch_id, string created_by)
+        {
+            //DropdownResponse resp = new DropdownResponse();
+
+            instance_name = Crypto.url_decrypt(instance_name);
+            user_hash = Crypto.url_decrypt(user_hash);
+            user_name = Crypto.url_decrypt(user_name);
+          
+            company_id = Crypto.url_decrypt(company_id);
+
+
+            string _con;
+            if (instance_name is null)
+            {
+                _con = connection._DB_Master;
+            }
+            else
+            {
+                _con = "Data Source=" + instance_name + ";Initial Catalog=mastersetupdb;User ID=" + user_name + ";Password=" + user_hash + ";MultipleActiveResultSets=True;";
+
+            }
+
+            List<BranchResponse> resp = new List<BranchResponse>();
+            DataTable dt = new DataTable();
+            SqlConnection oConn = new SqlConnection(_con);
+            SqlTransaction oTrans;
+            oConn.Open();
+            oTrans = oConn.BeginTransaction();
+            SqlCommand oCmd = new SqlCommand();
+            oCmd.Connection = oConn;
+            oCmd.Transaction = oTrans;
+            try
+            {
+
+                SqlDataAdapter da = new SqlDataAdapter();
+                da.SelectCommand = oCmd;
+                oCmd.CommandText = "branch_view_sel";
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Clear();
+                oCmd.Parameters.AddWithValue("@company_id", Crypto.url_decrypt(company_id));
+                oCmd.Parameters.AddWithValue("@branch_id", branch_id == "0" ? 0 :Crypto.url_decrypt(branch_id));
+                oCmd.Parameters.AddWithValue("@created_by", Crypto.url_decrypt(created_by));
+                da.Fill(dt);
+                resp = (from DataRow dr in dt.Rows
+                        select new BranchResponse()
+                        {
+                            branch_id = Crypto.url_encrypt(dr["branch_id"].ToString()),
+                            CreatedBy = Crypto.url_encrypt(dr["created_by"].ToString()),
+                            branch_code = dr["branch_code"].ToString(),
+                            branchName = dr["branch_name"].ToString(),
+                            unit = dr["unit_floor"].ToString(),
+                            building = dr["building"].ToString(),
+                            street = dr["street"].ToString(),
+                            barangay = dr["barangay"].ToString(),
+                            municipality = dr["municipality"].ToString(),
+                            SelectedCity = Convert.ToInt32(dr["city_id"].ToString()),
+                            SelectedRegion = Convert.ToInt32(dr["region_id"].ToString()),
+                            SelectedBranchCountry = Convert.ToInt32(dr["country_id"].ToString()),
+                            zipCode = dr["zip_code"].ToString(),
+                            sss = dr["sss"].ToString(),
+                            philhealth = dr["philhealth"].ToString(),
+                            pagibig = dr["pagibig"].ToString(),
+                            tin = dr["tin"].ToString(),
+
+                            SelectedRdoBranch = Convert.ToInt32(dr["rdo_branch_id"].ToString()),
+                            SelectedRdoOffice = Convert.ToInt32(dr["rdo_id"].ToString()),
+                            SelectedPCity = Convert.ToInt32(dr["pagibig_branch_id"].ToString()),
+                            SelectedPCode = Convert.ToInt32(dr["pagibig_code"].ToString()),
+                            SelectedPRegion = Convert.ToInt32(dr["pagibig_region_id"].ToString()),
+                            SelectedIndustry = Convert.ToInt32(dr["industry_id"].ToString()),
+                            SelectedBank = Convert.ToInt32(dr["bank_id"].ToString()),
+                            bankAccount = dr["bank_account"].ToString(),
+                            company_id = Crypto.url_encrypt(dr["company_id"].ToString()),
+
+                            instance_name = Crypto.url_encrypt(dr["instance_name"].ToString()),
+                            username = Crypto.url_encrypt(dr["user_name"].ToString()),
+                            password = Crypto.url_encrypt(dr["user_hash"].ToString()),
+                            active = Convert.ToBoolean(dr["active"].ToString())
+
+                        }).ToList();
+                //while (sdr.Read())
+                //{
+                //    resp.id = Convert.ToInt32(sdr["id"].ToString());
+                //    resp.description = sdr["description"].ToString();
+
+                //}
+                oConn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
+            finally
+            {
+                oConn.Close();
+            }
+
+
+            return resp;
+        }
 
 
         public DropdownIUResponse DropdownIU(DropdownIURequest model)
