@@ -154,4 +154,11 @@ namespace TenantManagementService.Model.CompanyModel
 
         public BranchResponse[] Branch_IU { get; set; }
     }
+
+
+    public class CompanyBranchOutput
+    {
+        public string description { get; set; }
+        public int id { get; set; }
+    }
 }

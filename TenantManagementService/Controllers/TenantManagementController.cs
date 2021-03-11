@@ -50,23 +50,49 @@ namespace TenantManagementService.Controllers
 
 
         [HttpPost("CompanyBranchIU")]
-        public IActionResult CompanyBranchIU(CompanyBranchIU model)
+        public CompanyBranchOutput CompanyBranchIU(CompanyBranchIU model)
         {
-
+            CompanyBranchOutput res = new CompanyBranchOutput();
             var result = _tenantmanagementServices.CompanyIU(model.company_IU);
 
-            if (model.Branch_IU[0].instance_name is null)
+
+
+
+            if (result.companyID == null )
             {
-                model.Branch_IU[0].instance_name = result.instance_name;
-                model.Branch_IU[0].username = result.username;
-                model.Branch_IU[0].password = result.password;
+               res.description = "Company data creation have a problem!";
+                res.id = 0;
             }
-            model.Branch_IU[0].company_id = result.companyID;
+            else
+            {
+
+                if (model.Branch_IU[0].instance_name is null)
+                {
+                    model.Branch_IU[0].instance_name = result.instance_name;
+                    model.Branch_IU[0].username = result.username;
+                    model.Branch_IU[0].password = result.password;
+                }
+                model.Branch_IU[0].company_id = result.companyID;
 
 
-            var branch_result = _tenantmanagementServices.MultipleBranchIU(model.Branch_IU);
+                var branch_result = _tenantmanagementServices.MultipleBranchIU(model.Branch_IU);
 
-            return Ok();
+                if (branch_result.branch_id == null)
+                {
+
+                    res.description = " Branch data creation have a problem!";
+                    res.id = 0;
+                }
+                else
+                {
+
+                    res.description = "Saving Successful! ";
+                    res.id = 1;
+                }
+            }
+         
+
+            return res;
         }
 
 
