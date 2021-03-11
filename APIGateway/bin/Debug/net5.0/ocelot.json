@@ -190,6 +190,24 @@
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
+    },
+
+    {
+
+      "DownstreamPathTemplate": "/api/TenantManagement/branch_view_sel",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "53188"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/TenantManagement/branch_view_sel",
+
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     }
 
   ]

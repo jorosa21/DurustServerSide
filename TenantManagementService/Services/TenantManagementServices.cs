@@ -427,6 +427,8 @@ namespace TenantManagementService.Services
                             street = dr["street"].ToString(),
                             companyName = dr["company_name"].ToString(),
                             barangay = dr["barangay"].ToString(),
+                            unit = dr["unit_floor"].ToString(),
+                            building = dr["building"].ToString(),
                             municipality = dr["municipality"].ToString(),
                             SelectedCity = Convert.ToInt32(dr["city_id"].ToString()),
                             SelectedRegion = Convert.ToInt32(dr["region_id"].ToString()),
