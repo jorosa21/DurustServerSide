@@ -172,6 +172,24 @@
       //  "PeriodTimespan": 1,
       //  "Limit": 1
       //}
+    },
+
+    {
+
+      "DownstreamPathTemplate": "/api/TenantManagement/company_view_sel",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "53188"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/TenantManagement/company_view_sel",
+
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     }
 
   ]

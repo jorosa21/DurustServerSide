@@ -103,7 +103,7 @@ namespace TenantManagementService.Controllers
             //dropdowntype_id = dropdowntype_id == "null" ? "0" : dropdowntype_id;
             //dropdown_type = dropdown_type == "null" ? "" : dropdown_type;
 
-            var result = _tenantmanagementServices.company_view_sel(company_code,company_code,created_by);
+            var result = _tenantmanagementServices.company_view_sel(company_id,company_code,created_by);
             return result;
         }
 

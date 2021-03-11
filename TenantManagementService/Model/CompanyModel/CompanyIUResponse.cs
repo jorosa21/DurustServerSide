@@ -50,7 +50,7 @@ namespace TenantManagementService.Model.CompanyModel
 
 
         public string branch_id { get; set; }
-        s
+        
         public string branch_code { get; set; }
 
         public string bankAccount { get; set; }
