@@ -19,11 +19,11 @@ namespace TenantManagementService.Services
     public interface ITenantManagementServices
     {
 
-        CompanyIUResponse CompanyIU(CompanyIURequest model);
+        CompanyResponse CompanyIU(CompanyIURequest model);
 
-        BranchIUResponse BranchIU(BranchIURequest model);
+        BranchResponse BranchIU(BranchIURequest model);
 
-        BranchIUResponse MultipleBranchIU(BranchIURequest[] model);
+        BranchResponse MultipleBranchIU(BranchIURequest[] model);
 
 
 
@@ -54,10 +54,10 @@ namespace TenantManagementService.Services
 
 
 
-        public CompanyIUResponse CompanyIU(CompanyIURequest model)
+        public CompanyResponse CompanyIU(CompanyIURequest model)
         {
 
-            CompanyIUResponse resp = new CompanyIUResponse();
+            CompanyResponse resp = new CompanyResponse();
             string _con = connection._DB_Master;
             DataTable dt = new DataTable();
             SqlConnection oConn = new SqlConnection(_con);
@@ -90,12 +90,12 @@ namespace TenantManagementService.Services
                 SqlDataReader sdr = oCmd.ExecuteReader();
                 while (sdr.Read())
                 {
-                    resp.company_id = Crypto.url_encrypt(sdr["company_id"].ToString());
-                    resp.created_by = Crypto.url_encrypt(sdr["created_by"].ToString());
-                    resp.company_code = sdr["company_code"].ToString();
+                    resp.companyID = Crypto.url_encrypt(sdr["company_id"].ToString());
+                    resp.createdBy = Crypto.url_encrypt(sdr["created_by"].ToString());
+                    resp.companyCode = sdr["company_code"].ToString();
                     resp.instance_name = Crypto.url_encrypt(sdr["instance_name"].ToString());
-                    resp.user_hash = Crypto.url_encrypt(sdr["user_hash"].ToString());
-                    resp.user_name = Crypto.url_encrypt(sdr["user_name"].ToString());
+                    resp.password = Crypto.url_encrypt(sdr["user_hash"].ToString());
+                    resp.username = Crypto.url_encrypt(sdr["user_name"].ToString());
                 }
                 sdr.Close();
                 oTrans.Commit();
@@ -113,7 +113,7 @@ namespace TenantManagementService.Services
         }
 
 
-        public BranchIUResponse BranchIU(BranchIURequest model)
+        public BranchResponse BranchIU(BranchIURequest model)
         {
             string instance_name = model.instance_name;
             string username = model.username;
@@ -121,7 +121,7 @@ namespace TenantManagementService.Services
             int branch = 0;
 
 
-            BranchIUResponse resp = new BranchIUResponse();
+            BranchResponse resp = new BranchResponse();
             string _con;
             if (instance_name is null)
             {
@@ -176,7 +176,7 @@ namespace TenantManagementService.Services
                 {
                     resp.branch_id = Crypto.url_decrypt(sdr["branch_id"].ToString());
                     resp.guid = sdr["guid"].ToString();
-                    resp.created_by = Crypto.url_decrypt(sdr["created_by"].ToString());
+                    resp.CreatedBy = Crypto.url_decrypt(sdr["created_by"].ToString());
 
                 }
                 sdr.Close();
@@ -244,7 +244,7 @@ namespace TenantManagementService.Services
         }
 
 
-        public BranchIUResponse MultipleBranchIU(BranchIURequest[] model)
+        public BranchResponse MultipleBranchIU(BranchIURequest[] model)
         {
             string instance_name = Crypto.url_decrypt(model[0].instance_name);
             string username = Crypto.url_decrypt(model[0].username);
@@ -253,7 +253,7 @@ namespace TenantManagementService.Services
             string company_id = Crypto.url_decrypt(model[0].company_id);
 
 
-            BranchIUResponse resp = new BranchIUResponse();
+            BranchResponse resp = new BranchResponse();
             string _con;
             if (instance_name is null)
             {
@@ -391,11 +391,11 @@ namespace TenantManagementService.Services
             return resp;
         }
 
-        public List<CompanyIURequest> company_view_sel(string company_id,string company_code,string created_by)
+        public List<CompanyResponse> company_view_sel(string company_id,string company_code,string created_by)
         {
             //DropdownResponse resp = new DropdownResponse();
 
-            List<CompanyIURequest> resp = new List<CompanyIURequest>();
+            List<CompanyResponse> resp = new List<CompanyResponse>();
             string _con = connection._DB_Master;
             DataTable dt = new DataTable();
             SqlConnection oConn = new SqlConnection(_con);
@@ -415,14 +415,28 @@ namespace TenantManagementService.Services
                 oCmd.Parameters.Clear();
                 oCmd.Parameters.AddWithValue("@company_id", Crypto.url_decrypt(company_id));
                 oCmd.Parameters.AddWithValue("@company_code", company_code);
-                oCmd.Parameters.AddWithValue("@created_by", created_by);
+                oCmd.Parameters.AddWithValue("@created_by", Crypto.url_decrypt(created_by));
                 da.Fill(dt);
                 resp = (from DataRow dr in dt.Rows
-                        select new CompanyIURequest()
+                        select new CompanyResponse()
                         {
-                            companyID = Crypto.url_decrypt(dr["id"].ToString()),
-                            companyCode = dr["description"].ToString(),
-                            createdBy = Crypto.url_decrypt(dr["type_id"].ToString()),
+                            companyID = Crypto.url_encrypt(dr["company_id"].ToString()),
+                            companyCode = dr["company_code"].ToString(),
+                            createdBy = Crypto.url_encrypt(dr["created_by"].ToString()),
+                            street = dr["street"].ToString(),
+                            companyName = dr["company_name"].ToString(),
+                            barangay = dr["barangay"].ToString(),
+                            municipality = dr["municipality"].ToString(),
+                            SelectedCity = Convert.ToInt32(dr["city_id"].ToString()),
+                            SelectedRegion = Convert.ToInt32(dr["region_id"].ToString()),
+                            selectedCompanyCountry = Convert.ToInt32(dr["country_id"].ToString()),
+                            zipCode = dr["zip_code"].ToString(),
+                            img = dr["company_logo"].ToString(),
+
+                            instance_name = Crypto.url_encrypt(dr["instance_name"].ToString()),
+                            username = Crypto.url_encrypt(dr["user_name"].ToString()),
+                            password = Crypto.url_encrypt(dr["user_hash"].ToString()),
+                            active = Convert.ToBoolean(dr["active"].ToString())
 
                         }).ToList();
                 //while (sdr.Read())

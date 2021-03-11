@@ -38,6 +38,11 @@ namespace TenantManagementService.Model.CompanyModel
         public bool active { get; set; }
 
 
+        public string instance_name { get; set; }
+        public string username { get; set; }
+        public string password { get; set; }
+
+
     }
 
     public class BranchResponse
@@ -103,13 +108,13 @@ namespace TenantManagementService.Model.CompanyModel
         public string password { get; set; }
 
 
-        public IPIU[] iP_IU { get; set; }
-        public ContactIU[] Contact_IU { get; set; }
-        public EmailIU[] Email_IU { get; set; }
+        public IPResponse[] iP_IU { get; set; }
+        public ContactResponse[] Contact_IU { get; set; }
+        public EmailResponse[] Email_IU { get; set; }
 
     }
 
-    public class IPIU
+    public class IPResponse
     {
         public string branch_id { get; set; }
 
@@ -119,7 +124,7 @@ namespace TenantManagementService.Model.CompanyModel
     }
 
 
-    public class ContactIU
+    public class ContactResponse
     {
         public string branch_id { get; set; }
 
@@ -131,7 +136,7 @@ namespace TenantManagementService.Model.CompanyModel
     }
 
 
-    public class EmailIU
+    public class EmailResponse
     {
         public string branch_id { get; set; }
 
@@ -142,11 +147,11 @@ namespace TenantManagementService.Model.CompanyModel
         public string createdBy { get; set; }
     }
 
-    public class CompanyBranchIU
+    public class CompanyBranchResponse
     {
 
-        public CompanyIURequest company_IU { get; set; }
+        public CompanyResponse company_IU { get; set; }
 
-        public BranchIURequest[] Branch_IU { get; set; }
+        public BranchResponse[] Branch_IU { get; set; }
     }
 }
