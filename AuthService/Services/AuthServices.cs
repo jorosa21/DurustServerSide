@@ -42,12 +42,21 @@ namespace AuthService.Services
 
         public AuthenticateResponse AuthenticateLogin(AuthenticateRequest model)
         {
+
+
             AuthenticateResponse resp = new AuthenticateResponse();
+
+
+            //var c = _protector.Protect("7");
+            //var b = _protector.Unprotect(c);
+            //resp.id = _protector.Unprotect(model.company_code);
+
             string _con = connection._DB_Master;
             DataTable dt = new DataTable();
             string UserHash = Crypto.password_encrypt(model.password);
             SqlConnection oConn = new SqlConnection(_con);
             SqlTransaction oTrans;
+            
             oConn.Open();
             oTrans = oConn.BeginTransaction();
             SqlCommand oCmd = new SqlCommand();

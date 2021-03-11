@@ -7,7 +7,7 @@ namespace TenantManagementService.Model.CompanyModel
 {
     public class CompanyIURequest
     {
-        public int companyID { get; set; }
+        public string companyID { get; set; }
 
         public string companyName { get; set; }
 
@@ -44,7 +44,7 @@ namespace TenantManagementService.Model.CompanyModel
     {
 
 
-        public int branch_id { get; set; }
+        public string branch_id { get; set; }
 
         public string bankAccount { get; set; }
 
@@ -90,7 +90,7 @@ namespace TenantManagementService.Model.CompanyModel
 
         public string zipCode { get; set; }
 
-        public int company_id { get; set; }
+        public string company_id { get; set; }
 
         public string guid { get; set; }
 
@@ -111,7 +111,7 @@ namespace TenantManagementService.Model.CompanyModel
 
     public class IPIU
     {
-        public int branch_id { get; set; }
+        public string branch_id { get; set; }
 
         public string description { get; set; }
 
@@ -121,7 +121,7 @@ namespace TenantManagementService.Model.CompanyModel
 
     public class ContactIU
     {
-        public int branch_id { get; set; }
+        public string branch_id { get; set; }
 
         public int id { get; set; }
 
@@ -133,7 +133,7 @@ namespace TenantManagementService.Model.CompanyModel
 
     public class EmailIU
     {
-        public int branch_id { get; set; }
+        public string branch_id { get; set; }
 
         public int id { get; set; }
 

@@ -56,6 +56,19 @@ namespace TenantManagementService.Services
         public CompanyIUResponse CompanyIU(CompanyIURequest model)
         {
 
+            var c = _protector.Protect("7");
+            var b = _protector.Unprotect(c);
+            var a = _protector.Unprotect(model.createdBy);
+
+            IPersistedDataProtector ipersistprotector = _protector as IPersistedDataProtector;
+
+            //bool requiresMigration, wasRevoked;
+            //var unprotectedPayload = ipersistprotector.DangerousUnprotect(protectedData: protectedData,
+            //    ignoreRevocationErrors: true,
+            //    requiresMigration: out requiresMigration,
+            //    wasRevoked: out wasRevoked);
+            //var d = _protector.Unprotect(model.createdBy);
+
             CompanyIUResponse resp = new CompanyIUResponse();
             string _con = connection._DB_Master;
             DataTable dt = new DataTable();
@@ -71,7 +84,7 @@ namespace TenantManagementService.Services
                 oCmd.CommandText = "company_in_up";
                 oCmd.CommandType = CommandType.StoredProcedure;
                 oCmd.Parameters.Clear();
-                oCmd.Parameters.AddWithValue("@company_id", model.companyID);
+                oCmd.Parameters.AddWithValue("@company_id", model.companyID == "0" ? 0 : _protector.Unprotect(model.companyID));
                 oCmd.Parameters.AddWithValue("@company_code", model.companyCode);
                 oCmd.Parameters.AddWithValue("@company_name", model.companyName);
                 oCmd.Parameters.AddWithValue("@unit_floor", model.unit);
@@ -84,14 +97,13 @@ namespace TenantManagementService.Services
                 oCmd.Parameters.AddWithValue("@country", model.selectedCompanyCountry);
                 oCmd.Parameters.AddWithValue("@zip_code", model.zipCode);
                 oCmd.Parameters.AddWithValue("@company_logo", model.img);
-                oCmd.Parameters.AddWithValue("@created_by", model.createdBy);
+                oCmd.Parameters.AddWithValue("@created_by", 1);
                 //oCmd.Parameters.AddWithValue("@active", model.active);
                 SqlDataReader sdr = oCmd.ExecuteReader();
                 while (sdr.Read())
                 {
-                    resp.company_id = Convert.ToInt32(sdr["company_id"].ToString());
-                    resp.guid = sdr["guid"].ToString();
-                    resp.created_by = Convert.ToInt32(sdr["created_by"].ToString());
+                    resp.company_id = _protector.Protect(sdr["company_id"].ToString());
+                    resp.created_by = _protector.Protect(sdr["created_by"].ToString());
                     resp.company_code = sdr["company_code"].ToString();
                     resp.instance_name = sdr["instance_name"].ToString();
                     resp.user_hash = sdr["user_hash"].ToString();
@@ -250,7 +262,7 @@ namespace TenantManagementService.Services
             string username = model[0].username;
             string password = model[0].password;
             int branch = 0;
-            int company_id = model[0].company_id;
+            string company_id = model[0].company_id;
 
 
             BranchIUResponse resp = new BranchIUResponse();
@@ -304,7 +316,7 @@ namespace TenantManagementService.Services
                         oCmd.Parameters.AddWithValue("@unit_floor", item.unit);
                         oCmd.Parameters.AddWithValue("@zip_code", item.zipCode);
                         oCmd.Parameters.AddWithValue("@company_id", company_id);
-                        oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
+                        oCmd.Parameters.AddWithValue("@created_by", 1);
                         //oCmd.ExecuteNonQuery();
                         SqlDataReader sdr = oCmd.ExecuteReader();
                         while (sdr.Read())
@@ -421,9 +433,9 @@ namespace TenantManagementService.Services
                 resp = (from DataRow dr in dt.Rows
                         select new CompanyIURequest()
                         {
-                            companyID = Convert.ToInt32(dr["id"].ToString()),
+                            companyID = _protector.Protect(dr["id"].ToString()),
                             companyCode = dr["description"].ToString(),
-                            createdBy = dr["type_id"].ToString(),
+                            createdBy = _protector.Protect(dr["type_id"].ToString()),
 
                         }).ToList();
                 //while (sdr.Read())
@@ -446,7 +458,6 @@ namespace TenantManagementService.Services
 
             return resp;
         }
-
 
 
 

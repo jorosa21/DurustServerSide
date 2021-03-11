@@ -15,6 +15,7 @@ namespace TenantManagementService
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.DataProtection;
 
     public class Startup
     {
@@ -41,7 +42,8 @@ namespace TenantManagementService
             services.Configure<EmailSender>(Configuration.GetSection("EmailSender"));
             services.Configure<Default_Url>(Configuration.GetSection("URLDefault"));
             services.AddScoped<ITenantManagementServices, TenantManagementServices>();
-            services.AddDataProtection();
+            services.AddDataProtection()
+                .SetApplicationName("AuthService");
 
         }
 

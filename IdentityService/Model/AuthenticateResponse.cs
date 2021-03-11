@@ -34,20 +34,20 @@ namespace IdentityService.Model
         public bool active { get; set; }
 
 
-        public AuthenticateResponse(User user, string token)
-        {
-            id = user.id;
-            username = user.username;
-            routing = user.routing;
-            guid = user.guid;
-            email_verified = user.email_verified;
-            lock_account = user.lock_account;
-            type = user.type;
-            email_address = user.email_address;
-            active = user.active;
-            Token = token;
-            json = user.json;
-        }
+        //public AuthenticateResponse(User user, string token)
+        //{
+        //    id = user.id;
+        //    username = user.username;
+        //    routing = user.routing;
+        //    guid = user.guid;
+        //    email_verified = user.email_verified;
+        //    lock_account = user.lock_account;
+        //    type = user.type;
+        //    email_address = user.email_address;
+        //    active = user.active;
+        //    Token = token;
+        //    json = user.json;
+        //}
 
 
 
