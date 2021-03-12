@@ -136,7 +136,7 @@ namespace TenantManagementService.Controllers
             return result;
         }
 
-    [HttpGet("branch_view")]
+    [HttpGet("branch_contact_view")]
         public List<ContactResponse> branch_contact_view(string instance_name, string user_name, string user_hash, string branch_id)
         {
 
@@ -144,7 +144,7 @@ namespace TenantManagementService.Controllers
             return result;
         }
 
-        [HttpGet("branch_view")]
+        [HttpGet("branch_email_view")]
         public List<EmailResponse> branch_email_view(string instance_name, string user_name, string user_hash, string branch_id)
         {
 
