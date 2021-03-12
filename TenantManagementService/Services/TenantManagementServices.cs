@@ -34,6 +34,13 @@ namespace TenantManagementService.Services
         List<CompanyResponse> company_view_sel(string company_id,  string created_by);
 
         List<BranchResponse> branch_view(string instance_name, string user_name, string user_hash, string company_id, string branch_id, string created_by);
+
+        List<IPResponse> branch_ip_view(string instance_name, string user_name, string user_hash,  string branch_id);
+
+        List<ContactResponse> branch_contact_view(string instance_name, string user_name, string user_hash,  string branch_id);
+
+        List<EmailResponse> branch_email_view(string instance_name, string user_name, string user_hash,  string branch_id);
+
     }
 
 

@@ -128,6 +128,31 @@ namespace TenantManagementService.Controllers
             return result;
         }
 
+        [HttpGet("branch_ip_view")]
+        public List<IPResponse> branch_ip_view(string instance_name, string user_name, string user_hash, string branch_id)
+         {
+
+            var result = _tenantmanagementServices.branch_ip_view(instance_name, user_name, user_hash,  branch_id);
+            return result;
+        }
+
+    [HttpGet("branch_view")]
+        public List<ContactResponse> branch_contact_view(string instance_name, string user_name, string user_hash, string branch_id)
+        {
+
+            var result = _tenantmanagementServices.branch_contact_view(instance_name, user_name, user_hash, branch_id);
+            return result;
+        }
+
+        [HttpGet("branch_view")]
+        public List<EmailResponse> branch_email_view(string instance_name, string user_name, string user_hash, string branch_id)
+        {
+
+            var result = _tenantmanagementServices.branch_email_view(instance_name, user_name, user_hash, branch_id);
+            return result;
+        }
+
+
 
         [HttpGet("Dropdown_List")]
         public List<DropdownResponse> Dropdown_List(string dropdowntype_id)
