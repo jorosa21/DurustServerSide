@@ -221,7 +221,7 @@
 
     {
 
-      "DownstreamPathTemplate": "/api/TenantManagement/branch_view_sel",
+      "DownstreamPathTemplate": "/api/TenantManagement/branch_view",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -229,7 +229,7 @@
           "Port": "53188"
         }
       ],
-      "UpstreamPathTemplate": "/api/TenantManagement/branch_view_sel",
+      "UpstreamPathTemplate": "/api/TenantManagement/branch_view",
 
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
