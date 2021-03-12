@@ -15,4 +15,6 @@ namespace MasterSettingService.Model.MenuViewModel
         public string module_type { get; set; }
         public string link { get; set; }
     }
+
+    
 }

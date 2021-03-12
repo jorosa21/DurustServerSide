@@ -26,9 +26,9 @@ namespace MasterSettingService.Services
         List<DropdownResponse> Dropdown_entitlement(string dropdowntype_id);
 
         List<DropdownTypeResponse> Dropdowntype_view();
-        List<DropdownTypeResponse> Dropdown_fix_view(string active)
+        List<DropdownTypeResponse> Dropdown_fix_view(string active);
 
-        DropdownIUResponse DropdownIU(DropdownIURequest model);
+        public DropdownIUResponse DropdownIU(DropdownIURequest model);
 
         List<MenuViewResponse> Menu_view(string instance_name, string user_name, string user_hash, string access_level_id);
     }
