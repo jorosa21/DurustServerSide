@@ -221,7 +221,7 @@
 
     {
 
-      "DownstreamPathTemplate": "/api/TenantManagement/Dropdowntype_List",
+      "DownstreamPathTemplate": "/api/TenantManagement/Dropdown_List",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -229,7 +229,7 @@
           "Port": "53188"
         }
       ],
-      "UpstreamPathTemplate": "/api/TenantManagement/Dropdowntype_List",
+      "UpstreamPathTemplate": "/api/TenantManagement/Dropdown_List",
 
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
