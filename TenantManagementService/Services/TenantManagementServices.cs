@@ -169,8 +169,8 @@ namespace TenantManagementService.Services
                 oCmd.Parameters.AddWithValue("@pagibig_branch", model.SelectedPCity);
                 oCmd.Parameters.AddWithValue("@pagibig_code", model.SelectedPCode);
                 oCmd.Parameters.AddWithValue("@pagibig_region", model.SelectedPRegion);
-                oCmd.Parameters.AddWithValue("@rdo", model.SelectedRdoBranch);
-                oCmd.Parameters.AddWithValue("@rdo_branch", model.SelectedRdoOffice);
+                oCmd.Parameters.AddWithValue("@rdo", model.SelectedRdoOffice);
+                oCmd.Parameters.AddWithValue("@rdo_branch", model.SelectedRdoBranch);
                 oCmd.Parameters.AddWithValue("@region", model.SelectedRegion);
                 oCmd.Parameters.AddWithValue("@sss", model.sss);
                 oCmd.Parameters.AddWithValue("@street", model.street);
@@ -303,8 +303,8 @@ namespace TenantManagementService.Services
                         oCmd.Parameters.AddWithValue("@pagibig_branch", item.SelectedPCity);
                         oCmd.Parameters.AddWithValue("@pagibig_code", item.SelectedPCode);
                         oCmd.Parameters.AddWithValue("@pagibig_region", item.SelectedPRegion);
-                        oCmd.Parameters.AddWithValue("@rdo", item.SelectedRdoBranch);
-                        oCmd.Parameters.AddWithValue("@rdo_branch", item.SelectedRdoOffice);
+                        oCmd.Parameters.AddWithValue("@rdo", item.SelectedRdoOffice);
+                        oCmd.Parameters.AddWithValue("@rdo_branch", item.SelectedRdoBranch);
                         oCmd.Parameters.AddWithValue("@region", item.SelectedRegion);
                         oCmd.Parameters.AddWithValue("@sss", item.sss);
                         oCmd.Parameters.AddWithValue("@street", item.street);

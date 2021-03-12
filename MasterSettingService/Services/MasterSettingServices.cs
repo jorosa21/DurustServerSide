@@ -26,6 +26,7 @@ namespace MasterSettingService.Services
         List<DropdownResponse> Dropdown_entitlement(string dropdowntype_id);
 
         List<DropdownTypeResponse> Dropdowntype_view();
+        List<DropdownTypeResponse> Dropdown_fix_view(string active)
 
         DropdownIUResponse DropdownIU(DropdownIURequest model);
 
@@ -258,6 +259,60 @@ namespace MasterSettingService.Services
 
             return resp;
         }
+
+
+        public List<DropdownTypeResponse> Dropdown_fix_view(string active)
+        {
+            //DropdownResponse resp = new DropdownResponse();
+
+            List<DropdownTypeResponse> resp = new List<DropdownTypeResponse>();
+            string _con = connection._DB_Master;
+            DataTable dt = new DataTable();
+            SqlConnection oConn = new SqlConnection(_con);
+            SqlTransaction oTrans;
+            oConn.Open();
+            oTrans = oConn.BeginTransaction();
+            SqlCommand oCmd = new SqlCommand();
+            oCmd.Connection = oConn;
+            oCmd.Transaction = oTrans;
+            try
+            {
+
+                SqlDataAdapter da = new SqlDataAdapter();
+                da.SelectCommand = oCmd;
+                oCmd.CommandText = "dropdown_type_view_fix";
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Clear();
+                oCmd.Parameters.AddWithValue("@active", active);
+                da.Fill(dt);
+                resp = (from DataRow dr in dt.Rows
+                        select new DropdownTypeResponse()
+                        {
+                            id = Convert.ToInt32(dr["id"].ToString()),
+                            description = dr["description"].ToString(),
+
+                        }).ToList();
+                //while (sdr.Read())
+                //{
+                //    resp.id = Convert.ToInt32(sdr["id"].ToString());
+                //    resp.description = sdr["description"].ToString();
+
+                //}
+                oConn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
+            finally
+            {
+                oConn.Close();
+            }
+
+
+            return resp;
+        }
+
 
         public List<MenuViewResponse> Menu_view(string instance_name, string user_name, string user_hash, string access_level_id)
         {

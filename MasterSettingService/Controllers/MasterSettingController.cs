@@ -68,6 +68,16 @@ namespace MasterSettingService.Controllers
         }
 
 
+
+        [HttpGet("Dropdown_fix_view")]
+        public List<DropdownTypeResponse> Dropdown_fix_view(string active)
+        {
+
+            var result = _masterServices.Dropdown_fix_view(active);
+            return result;
+        }
+
+
         [HttpPost("DropdownIU")]
         public DropdownIUResponse DropdownIU(DropdownIURequest model)
         {

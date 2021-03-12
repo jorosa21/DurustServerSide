@@ -94,6 +94,24 @@
 
     {
 
+      "DownstreamPathTemplate": "/api/MasterSetting/Dropdown_fix_view",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "65478"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/MasterSetting/Dropdown_fix_view",
+
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+    {
+
       "DownstreamPathTemplate": "/api/TenantManagement/CompanyIU",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
