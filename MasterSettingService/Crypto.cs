@@ -102,6 +102,7 @@ namespace MasterSettingService
         {
 
             cipherText = HttpUtility.UrlDecode(cipherText);
+            cipherText = cipherText.Replace(' ', '+');
 
             if (cipherText != null)
             {

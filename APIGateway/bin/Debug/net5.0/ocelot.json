@@ -162,7 +162,33 @@
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
+      //,
 
+      //"RateLimitOptions": {
+      //  "ClientWhiteList": [],
+      //  "EnableRateLimiting": true,
+      //  "Period": "5s",
+      //  "PeriodTimespan": 1,
+      //  "Limit": 1
+      //}
+    },
+
+    {
+
+      "DownstreamPathTemplate": "/api/MasterSetting/Menu_view",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "65478"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/MasterSetting/Menu_view",
+
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
       //,
 
       //"RateLimitOptions": {
@@ -192,6 +218,7 @@
       }
     },
 
+
     {
 
       "DownstreamPathTemplate": "/api/TenantManagement/branch_view_sel",
@@ -209,6 +236,7 @@
         "AllowedScopes": []
       }
     }
+
 
   ]
 }
