@@ -17,6 +17,13 @@ namespace TenantManagementService.Model.DropdownModel
 
         public bool active { get; set; }
 
+        public string instance_name { get; set; }
+
+        public string user_name { get; set; }
+
+        public string user_hash { get; set; }
+
+
     }
     public class DropdownRequest
     {

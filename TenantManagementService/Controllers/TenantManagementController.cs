@@ -155,12 +155,12 @@ namespace TenantManagementService.Controllers
 
 
         [HttpGet("Dropdown_List")]
-        public List<DropdownResponse> Dropdown_List(string dropdowntype_id)
+        public List<DropdownResponse> Dropdown_List(string instance_name, string user_name, string user_hash, string dropdowntype_id)
         {
             //dropdowntype_id = dropdowntype_id == "null" ? "0" : dropdowntype_id;
             //dropdown_type = dropdown_type == "null" ? "" : dropdown_type;
 
-            var result = _tenantmanagementServices.Dropdown_List(dropdowntype_id);
+            var result = _tenantmanagementServices.Dropdown_List(instance_name, user_name, user_hash, dropdowntype_id);
             return result;
         }
 

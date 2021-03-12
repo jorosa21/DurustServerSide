@@ -27,7 +27,7 @@ namespace TenantManagementService.Services
 
 
 
-        List<DropdownResponse> Dropdown_List(string dropdowntype_id);
+        List<DropdownResponse> Dropdown_List(string instance_name, string user_name, string user_hash, string dropdown_type_id);
 
         DropdownIUResponse DropdownIU(DropdownIURequest model);
 
@@ -792,8 +792,23 @@ namespace TenantManagementService.Services
         public DropdownIUResponse DropdownIU(DropdownIURequest model)
         {
 
+            string instance_name = Crypto.url_decrypt(model.instance_name);
+            string user_hash = Crypto.url_decrypt(model.user_hash);
+            string user_name = Crypto.url_decrypt(model.user_name);
+
+            string _con;
+            if (instance_name is null)
+            {
+                _con = connection._DB_Master;
+            }
+            else
+            {
+                _con = "Data Source=" + instance_name + ";Initial Catalog=mastersetupdb;User ID=" + user_name + ";Password=" + user_hash + ";MultipleActiveResultSets=True;";
+
+            }
+
             DropdownIUResponse resp = new DropdownIUResponse();
-            string _con = connection._DB_Master;
+            //string _con = connection._DB_Master;
             DataTable dt = new DataTable();
             SqlConnection oConn = new SqlConnection(_con);
             SqlTransaction oTrans;
@@ -833,12 +848,28 @@ namespace TenantManagementService.Services
             return resp;
         }
 
-        public List<DropdownResponse> Dropdown_List(string dropdown_type_id)
+        public List<DropdownResponse> Dropdown_List(string instance_name, string user_name, string user_hash, string dropdown_type_id)
         {
+
+            instance_name = Crypto.url_decrypt(instance_name);
+            user_hash = Crypto.url_decrypt(user_hash);
+            user_name = Crypto.url_decrypt(user_name);
+
+
+
+            string _con;
+            if (instance_name is null)
+            {
+                _con = connection._DB_Master;
+            }
+            else
+            {
+                _con = "Data Source=" + instance_name + ";Initial Catalog=mastersetupdb;User ID=" + user_name + ";Password=" + user_hash + ";MultipleActiveResultSets=True;";
+
+            }
 
 
             List<DropdownResponse> resp = new List<DropdownResponse>();
-            string _con = connection._DB_Master;
             DataTable dt = new DataTable();
             SqlConnection oConn = new SqlConnection(_con);
             SqlTransaction oTrans;
