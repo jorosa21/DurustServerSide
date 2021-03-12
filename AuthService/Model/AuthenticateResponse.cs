@@ -42,6 +42,8 @@ namespace AuthService.Model
 
         public string company_user_hash { get; set; }
 
+        public string access_level_id { get; set; }
+
 
         //public AuthenticateResponse(User user, string token)
         //{

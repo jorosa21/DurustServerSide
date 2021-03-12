@@ -81,6 +81,7 @@ namespace AuthService.Services
                     resp.instance_name = Crypto.url_encrypt(sdr["instance_name"].ToString());
                     resp.company_user_name = Crypto.url_encrypt(sdr["company_user_name"].ToString());
                     resp.company_user_hash = Crypto.url_encrypt(sdr["company_user_hash"].ToString());
+                    resp.access_level_id = Crypto.url_encrypt(sdr["access_level_id"].ToString());
                 }
                 sdr.Close();
                 oConn.Close();

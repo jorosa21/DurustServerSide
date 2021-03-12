@@ -513,56 +513,6 @@ namespace TenantManagementService.Services
                 SqlDataAdapter da = new SqlDataAdapter();
                 da.SelectCommand = oCmd;
 
-                //oCmd.CommandText = "branch_ip_view";
-                //da.SelectCommand.CommandType = CommandType.StoredProcedure;
-                //oCmd.Parameters.Clear();
-                //oCmd.Parameters.AddWithValue("@branch_id", branch_id == "0" ? 0 : Crypto.url_decrypt(branch_id));
-                //da.Fill(dt);
-                //ipresp = (from DataRow dr in dt.Rows
-                //          select new IPResponse()
-                //          {
-                //              branch_id = Crypto.url_encrypt(dr["branch_id"].ToString()),
-                //              createdBy = Crypto.url_encrypt(dr["created_by"].ToString()),
-                //              description = dr["ip_address"].ToString(),
-
-                //          }).ToList();
-
-
-
-                //oCmd.CommandText = "branch_email_view";
-                //da.SelectCommand.CommandType = CommandType.StoredProcedure;
-                //oCmd.Parameters.Clear();
-                //oCmd.Parameters.AddWithValue("@branch_id", branch_id == "0" ? 0 : Crypto.url_decrypt(branch_id));
-                //da.Fill(dt);
-                //emailresp = (from DataRow dr in dt.Rows
-                //             select new EmailResponse()
-                //             {
-                //                 branch_id = Crypto.url_encrypt(dr["branch_id"].ToString()),
-                //                 createdBy = Crypto.url_encrypt(dr["created_by"].ToString()),
-                //                 //id = Convert.ToInt32(dr["email_type_id"].ToString()),
-                //                 email_address = dr["email_address"].ToString(),
-
-                //             }).ToList();
-
-
-
-
-                //oCmd.CommandText = "branch_contact_view";
-                //da.SelectCommand.CommandType = CommandType.StoredProcedure;
-                //oCmd.Parameters.Clear();
-                //oCmd.Parameters.AddWithValue("@branch_id", branch_id == "0" ? 0 : Crypto.url_decrypt(branch_id));
-                //da.Fill(dt);
-                //contactresp = (from DataRow dr in dt.Rows
-                //               select new ContactResponse()
-                //               {
-                //                   branch_id = Crypto.url_encrypt(dr["branch_id"].ToString()),
-                //                   createdBy = Crypto.url_encrypt(dr["created_by"].ToString()),
-                //                   id = (dr["contact_type_id"].ToString()),
-                //                   number = dr["contact_number"].ToString(),
-
-                //               }).ToList();
-
-
 
                 oCmd.CommandText = "branch_view_sel";
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;

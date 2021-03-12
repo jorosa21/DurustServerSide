@@ -29,7 +29,7 @@ namespace MasterSettingService.Services
 
         DropdownIUResponse DropdownIU(DropdownIURequest model);
 
-        public string Menu_view(string instance_name, string user_name, string user_hash);
+        List<MenuViewResponse> Menu_view(string instance_name, string user_name, string user_hash, string access_level_id, string module_type);
     }
 
 
@@ -259,9 +259,9 @@ namespace MasterSettingService.Services
             return resp;
         }
 
-        public string Menu_view(string instance_name, string user_name, string user_hash)
+        public List<MenuViewResponse> Menu_view(string instance_name, string user_name, string user_hash, string access_level_id, string module_type)
         {
-            //DropdownResponse resp = new DropdownResponse();
+            List<MenuViewResponse> resp = new List<MenuViewResponse>();
 
             instance_name = Crypto.url_decrypt(instance_name);
             user_hash = Crypto.url_decrypt(user_hash);
@@ -279,7 +279,7 @@ namespace MasterSettingService.Services
                 _con = "Data Source=" + instance_name + ";Initial Catalog=mastersetupdb;User ID=" + user_name + ";Password=" + user_hash + ";MultipleActiveResultSets=True;";
 
             }
-            string resp = "";
+
             //string _con = connection._DB_Master;
             DataTable dt = new DataTable();
             SqlConnection oConn = new SqlConnection(_con);
@@ -297,12 +297,23 @@ namespace MasterSettingService.Services
                 oCmd.CommandText = "dynamic_menu_view";
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 oCmd.Parameters.Clear();
-                SqlDataReader sdr = oCmd.ExecuteReader();
-                while (sdr.Read())
-                {
-                    resp = sdr["module_view"].ToString();
+                oCmd.Parameters.AddWithValue("@access_level_id", Crypto.url_decrypt(access_level_id));
+                da.Fill(dt);
+                
 
-                }
+                resp = (from DataRow dr in dt.Rows
+                        select new MenuViewResponse()
+                        {
+                            ordey_by = dr["ordey_by"].ToString(),
+                            module_id = Convert.ToInt32(dr["module_id"].ToString()),
+                            parent_module_id = Convert.ToInt32(dr["parent_module_id"].ToString()),
+                            module_name = dr["module_name"].ToString(),
+                            classes = dr["class"].ToString(),
+                            module_type = dr["module_type"].ToString(),
+                            link = dr["link"].ToString(),
+
+                        }).ToList();
+
                 oConn.Close();
             }
             catch (Exception e)
