@@ -81,8 +81,8 @@ namespace TenantManagementService.Controllers
                 if (model.Branch_IU[0].instance_name is null)
                 {
                     model.Branch_IU[0].instance_name = result.instance_name;
-                    model.Branch_IU[0].username = result.username;
-                    model.Branch_IU[0].password = result.password;
+                    model.Branch_IU[0].user_name = result.username;
+                    model.Branch_IU[0].user_hash = result.password;
                 }
                 model.Branch_IU[0].company_id = result.companyID;
 

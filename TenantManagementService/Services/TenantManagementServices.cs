@@ -117,11 +117,11 @@ namespace TenantManagementService.Services
 
         public BranchResponse BranchIU(BranchIURequest model)
         {
-            string instance_name = model.instance_name;
-            string username = model.username;
-            string password = model.password;
-            int branch = 0;
-
+            string instance_name = Crypto.url_decrypt(model.instance_name);
+            string username = Crypto.url_decrypt(model.user_name);
+            string password = Crypto.url_decrypt(model.user_hash);
+            string branch_id = "";
+            string created_by = Crypto.url_decrypt(model.CreatedBy);
 
             BranchResponse resp = new BranchResponse();
             string _con;
@@ -147,39 +147,38 @@ namespace TenantManagementService.Services
                 oCmd.CommandText = "branch_in_up";
                 oCmd.CommandType = CommandType.StoredProcedure;
                 oCmd.Parameters.Clear();
-                oCmd.Parameters.AddWithValue("@branch_id", model.branch_id);
-                oCmd.Parameters.AddWithValue("@bankAccount", model.bankAccount);
+                oCmd.Parameters.AddWithValue("@branch_id", model.branchID == "0"? 0: Crypto.url_decrypt(model.branchID));
+                oCmd.Parameters.AddWithValue("@bank_account", model.bankAccount);
                 oCmd.Parameters.AddWithValue("@barangay", model.barangay);
-                oCmd.Parameters.AddWithValue("@branchName", model.branchName);
+                oCmd.Parameters.AddWithValue("@branch_name", model.branchName);
                 oCmd.Parameters.AddWithValue("@building", model.building);
                 oCmd.Parameters.AddWithValue("@municipality", model.municipality);
                 oCmd.Parameters.AddWithValue("@pagibig", model.pagibig);
                 oCmd.Parameters.AddWithValue("@philhealth", model.philhealth);
-                oCmd.Parameters.AddWithValue("@SelectedBank", model.SelectedBank);
-                oCmd.Parameters.AddWithValue("@SelectedBranchCountry", model.SelectedBranchCountry);
-                oCmd.Parameters.AddWithValue("@SelectedCity", model.SelectedCity);
-                oCmd.Parameters.AddWithValue("@SelectedIndustry", model.SelectedIndustry);
-                oCmd.Parameters.AddWithValue("@SelectedPCity", model.SelectedPCity);
-                oCmd.Parameters.AddWithValue("@SelectedPCode", model.SelectedPCode);
-                oCmd.Parameters.AddWithValue("@SelectedPRegion", model.SelectedPRegion);
-                oCmd.Parameters.AddWithValue("@SelectedRdoBranch", model.SelectedRdoBranch);
-                oCmd.Parameters.AddWithValue("@SelectedRdoOffice", model.SelectedRdoOffice);
-                oCmd.Parameters.AddWithValue("@SelectedRegion", model.SelectedRegion);
+                oCmd.Parameters.AddWithValue("@bank_id", model.SelectedBank);
+                oCmd.Parameters.AddWithValue("@country", model.SelectedBranchCountry);
+                oCmd.Parameters.AddWithValue("@city", model.SelectedCity);
+                oCmd.Parameters.AddWithValue("@industry", model.SelectedIndustry);
+                oCmd.Parameters.AddWithValue("@pagibig_branch", model.SelectedPCity);
+                oCmd.Parameters.AddWithValue("@pagibig_code", model.SelectedPCode);
+                oCmd.Parameters.AddWithValue("@pagibig_region", model.SelectedPRegion);
+                oCmd.Parameters.AddWithValue("@rdo", model.SelectedRdoBranch);
+                oCmd.Parameters.AddWithValue("@rdo_branch", model.SelectedRdoOffice);
+                oCmd.Parameters.AddWithValue("@region", model.SelectedRegion);
                 oCmd.Parameters.AddWithValue("@sss", model.sss);
                 oCmd.Parameters.AddWithValue("@street", model.street);
                 oCmd.Parameters.AddWithValue("@tin", model.tin);
-                oCmd.Parameters.AddWithValue("@unit", model.unit);
-                oCmd.Parameters.AddWithValue("@zipCode", model.zipCode);
-                oCmd.Parameters.AddWithValue("@company_id", model.company_id);
-                oCmd.Parameters.AddWithValue("@created_by", model.CreatedBy);
+                oCmd.Parameters.AddWithValue("@unit_floor", model.unit);
+                oCmd.Parameters.AddWithValue("@zip_code", model.zipCode);
+                oCmd.Parameters.AddWithValue("@company_id", Crypto.url_decrypt(model.company_id));
+                oCmd.Parameters.AddWithValue("@created_by", created_by);
                 //oCmd.Parameters.AddWithValue("@active", model.active);
                 SqlDataReader sdr = oCmd.ExecuteReader();
                 while (sdr.Read())
                 {
-                    resp.branch_id = Crypto.url_decrypt(sdr["branch_id"].ToString());
-                    resp.guid = sdr["guid"].ToString();
-                    resp.CreatedBy = Crypto.url_decrypt(sdr["created_by"].ToString());
-
+                    resp.branch_id = Crypto.url_encrypt(sdr["branch_id"].ToString());
+                    resp.CreatedBy = Crypto.url_encrypt(sdr["created_by"].ToString());
+                    branch_id = sdr["branch_id"].ToString();
                 }
                 sdr.Close();
 
@@ -191,9 +190,9 @@ namespace TenantManagementService.Services
                         oCmd.CommandText = "branch_ip_in";
                         oCmd.CommandType = CommandType.StoredProcedure;
                         oCmd.Parameters.Clear();
-                        oCmd.Parameters.AddWithValue("@branch_id", resp.branch_id);
+                        oCmd.Parameters.AddWithValue("@branch_id", branch_id);
                         oCmd.Parameters.AddWithValue("@ip_address", ip.description);
-                        oCmd.Parameters.AddWithValue("@created_by", ip.createdBy);
+                        oCmd.Parameters.AddWithValue("@created_by", created_by);
                         oCmd.ExecuteNonQuery();
                     }
                 }
@@ -206,10 +205,10 @@ namespace TenantManagementService.Services
                         oCmd.CommandText = "branch_contact_in";
                         oCmd.CommandType = CommandType.StoredProcedure;
                         oCmd.Parameters.Clear();
-                        oCmd.Parameters.AddWithValue("@branch_id", resp.branch_id);
+                        oCmd.Parameters.AddWithValue("@branch_id", branch_id);
                         oCmd.Parameters.AddWithValue("@contact_type_id", contact.id);
                         oCmd.Parameters.AddWithValue("@contact_number", contact.number);
-                        oCmd.Parameters.AddWithValue("@created_by", contact.createdBy);
+                        oCmd.Parameters.AddWithValue("@created_by", created_by);
                         oCmd.ExecuteNonQuery();
                     }
                 }
@@ -222,10 +221,10 @@ namespace TenantManagementService.Services
                         oCmd.CommandText = "branch_email_in";
                         oCmd.CommandType = CommandType.StoredProcedure;
                         oCmd.Parameters.Clear();
-                        oCmd.Parameters.AddWithValue("@branch_id", resp.branch_id);
+                        oCmd.Parameters.AddWithValue("@branch_id", branch_id);
                         oCmd.Parameters.AddWithValue("@email_type_id", email.id);
                         oCmd.Parameters.AddWithValue("@email_address", email.email_address);
-                        oCmd.Parameters.AddWithValue("@created_by", email.createdBy);
+                        oCmd.Parameters.AddWithValue("@created_by", created_by);
                         oCmd.ExecuteNonQuery();
                     }
                 }
@@ -249,8 +248,8 @@ namespace TenantManagementService.Services
         public BranchResponse MultipleBranchIU(BranchIURequest[] model)
         {
             string instance_name = Crypto.url_decrypt(model[0].instance_name);
-            string username = Crypto.url_decrypt(model[0].username);
-            string password = Crypto.url_decrypt(model[0].password);
+            string username = Crypto.url_decrypt(model[0].user_name);
+            string password = Crypto.url_decrypt(model[0].user_hash);
             int branch = 0;
             string company_id = Crypto.url_decrypt(model[0].company_id);
 
@@ -282,7 +281,7 @@ namespace TenantManagementService.Services
                     {
                         oCmd.CommandText = "branch_in_up";
                         oCmd.CommandType = CommandType.StoredProcedure;
-                        oCmd.Parameters.Clear(); oCmd.Parameters.AddWithValue("@branch_id", item.branch_id);
+                        oCmd.Parameters.Clear(); oCmd.Parameters.AddWithValue("@branch_id", item.branchID);
                         oCmd.Parameters.AddWithValue("@bank_account", item.bankAccount);
                         oCmd.Parameters.AddWithValue("@barangay", item.barangay);
                         oCmd.Parameters.AddWithValue("@branch_name", item.branchName);
@@ -486,7 +485,14 @@ namespace TenantManagementService.Services
             }
 
             List<BranchResponse> resp = new List<BranchResponse>();
+            List<IPResponse> ipresp = new List<IPResponse>();
+            List<EmailResponse> emailresp = new List<EmailResponse>();
+            List<ContactResponse> contactresp = new List<ContactResponse>();
+            //List<BranchResponse> resp = new List<BranchResponse>();
             DataTable dt = new DataTable();
+            DataTable dt_ip = new DataTable();
+            DataTable dt_contact = new DataTable();
+            DataTable dt_email = new DataTable();
             SqlConnection oConn = new SqlConnection(_con);
             SqlTransaction oTrans;
             oConn.Open();
@@ -499,6 +505,58 @@ namespace TenantManagementService.Services
 
                 SqlDataAdapter da = new SqlDataAdapter();
                 da.SelectCommand = oCmd;
+
+                oCmd.CommandText = "branch_ip_view";
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Clear();
+                oCmd.Parameters.AddWithValue("@branch_id", branch_id == "0" ? 0 : Crypto.url_decrypt(branch_id));
+                da.Fill(dt);
+                ipresp = (from DataRow dr in dt.Rows
+                          select new IPResponse()
+                          {
+                              branch_id = Crypto.url_encrypt(dr["branch_id"].ToString()),
+                              createdBy = Crypto.url_encrypt(dr["created_by"].ToString()),
+                              description = dr["ip_address"].ToString(),
+
+                          }).ToList();
+
+
+
+                oCmd.CommandText = "branch_email_view";
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Clear();
+                oCmd.Parameters.AddWithValue("@branch_id", branch_id == "0" ? 0 : Crypto.url_decrypt(branch_id));
+                da.Fill(dt);
+                emailresp = (from DataRow dr in dt.Rows
+                             select new EmailResponse()
+                             {
+                                 branch_id = Crypto.url_encrypt(dr["branch_id"].ToString()),
+                                 createdBy = Crypto.url_encrypt(dr["created_by"].ToString()),
+                                 //id = Convert.ToInt32(dr["email_type_id"].ToString()),
+                                 email_address = dr["email_address"].ToString(),
+
+                             }).ToList();
+
+
+
+
+                oCmd.CommandText = "branch_contact_view";
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Clear();
+                oCmd.Parameters.AddWithValue("@branch_id", branch_id == "0" ? 0 : Crypto.url_decrypt(branch_id));
+                da.Fill(dt);
+                contactresp = (from DataRow dr in dt.Rows
+                               select new ContactResponse()
+                               {
+                                   branch_id = Crypto.url_encrypt(dr["branch_id"].ToString()),
+                                   createdBy = Crypto.url_encrypt(dr["created_by"].ToString()),
+                                   id = Convert.ToInt32(dr["contact_type_id"].ToString()),
+                                   number = dr["contact_number"].ToString(),
+
+                               }).ToList();
+
+
+
                 oCmd.CommandText = "branch_view_sel";
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 oCmd.Parameters.Clear();
@@ -540,15 +598,18 @@ namespace TenantManagementService.Services
                             //instance_name = Crypto.url_encrypt(dr["instance_name"].ToString()),
                             //username = Crypto.url_encrypt(dr["user_name"].ToString()),
                             //password = Crypto.url_encrypt(dr["user_hash"].ToString()),
-                            active = Convert.ToBoolean(dr["active"].ToString())
+                            active = Convert.ToBoolean(dr["active"].ToString()),
+
+                            //iP_IU = ipresp
 
                         }).ToList();
-                //while (sdr.Read())
-                //{
-                //    resp.id = Convert.ToInt32(sdr["id"].ToString());
-                //    resp.description = sdr["description"].ToString();
 
-                //}
+
+
+
+
+
+
                 oConn.Close();
             }
             catch (Exception e)

@@ -44,7 +44,7 @@ namespace TenantManagementService.Model.CompanyModel
     {
 
 
-        public string branch_id { get; set; }
+        public string branchID { get; set; }
 
         public string bankAccount { get; set; }
 
@@ -99,8 +99,8 @@ namespace TenantManagementService.Model.CompanyModel
         public bool active { get; set; }
 
         public string instance_name { get; set; }
-        public string username { get; set; }
-        public string password { get; set; }
+        public string user_name { get; set; }
+        public string user_hash { get; set; }
 
 
         public IPIU[] iP_IU { get; set; }
