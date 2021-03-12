@@ -97,7 +97,8 @@ namespace TenantManagementService
             }
             //return clearText;
 
-            return HttpUtility.UrlEncode(clearText);
+            clearText =  HttpUtility.UrlEncode(clearText);
+            return clearText;
             //return HttpContext.Current.Server.UrlEncode(password_encrypt(clearText));
         }
 
@@ -105,7 +106,7 @@ namespace TenantManagementService
         {
 
             cipherText = HttpUtility.UrlDecode(cipherText);
-
+            cipherText = cipherText.Replace(' ', '+');
             if (cipherText != null)
             {
                 string EncryptionKey = "MAKV2SPBNI99212";

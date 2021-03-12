@@ -93,7 +93,8 @@ namespace AuthService
             }
             //return clearText;
 
-            return HttpUtility.UrlEncode(clearText);
+            clearText = HttpUtility.UrlEncode(clearText);
+            return clearText;
             //return HttpContext.Current.Server.UrlEncode(password_encrypt(clearText));
         }
 

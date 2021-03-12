@@ -472,7 +472,6 @@ namespace TenantManagementService.Services
             user_hash = Crypto.url_decrypt(user_hash);
             user_name = Crypto.url_decrypt(user_name);
           
-            company_id = Crypto.url_decrypt(company_id);
 
 
             string _con;
