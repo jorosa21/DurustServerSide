@@ -29,7 +29,7 @@ namespace MasterSettingService.Services
 
         DropdownIUResponse DropdownIU(DropdownIURequest model);
 
-        MenuViewResponse Menu_view(string instance_name, string user_name, string user_hash);
+        public string Menu_view(string instance_name, string user_name, string user_hash);
     }
 
 
@@ -259,7 +259,7 @@ namespace MasterSettingService.Services
             return resp;
         }
 
-        public MenuViewResponse Menu_view(string instance_name, string user_name, string user_hash)
+        public string Menu_view(string instance_name, string user_name, string user_hash)
         {
             //DropdownResponse resp = new DropdownResponse();
 
@@ -279,7 +279,7 @@ namespace MasterSettingService.Services
                 _con = "Data Source=" + instance_name + ";Initial Catalog=mastersetupdb;User ID=" + user_name + ";Password=" + user_hash + ";MultipleActiveResultSets=True;";
 
             }
-            MenuViewResponse resp = new MenuViewResponse();
+            string resp = "";
             //string _con = connection._DB_Master;
             DataTable dt = new DataTable();
             SqlConnection oConn = new SqlConnection(_con);
@@ -300,7 +300,7 @@ namespace MasterSettingService.Services
                 SqlDataReader sdr = oCmd.ExecuteReader();
                 while (sdr.Read())
                 {
-                    resp.menu_view = sdr["module_view"].ToString();
+                    resp = sdr["module_view"].ToString();
 
                 }
                 oConn.Close();
