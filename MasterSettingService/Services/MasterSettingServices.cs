@@ -29,7 +29,7 @@ namespace MasterSettingService.Services
 
         DropdownIUResponse DropdownIU(DropdownIURequest model);
 
-        List<MenuViewResponse> Menu_view(string instance_name, string user_name, string user_hash, string access_level_id, string module_type);
+        List<MenuViewResponse> Menu_view(string instance_name, string user_name, string user_hash, string access_level_id);
     }
 
 
@@ -259,7 +259,7 @@ namespace MasterSettingService.Services
             return resp;
         }
 
-        public List<MenuViewResponse> Menu_view(string instance_name, string user_name, string user_hash, string access_level_id, string module_type)
+        public List<MenuViewResponse> Menu_view(string instance_name, string user_name, string user_hash, string access_level_id)
         {
             List<MenuViewResponse> resp = new List<MenuViewResponse>();
 

@@ -78,14 +78,14 @@ namespace MasterSettingService.Controllers
 
 
         [HttpGet("Menu_view")]
-        public string Menu_view(string instance_name, string user_name, string user_hash)
+        public List<MenuViewResponse> Menu_view(string instance_name, string user_name, string user_hash, string access_level_id)
         {
             //dropdowntype_id = dropdowntype_id == "null" ? "0" : dropdowntype_id;
             //dropdown_type = dropdown_type == "null" ? "" : dropdown_type;
             
-            var result = _masterServices.Menu_view(instance_name, user_name, user_hash);
+            var result = _masterServices.Menu_view(instance_name, user_name, user_hash,access_level_id);
 
-            result = JsonConvert.SerializeObject(result);
+            //result = JsonConvert.SerializeObject(result);
             return result;
         }
 
