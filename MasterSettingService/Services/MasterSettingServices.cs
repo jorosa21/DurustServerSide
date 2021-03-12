@@ -125,6 +125,7 @@ namespace MasterSettingService.Services
                        {
                            id = Convert.ToInt32(dr["id"].ToString()),
                            description = dr["description"].ToString(),
+                           type_description = dr["type_description"].ToString(),
                            type_id = Convert.ToInt32(dr["type_id"].ToString()),
                            active = Convert.ToBoolean( dr["active"].ToString()),
 

@@ -894,6 +894,7 @@ namespace TenantManagementService.Services
                             id = Convert.ToInt32(dr["id"].ToString()),
                             description = dr["description"].ToString(),
                             type_id = Convert.ToInt32(dr["type_id"].ToString()),
+                            type_description = (dr["type_description"].ToString()),
                             active = Convert.ToBoolean(dr["active"].ToString()),
 
                         }).ToList();
