@@ -33,7 +33,7 @@ namespace TenantManagementService.Services
 
         List<CompanyResponse> company_view_sel(string company_id,  string created_by);
 
-        List<BranchResponse> branch_view_sel(string instance_name, string user_name, string user_hash, string company_id, string branch_id, string created_by);
+        List<BranchResponse> branch_view(string instance_name, string user_name, string user_hash, string company_id, string branch_id, string created_by);
     }
 
 
@@ -463,7 +463,7 @@ namespace TenantManagementService.Services
         }
 
 
-        public List<BranchResponse> branch_view_sel(string instance_name,string user_name, string user_hash,string company_id, string branch_id, string created_by)
+        public List<BranchResponse> branch_view(string instance_name,string user_name, string user_hash,string company_id, string branch_id, string created_by)
         {
             //DropdownResponse resp = new DropdownResponse();
 
@@ -506,54 +506,54 @@ namespace TenantManagementService.Services
                 SqlDataAdapter da = new SqlDataAdapter();
                 da.SelectCommand = oCmd;
 
-                oCmd.CommandText = "branch_ip_view";
-                da.SelectCommand.CommandType = CommandType.StoredProcedure;
-                oCmd.Parameters.Clear();
-                oCmd.Parameters.AddWithValue("@branch_id", branch_id == "0" ? 0 : Crypto.url_decrypt(branch_id));
-                da.Fill(dt);
-                ipresp = (from DataRow dr in dt.Rows
-                          select new IPResponse()
-                          {
-                              branch_id = Crypto.url_encrypt(dr["branch_id"].ToString()),
-                              createdBy = Crypto.url_encrypt(dr["created_by"].ToString()),
-                              description = dr["ip_address"].ToString(),
+                //oCmd.CommandText = "branch_ip_view";
+                //da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                //oCmd.Parameters.Clear();
+                //oCmd.Parameters.AddWithValue("@branch_id", branch_id == "0" ? 0 : Crypto.url_decrypt(branch_id));
+                //da.Fill(dt);
+                //ipresp = (from DataRow dr in dt.Rows
+                //          select new IPResponse()
+                //          {
+                //              branch_id = Crypto.url_encrypt(dr["branch_id"].ToString()),
+                //              createdBy = Crypto.url_encrypt(dr["created_by"].ToString()),
+                //              description = dr["ip_address"].ToString(),
 
-                          }).ToList();
-
-
-
-                oCmd.CommandText = "branch_email_view";
-                da.SelectCommand.CommandType = CommandType.StoredProcedure;
-                oCmd.Parameters.Clear();
-                oCmd.Parameters.AddWithValue("@branch_id", branch_id == "0" ? 0 : Crypto.url_decrypt(branch_id));
-                da.Fill(dt);
-                emailresp = (from DataRow dr in dt.Rows
-                             select new EmailResponse()
-                             {
-                                 branch_id = Crypto.url_encrypt(dr["branch_id"].ToString()),
-                                 createdBy = Crypto.url_encrypt(dr["created_by"].ToString()),
-                                 //id = Convert.ToInt32(dr["email_type_id"].ToString()),
-                                 email_address = dr["email_address"].ToString(),
-
-                             }).ToList();
+                //          }).ToList();
 
 
 
+                //oCmd.CommandText = "branch_email_view";
+                //da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                //oCmd.Parameters.Clear();
+                //oCmd.Parameters.AddWithValue("@branch_id", branch_id == "0" ? 0 : Crypto.url_decrypt(branch_id));
+                //da.Fill(dt);
+                //emailresp = (from DataRow dr in dt.Rows
+                //             select new EmailResponse()
+                //             {
+                //                 branch_id = Crypto.url_encrypt(dr["branch_id"].ToString()),
+                //                 createdBy = Crypto.url_encrypt(dr["created_by"].ToString()),
+                //                 //id = Convert.ToInt32(dr["email_type_id"].ToString()),
+                //                 email_address = dr["email_address"].ToString(),
 
-                oCmd.CommandText = "branch_contact_view";
-                da.SelectCommand.CommandType = CommandType.StoredProcedure;
-                oCmd.Parameters.Clear();
-                oCmd.Parameters.AddWithValue("@branch_id", branch_id == "0" ? 0 : Crypto.url_decrypt(branch_id));
-                da.Fill(dt);
-                contactresp = (from DataRow dr in dt.Rows
-                               select new ContactResponse()
-                               {
-                                   branch_id = Crypto.url_encrypt(dr["branch_id"].ToString()),
-                                   createdBy = Crypto.url_encrypt(dr["created_by"].ToString()),
-                                   id = Convert.ToInt32(dr["contact_type_id"].ToString()),
-                                   number = dr["contact_number"].ToString(),
+                //             }).ToList();
 
-                               }).ToList();
+
+
+
+                //oCmd.CommandText = "branch_contact_view";
+                //da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                //oCmd.Parameters.Clear();
+                //oCmd.Parameters.AddWithValue("@branch_id", branch_id == "0" ? 0 : Crypto.url_decrypt(branch_id));
+                //da.Fill(dt);
+                //contactresp = (from DataRow dr in dt.Rows
+                //               select new ContactResponse()
+                //               {
+                //                   branch_id = Crypto.url_encrypt(dr["branch_id"].ToString()),
+                //                   createdBy = Crypto.url_encrypt(dr["created_by"].ToString()),
+                //                   id = (dr["contact_type_id"].ToString()),
+                //                   number = dr["contact_number"].ToString(),
+
+                //               }).ToList();
 
 
 
@@ -624,6 +624,210 @@ namespace TenantManagementService.Services
 
             return resp;
         }
+
+
+        public List<IPResponse> branch_ip_view(string instance_name, string user_name, string user_hash,  string branch_id)
+        {
+            //DropdownResponse resp = new DropdownResponse();
+
+            instance_name = Crypto.url_decrypt(instance_name);
+            user_hash = Crypto.url_decrypt(user_hash);
+            user_name = Crypto.url_decrypt(user_name);
+
+            string _con;
+            if (instance_name is null)
+            {
+                _con = connection._DB_Master;
+            }
+            else
+            {
+                _con = "Data Source=" + instance_name + ";Initial Catalog=mastersetupdb;User ID=" + user_name + ";Password=" + user_hash + ";MultipleActiveResultSets=True;";
+
+            }
+
+            List<IPResponse> resp = new List<IPResponse>();
+            DataTable dt = new DataTable();
+            SqlConnection oConn = new SqlConnection(_con);
+            SqlTransaction oTrans;
+            oConn.Open();
+            oTrans = oConn.BeginTransaction();
+            SqlCommand oCmd = new SqlCommand();
+            oCmd.Connection = oConn;
+            oCmd.Transaction = oTrans;
+            try
+            {
+
+                SqlDataAdapter da = new SqlDataAdapter();
+                da.SelectCommand = oCmd;
+
+                oCmd.CommandText = "branch_ip_view";
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Clear();
+                oCmd.Parameters.AddWithValue("@branch_id", branch_id == "0" ? 0 : Crypto.url_decrypt(branch_id));
+                da.Fill(dt);
+                resp = (from DataRow dr in dt.Rows
+                          select new IPResponse()
+                          {
+                              branch_id = Crypto.url_encrypt(dr["branch_id"].ToString()),
+                              createdBy = Crypto.url_encrypt(dr["created_by"].ToString()),
+                              description = dr["ip_address"].ToString(),
+
+                          }).ToList();
+
+                oConn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
+            finally
+            {
+                oConn.Close();
+            }
+
+
+            return resp;
+        }
+
+        public List<ContactResponse> branch_contact_view(string instance_name, string user_name, string user_hash, string branch_id)
+        {
+            instance_name = Crypto.url_decrypt(instance_name);
+            user_hash = Crypto.url_decrypt(user_hash);
+            user_name = Crypto.url_decrypt(user_name);
+
+
+
+            string _con;
+            if (instance_name is null)
+            {
+                _con = connection._DB_Master;
+            }
+            else
+            {
+                _con = "Data Source=" + instance_name + ";Initial Catalog=mastersetupdb;User ID=" + user_name + ";Password=" + user_hash + ";MultipleActiveResultSets=True;";
+
+            }
+
+            List<ContactResponse> resp = new List<ContactResponse>();
+            //List<BranchResponse> resp = new List<BranchResponse>();
+            DataTable dt = new DataTable();
+            SqlConnection oConn = new SqlConnection(_con);
+            SqlTransaction oTrans;
+            oConn.Open();
+            oTrans = oConn.BeginTransaction();
+            SqlCommand oCmd = new SqlCommand();
+            oCmd.Connection = oConn;
+            oCmd.Transaction = oTrans;
+            try
+            {
+
+                SqlDataAdapter da = new SqlDataAdapter();
+                da.SelectCommand = oCmd;
+
+                oCmd.CommandText = "branch_contact_view";
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Clear();
+                oCmd.Parameters.AddWithValue("@branch_id", branch_id == "0" ? 0 : Crypto.url_decrypt(branch_id));
+                da.Fill(dt);
+                resp = (from DataRow dr in dt.Rows
+                               select new ContactResponse()
+                               {
+                                   branch_id = Crypto.url_encrypt(dr["branch_id"].ToString()),
+                                   createdBy = Crypto.url_encrypt(dr["created_by"].ToString()),
+                                   id = (dr["contact_type_id"].ToString()),
+                                   number = dr["contact_number"].ToString(),
+
+                               }).ToList();
+
+
+
+
+                oConn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
+            finally
+            {
+                oConn.Close();
+            }
+
+
+            return resp;
+        }
+
+
+        public List<EmailResponse> branch_email_view(string instance_name, string user_name, string user_hash, string branch_id)
+        {
+            //DropdownResponse resp = new DropdownResponse();
+
+            instance_name = Crypto.url_decrypt(instance_name);
+            user_hash = Crypto.url_decrypt(user_hash);
+            user_name = Crypto.url_decrypt(user_name);
+
+
+
+            string _con;
+            if (instance_name is null)
+            {
+                _con = connection._DB_Master;
+            }
+            else
+            {
+                _con = "Data Source=" + instance_name + ";Initial Catalog=mastersetupdb;User ID=" + user_name + ";Password=" + user_hash + ";MultipleActiveResultSets=True;";
+
+            }
+
+            List<EmailResponse> resp = new List<EmailResponse>();
+            //List<BranchResponse> resp = new List<BranchResponse>();
+            DataTable dt = new DataTable();
+            SqlConnection oConn = new SqlConnection(_con);
+            SqlTransaction oTrans;
+            oConn.Open();
+            oTrans = oConn.BeginTransaction();
+            SqlCommand oCmd = new SqlCommand();
+            oCmd.Connection = oConn;
+            oCmd.Transaction = oTrans;
+            try
+            {
+
+                SqlDataAdapter da = new SqlDataAdapter();
+                da.SelectCommand = oCmd;
+                oCmd.CommandText = "branch_email_view";
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Clear();
+                oCmd.Parameters.AddWithValue("@branch_id", branch_id == "0" ? 0 : Crypto.url_decrypt(branch_id));
+                da.Fill(dt);
+                resp = (from DataRow dr in dt.Rows
+                             select new EmailResponse()
+                             {
+                                 branch_id = Crypto.url_encrypt(dr["branch_id"].ToString()),
+                                 createdBy = Crypto.url_encrypt(dr["created_by"].ToString()),
+                                 //id = Convert.ToInt32(dr["email_type_id"].ToString()),
+                                 email_address = dr["email_address"].ToString(),
+
+                             }).ToList();
+
+
+
+
+                oConn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
+            finally
+            {
+                oConn.Close();
+            }
+
+
+            return resp;
+        }
+
+
 
 
         public DropdownIUResponse DropdownIU(DropdownIURequest model)
@@ -719,340 +923,6 @@ namespace TenantManagementService.Services
         }
 
 
-
-        //public CompanyBranchIU CompanyBranchIU(CompanyBranchIU model)
-        //{
-
-        //    CompanyIURequest company_data = new CompanyIURequest();
-        //    CompanyIUResponse resp_comp = new CompanyIUResponse();
-        //    BranchIUResponse resp = new BranchIUResponse();
-
-        //    company_data = model.company_IU;
-        //    string _con = connection._DB_Master;
-        //    DataTable dt = new DataTable();
-        //    SqlConnection oConn = new SqlConnection(_con);
-        //    SqlTransaction oTrans;
-        //    oConn.Open();
-        //    oTrans = oConn.BeginTransaction();
-        //    SqlCommand oCmd = new SqlCommand();
-        //    oCmd.Connection = oConn;
-        //    oCmd.Transaction = oTrans;
-        //    try
-        //    {
-        //        oCmd.CommandText = "company_in_up";
-        //        oCmd.CommandType = CommandType.StoredProcedure;
-        //        oCmd.Parameters.Clear();
-        //        oCmd.Parameters.AddWithValue("@company_id", 0);
-        //        oCmd.Parameters.AddWithValue("@company_code", company_data.companyCode);
-        //        oCmd.Parameters.AddWithValue("@company_name", company_data.companyName);
-        //        oCmd.Parameters.AddWithValue("@unit_floor", company_data.unit);
-        //        oCmd.Parameters.AddWithValue("@building", company_data.building);
-        //        oCmd.Parameters.AddWithValue("@street", company_data.street);
-        //        oCmd.Parameters.AddWithValue("@barangay", company_data.barangay);
-        //        oCmd.Parameters.AddWithValue("@municipality", company_data.municipality);
-        //        oCmd.Parameters.AddWithValue("@city", company_data.SelectedCity);
-        //        oCmd.Parameters.AddWithValue("@region", company_data.SelectedRegion);
-        //        oCmd.Parameters.AddWithValue("@country", company_data.selectedCompanyCountry);
-        //        oCmd.Parameters.AddWithValue("@zip_code", company_data.zipCode);
-        //        oCmd.Parameters.AddWithValue("@company_logo", company_data.img);
-        //        oCmd.Parameters.AddWithValue("@created_by", _protector.Unprotect(company_data.createdBy));
-        //        //oCmd.Parameters.AddWithValue("@active", model.active);
-        //        SqlDataReader sdr = oCmd.ExecuteReader();
-        //        while (sdr.Read())
-        //        {
-        //            resp_comp.company_id = _protector.Protect(sdr["company_id"].ToString());
-        //            resp_comp.created_by = _protector.Protect(sdr["created_by"].ToString());
-        //            resp_comp.company_code = sdr["company_code"].ToString();
-        //            resp_comp.instance_name = sdr["instance_name"].ToString();
-        //            resp_comp.user_hash = sdr["user_hash"].ToString();
-        //            resp_comp.user_name = sdr["user_name"].ToString();
-
-
-        //            string _branchcon;
-        //            if (resp_comp.instance_name is null)
-        //            {
-        //                _branchcon = connection._DB_Master;
-        //            }
-        //            else
-        //            {
-        //                _branchcon = "Data Source=" + resp_comp.instance_name + ";Initial Catalog=mastersetupdb;User ID=" + resp_comp.user_name + ";Password=" + resp_comp.user_hash + ";MultipleActiveResultSets=True;";
-
-        //            }
-
-        //            SqlConnection oBranchConn = new SqlConnection(_branchcon);
-        //            SqlTransaction oTrans;
-        //            oConn.Open();
-        //            oTrans = oConn.BeginTransaction();
-        //            SqlCommand oCmd = new SqlCommand();
-        //            oCmd.Connection = oConn;
-        //            oCmd.Transaction = oTrans;
-        //            try
-        //            {
-        //                if (model != null)
-        //                {
-        //                    foreach (var item in model)
-        //                    {
-        //                        oCmd.CommandText = "branch_in_up";
-        //                        oCmd.CommandType = CommandType.StoredProcedure;
-        //                        oCmd.Parameters.Clear(); oCmd.Parameters.AddWithValue("@branch_id", item.branch_id);
-        //                        oCmd.Parameters.AddWithValue("@bank_account", item.bankAccount);
-        //                        oCmd.Parameters.AddWithValue("@barangay", item.barangay);
-        //                        oCmd.Parameters.AddWithValue("@branch_name", item.branchName);
-        //                        oCmd.Parameters.AddWithValue("@building", item.building);
-        //                        oCmd.Parameters.AddWithValue("@municipality", item.municipality);
-        //                        oCmd.Parameters.AddWithValue("@pagibig", item.pagibig);
-        //                        oCmd.Parameters.AddWithValue("@philhealth", item.philhealth);
-        //                        oCmd.Parameters.AddWithValue("@bank_id", item.SelectedBank);
-        //                        oCmd.Parameters.AddWithValue("@country", item.SelectedBranchCountry);
-        //                        oCmd.Parameters.AddWithValue("@city", item.SelectedCity);
-        //                        oCmd.Parameters.AddWithValue("@industry", item.SelectedIndustry);
-        //                        oCmd.Parameters.AddWithValue("@pagibig_branch", item.SelectedPCity);
-        //                        oCmd.Parameters.AddWithValue("@pagibig_code", item.SelectedPCode);
-        //                        oCmd.Parameters.AddWithValue("@pagibig_region", item.SelectedPRegion);
-        //                        oCmd.Parameters.AddWithValue("@rdo", item.SelectedRdoBranch);
-        //                        oCmd.Parameters.AddWithValue("@rdo_branch", item.SelectedRdoOffice);
-        //                        oCmd.Parameters.AddWithValue("@region", item.SelectedRegion);
-        //                        oCmd.Parameters.AddWithValue("@sss", item.sss);
-        //                        oCmd.Parameters.AddWithValue("@street", item.street);
-        //                        oCmd.Parameters.AddWithValue("@tin", item.tin);
-        //                        oCmd.Parameters.AddWithValue("@unit_floor", item.unit);
-        //                        oCmd.Parameters.AddWithValue("@zip_code", item.zipCode);
-        //                        oCmd.Parameters.AddWithValue("@company_id", company_id);
-        //                        oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
-        //                        //oCmd.ExecuteNonQuery();
-        //                        SqlDataReader sdr = oCmd.ExecuteReader();
-        //                        while (sdr.Read())
-        //                        {
-        //                            resp.branch_id = Convert.ToInt32(sdr["branch_id"].ToString());
-        //                            resp.guid = sdr["guid"].ToString();
-
-        //                            branch = Convert.ToInt32(sdr["branch_id"].ToString());
-
-        //                        }
-        //                        sdr.Close();
-
-        //                        if (item.iP_IU != null)
-        //                        {
-        //                            foreach (var ip in item.iP_IU)
-        //                            {
-        //                                oCmd.CommandText = "branch_ip_in";
-        //                                oCmd.CommandType = CommandType.StoredProcedure;
-        //                                oCmd.Parameters.Clear();
-        //                                oCmd.Parameters.AddWithValue("@branch_id", branch);
-        //                                oCmd.Parameters.AddWithValue("@ip_address", ip.description);
-        //                                oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
-        //                                oCmd.ExecuteNonQuery();
-        //                            }
-        //                        }
-
-
-        //                        if (item.Contact_IU != null)
-        //                        {
-        //                            foreach (var contact in item.Contact_IU)
-        //                            {
-        //                                oCmd.CommandText = "branch_contact_in";
-        //                                oCmd.CommandType = CommandType.StoredProcedure;
-        //                                oCmd.Parameters.Clear();
-        //                                oCmd.Parameters.AddWithValue("@branch_id", branch);
-        //                                oCmd.Parameters.AddWithValue("@contact_type_id", contact.id);
-        //                                oCmd.Parameters.AddWithValue("@contact_number", contact.number);
-        //                                oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
-        //                                oCmd.ExecuteNonQuery();
-        //                            }
-        //                        }
-
-
-        //                        if (item.Email_IU != null)
-        //                        {
-        //                            foreach (var email in item.Email_IU)
-        //                            {
-        //                                oCmd.CommandText = "branch_email_in";
-        //                                oCmd.CommandType = CommandType.StoredProcedure;
-        //                                oCmd.Parameters.Clear();
-        //                                oCmd.Parameters.AddWithValue("@branch_id", branch);
-        //                                oCmd.Parameters.AddWithValue("@email_type_id", email.id);
-        //                                oCmd.Parameters.AddWithValue("@email_address", email.email_address);
-        //                                oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
-        //                                oCmd.ExecuteNonQuery();
-        //                            }
-        //                        }
-
-        //                    }
-        //                }
-
-
-
-        //            }
-        //        sdr.Close();
-        //        oTrans.Commit();
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine("Error: " + e.Message);
-        //    }
-        //    finally
-        //    {
-        //        oConn.Close();
-        //    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //    string instance_name = model[0].instance_name;
-        //    string username = model[0].username;
-        //    string password = model[0].password;
-        //    int branch = 0;
-        //    int company_id = model[0].company_id;
-
-
-        //    BranchIUResponse resp = new BranchIUResponse();
-        //    string _con;
-        //    if (instance_name is null)
-        //    {
-        //        _con = connection._DB_Master;
-        //    }
-        //    else
-        //    {
-        //        _con = "Data Source=" + instance_name + ";Initial Catalog=mastersetupdb;User ID=" + username + ";Password=" + password + ";MultipleActiveResultSets=True;";
-
-        //    }
-        //    DataTable dt = new DataTable();
-        //    SqlConnection oConn = new SqlConnection(_con);
-        //    SqlTransaction oTrans;
-        //    oConn.Open();
-        //    oTrans = oConn.BeginTransaction();
-        //    SqlCommand oCmd = new SqlCommand();
-        //    oCmd.Connection = oConn;
-        //    oCmd.Transaction = oTrans;
-        //    try
-        //    {
-        //        if (model != null)
-        //        {
-        //            foreach (var item in model)
-        //            {
-        //                oCmd.CommandText = "branch_in_up";
-        //                oCmd.CommandType = CommandType.StoredProcedure;
-        //                oCmd.Parameters.Clear(); oCmd.Parameters.AddWithValue("@branch_id", item.branch_id);
-        //                oCmd.Parameters.AddWithValue("@bank_account", item.bankAccount);
-        //                oCmd.Parameters.AddWithValue("@barangay", item.barangay);
-        //                oCmd.Parameters.AddWithValue("@branch_name", item.branchName);
-        //                oCmd.Parameters.AddWithValue("@building", item.building);
-        //                oCmd.Parameters.AddWithValue("@municipality", item.municipality);
-        //                oCmd.Parameters.AddWithValue("@pagibig", item.pagibig);
-        //                oCmd.Parameters.AddWithValue("@philhealth", item.philhealth);
-        //                oCmd.Parameters.AddWithValue("@bank_id", item.SelectedBank);
-        //                oCmd.Parameters.AddWithValue("@country", item.SelectedBranchCountry);
-        //                oCmd.Parameters.AddWithValue("@city", item.SelectedCity);
-        //                oCmd.Parameters.AddWithValue("@industry", item.SelectedIndustry);
-        //                oCmd.Parameters.AddWithValue("@pagibig_branch", item.SelectedPCity);
-        //                oCmd.Parameters.AddWithValue("@pagibig_code", item.SelectedPCode);
-        //                oCmd.Parameters.AddWithValue("@pagibig_region", item.SelectedPRegion);
-        //                oCmd.Parameters.AddWithValue("@rdo", item.SelectedRdoBranch);
-        //                oCmd.Parameters.AddWithValue("@rdo_branch", item.SelectedRdoOffice);
-        //                oCmd.Parameters.AddWithValue("@region", item.SelectedRegion);
-        //                oCmd.Parameters.AddWithValue("@sss", item.sss);
-        //                oCmd.Parameters.AddWithValue("@street", item.street);
-        //                oCmd.Parameters.AddWithValue("@tin", item.tin);
-        //                oCmd.Parameters.AddWithValue("@unit_floor", item.unit);
-        //                oCmd.Parameters.AddWithValue("@zip_code", item.zipCode);
-        //                oCmd.Parameters.AddWithValue("@company_id", company_id);
-        //                oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
-        //                //oCmd.ExecuteNonQuery();
-        //                SqlDataReader sdr = oCmd.ExecuteReader();
-        //                while (sdr.Read())
-        //                {
-        //                    resp.branch_id = Convert.ToInt32(sdr["branch_id"].ToString());
-        //                    resp.guid = sdr["guid"].ToString();
-
-        //                    branch = Convert.ToInt32(sdr["branch_id"].ToString());
-
-        //                }
-        //                sdr.Close();
-
-        //                if (item.iP_IU != null)
-        //                {
-        //                    foreach (var ip in item.iP_IU)
-        //                    {
-        //                        oCmd.CommandText = "branch_ip_in";
-        //                        oCmd.CommandType = CommandType.StoredProcedure;
-        //                        oCmd.Parameters.Clear();
-        //                        oCmd.Parameters.AddWithValue("@branch_id", branch);
-        //                        oCmd.Parameters.AddWithValue("@ip_address", ip.description);
-        //                        oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
-        //                        oCmd.ExecuteNonQuery();
-        //                    }
-        //                }
-
-
-        //                if (item.Contact_IU != null)
-        //                {
-        //                    foreach (var contact in item.Contact_IU)
-        //                    {
-        //                        oCmd.CommandText = "branch_contact_in";
-        //                        oCmd.CommandType = CommandType.StoredProcedure;
-        //                        oCmd.Parameters.Clear();
-        //                        oCmd.Parameters.AddWithValue("@branch_id", branch);
-        //                        oCmd.Parameters.AddWithValue("@contact_type_id", contact.id);
-        //                        oCmd.Parameters.AddWithValue("@contact_number", contact.number);
-        //                        oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
-        //                        oCmd.ExecuteNonQuery();
-        //                    }
-        //                }
-
-
-        //                if (item.Email_IU != null)
-        //                {
-        //                    foreach (var email in item.Email_IU)
-        //                    {
-        //                        oCmd.CommandText = "branch_email_in";
-        //                        oCmd.CommandType = CommandType.StoredProcedure;
-        //                        oCmd.Parameters.Clear();
-        //                        oCmd.Parameters.AddWithValue("@branch_id", branch);
-        //                        oCmd.Parameters.AddWithValue("@email_type_id", email.id);
-        //                        oCmd.Parameters.AddWithValue("@email_address", email.email_address);
-        //                        oCmd.Parameters.AddWithValue("@created_by", item.CreatedBy);
-        //                        oCmd.ExecuteNonQuery();
-        //                    }
-        //                }
-
-        //            }
-        //        }
-
-
-        //        ////oCmd.Parameters.AddWithValue("@active", model.active);
-        //        //SqlDataReader sdr = oCmd.ExecuteReader();
-        //        //while (sdr.Read())
-        //        //{
-        //        //    resp.branch_id = Convert.ToInt32(sdr["branch_id"].ToString());
-        //        //    resp.guid = sdr["guid"].ToString();
-        //        //    resp.created_by = Convert.ToInt32(sdr["created_by"].ToString());
-
-        //        //}
-        //        //sdr.Close();
-        //        oTrans.Commit();
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine("Error: " + e.Message);
-        //        oTrans.Rollback();
-        //    }
-        //    finally
-        //    {
-        //        oConn.Close();
-        //    }
-
-        //    return resp;
-        //}
     }
 
 }

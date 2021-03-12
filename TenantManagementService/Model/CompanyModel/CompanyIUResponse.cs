@@ -130,7 +130,7 @@ namespace TenantManagementService.Model.CompanyModel
     {
         public string branch_id { get; set; }
 
-        public int id { get; set; }
+        public string id { get; set; }
 
         public string number { get; set; }
 

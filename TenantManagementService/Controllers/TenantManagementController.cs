@@ -120,11 +120,11 @@ namespace TenantManagementService.Controllers
         }
 
 
-        [HttpGet("branch_view_sel")]
-        public List<BranchResponse> branch_view_sel(string instance_name, string user_name, string user_hash, string company_id, string branch_id, string created_by)
+        [HttpGet("branch_view")]
+        public List<BranchResponse> branch_view(string instance_name, string user_name, string user_hash, string company_id, string branch_id, string created_by)
         {
 
-            var result = _tenantmanagementServices.branch_view_sel(instance_name, user_name, user_hash, company_id, branch_id, created_by);
+            var result = _tenantmanagementServices.branch_view(instance_name, user_name, user_hash, company_id, branch_id, created_by);
             return result;
         }
 
