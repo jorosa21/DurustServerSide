@@ -11,6 +11,8 @@ namespace MasterSettingService.Model.DropdownModel
         public int id { get; set; }
 
         public string description { get; set; }
+        
+        public string type_description { get; set; }
 
         public int type_id { get; set; }
 

@@ -25,6 +25,8 @@ namespace TenantManagementService.Model.DropdownModel
 
         public string description { get; set; }
 
+        public string type_description { get; set; }
+
         public int type_id { get; set; }
 
         public bool active { get; set; }
