@@ -537,9 +537,9 @@ namespace TenantManagementService.Services
                             bankAccount = dr["bank_account"].ToString(),
                             company_id = Crypto.url_encrypt(dr["company_id"].ToString()),
 
-                            instance_name = Crypto.url_encrypt(dr["instance_name"].ToString()),
-                            username = Crypto.url_encrypt(dr["user_name"].ToString()),
-                            password = Crypto.url_encrypt(dr["user_hash"].ToString()),
+                            //instance_name = Crypto.url_encrypt(dr["instance_name"].ToString()),
+                            //username = Crypto.url_encrypt(dr["user_name"].ToString()),
+                            //password = Crypto.url_encrypt(dr["user_hash"].ToString()),
                             active = Convert.ToBoolean(dr["active"].ToString())
 
                         }).ToList();
