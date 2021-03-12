@@ -35,6 +35,12 @@ namespace TenantManagementService.Controllers
             
 
             var result = _tenantmanagementServices.CompanyIU(model);
+
+
+            if (result.companyID == null)
+            {
+                result.companyID = "0";
+            }
             return result;
         }
 
@@ -44,6 +50,12 @@ namespace TenantManagementService.Controllers
         {
 
             var result = _tenantmanagementServices.BranchIU(model);
+
+            if (result.branch_id == null)
+            {
+                result.branch_id = "0";
+            }
+
             return result;
         }
 
