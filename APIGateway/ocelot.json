@@ -57,6 +57,25 @@
 
     {
 
+      "DownstreamPathTemplate": "/api/MasterSetting/Dropdown_List_all",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "65478"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/MasterSetting/Dropdown_List_all",
+
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+
+    },
+
+    {
+
       "DownstreamPathTemplate": "/api/MasterSetting/Dropdown_entitlement",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -238,6 +257,25 @@
     },
 
 
+    {
+
+      "DownstreamPathTemplate": "/api/TenantManagement/Dropdown_List_all",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "53188"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/TenantManagement/Dropdown_List_all",
+
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+
 
     {
 
@@ -260,99 +298,99 @@
 
 
 
-      {
+    {
 
-        "DownstreamPathTemplate": "/api/TenantManagement/company_view_sel",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "localhost",
-            "Port": "53188"
-          }
-        ],
-        "UpstreamPathTemplate": "/api/TenantManagement/company_view_sel",
-
-        "AuthenticationOptions": {
-          "AuthenticationProviderKey": "Bearer",
-          "AllowedScopes": []
+      "DownstreamPathTemplate": "/api/TenantManagement/company_view_sel",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "53188"
         }
-      },
+      ],
+      "UpstreamPathTemplate": "/api/TenantManagement/company_view_sel",
 
-
-      {
-
-        "DownstreamPathTemplate": "/api/TenantManagement/branch_view",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "localhost",
-            "Port": "53188"
-          }
-        ],
-        "UpstreamPathTemplate": "/api/TenantManagement/branch_view",
-
-        "AuthenticationOptions": {
-          "AuthenticationProviderKey": "Bearer",
-          "AllowedScopes": []
-        }
-      },
-
-
-      {
-
-        "DownstreamPathTemplate": "/api/TenantManagement/branch_ip_view",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "localhost",
-            "Port": "53188"
-          }
-        ],
-        "UpstreamPathTemplate": "/api/TenantManagement/branch_ip_view",
-
-        "AuthenticationOptions": {
-          "AuthenticationProviderKey": "Bearer",
-          "AllowedScopes": []
-        }
-      },
-
-
-      {
-
-        "DownstreamPathTemplate": "/api/TenantManagement/branch_contact_view",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "localhost",
-            "Port": "53188"
-          }
-        ],
-        "UpstreamPathTemplate": "/api/TenantManagement/branch_contact_view",
-
-        "AuthenticationOptions": {
-          "AuthenticationProviderKey": "Bearer",
-          "AllowedScopes": []
-        }
-      },
-
-
-      {
-
-        "DownstreamPathTemplate": "/api/TenantManagement/branch_email_view",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "localhost",
-            "Port": "53188"
-          }
-        ],
-        "UpstreamPathTemplate": "/api/TenantManagement/branch_email_view",
-
-        "AuthenticationOptions": {
-          "AuthenticationProviderKey": "Bearer",
-          "AllowedScopes": []
-        }
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
       }
+    },
+
+
+    {
+
+      "DownstreamPathTemplate": "/api/TenantManagement/branch_view",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "53188"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/TenantManagement/branch_view",
+
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+
+    {
+
+      "DownstreamPathTemplate": "/api/TenantManagement/branch_ip_view",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "53188"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/TenantManagement/branch_ip_view",
+
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+
+    {
+
+      "DownstreamPathTemplate": "/api/TenantManagement/branch_contact_view",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "53188"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/TenantManagement/branch_contact_view",
+
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+
+    {
+
+      "DownstreamPathTemplate": "/api/TenantManagement/branch_email_view",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "53188"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/TenantManagement/branch_email_view",
+
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }
 
 
   ]

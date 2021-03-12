@@ -29,6 +29,9 @@ namespace TenantManagementService.Services
 
         List<DropdownResponse> Dropdown_List(string instance_name, string user_name, string user_hash, string dropdown_type_id);
 
+
+        List<DropdownResponse> Dropdown_List_all(string instance_name, string user_name, string user_hash, string dropdown_type_id);
+
         DropdownIUResponse DropdownIU(DropdownIURequest model);
 
         List<CompanyResponse> company_view_sel(string company_id,  string created_by);
@@ -913,6 +916,71 @@ namespace TenantManagementService.Services
             return resp;
         }
 
+
+        public List<DropdownResponse> Dropdown_List_all(string instance_name, string user_name, string user_hash, string dropdown_type_id)
+        {
+
+            instance_name = Crypto.url_decrypt(instance_name);
+            user_hash = Crypto.url_decrypt(user_hash);
+            user_name = Crypto.url_decrypt(user_name);
+
+
+
+            string _con;
+            if (instance_name is null)
+            {
+                _con = connection._DB_Master;
+            }
+            else
+            {
+                _con = "Data Source=" + instance_name + ";Initial Catalog=mastersetupdb;User ID=" + user_name + ";Password=" + user_hash + ";MultipleActiveResultSets=True;";
+
+            }
+
+
+            List<DropdownResponse> resp = new List<DropdownResponse>();
+            DataTable dt = new DataTable();
+            SqlConnection oConn = new SqlConnection(_con);
+            SqlTransaction oTrans;
+            oConn.Open();
+            oTrans = oConn.BeginTransaction();
+            SqlCommand oCmd = new SqlCommand();
+            oCmd.Connection = oConn;
+            oCmd.Transaction = oTrans;
+            try
+            {
+
+                SqlDataAdapter da = new SqlDataAdapter();
+                da.SelectCommand = oCmd;
+                oCmd.CommandText = "dropdown_view_all";
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Clear();
+                oCmd.Parameters.AddWithValue("@dropdown_type_id", dropdown_type_id);
+                da.Fill(dt);
+                resp = (from DataRow dr in dt.Rows
+                        select new DropdownResponse()
+                        {
+                            id = Convert.ToInt32(dr["id"].ToString()),
+                            description = dr["description"].ToString(),
+                            type_id = Convert.ToInt32(dr["type_id"].ToString()),
+                            type_description = (dr["type_description"].ToString()),
+                            active = Convert.ToBoolean(dr["active"].ToString()),
+
+                        }).ToList();
+                oConn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
+            finally
+            {
+                oConn.Close();
+            }
+
+
+            return resp;
+        }
 
     }
 

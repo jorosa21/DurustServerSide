@@ -166,6 +166,18 @@ namespace TenantManagementService.Controllers
 
 
 
+        [HttpGet("Dropdown_List_all")]
+        public List<DropdownResponse> Dropdown_List_all(string instance_name, string user_name, string user_hash, string dropdowntype_id)
+        {
+            //dropdowntype_id = dropdowntype_id == "null" ? "0" : dropdowntype_id;
+            //dropdown_type = dropdown_type == "null" ? "" : dropdown_type;
+
+            var result = _tenantmanagementServices.Dropdown_List_all(instance_name, user_name, user_hash, dropdowntype_id);
+            return result;
+        }
+
+
+
         [HttpPost("DropdownIU")]
         public DropdownIUResponse DropdownIU(DropdownIURequest model)
         {

@@ -48,6 +48,18 @@ namespace MasterSettingService.Controllers
         }
 
 
+
+        [HttpGet("Dropdown_List_all")]
+        public List<DropdownResponse> Dropdown_List_all(string dropdowntype_id)
+        {
+            //dropdowntype_id = dropdowntype_id == "null" ? "0" : dropdowntype_id;
+            //dropdown_type = dropdown_type == "null" ? "" : dropdown_type;
+
+            var result = _masterServices.Dropdown_List_all(dropdowntype_id);
+            return result;
+        }
+
+
         [HttpGet("Dropdown_entitlement")]
         public List<DropdownResponse> Dropdown_entitlement(string dropdowntype_id)
         {
@@ -66,6 +78,7 @@ namespace MasterSettingService.Controllers
             var result = _masterServices.Dropdowntype_view();
             return result;
         }
+
 
 
 
