@@ -73,7 +73,7 @@ namespace MasterSettingService.Services
                 oCmd.Parameters.AddWithValue("@dropdown_id", model.dropdown_id);
                 oCmd.Parameters.AddWithValue("@dropdown_type_id", model.dropdown_type_id);
                 oCmd.Parameters.AddWithValue("@dropdown_description", model.dropdown_description);
-                oCmd.Parameters.AddWithValue("@created_by", model.created_by);
+                oCmd.Parameters.AddWithValue("@created_by", Crypto.url_decrypt(model.created_by));
                 oCmd.Parameters.AddWithValue("@active", model.active);
                 SqlDataReader sdr = oCmd.ExecuteReader();
                 while (sdr.Read())
