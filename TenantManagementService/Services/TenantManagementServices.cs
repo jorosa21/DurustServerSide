@@ -692,6 +692,7 @@ namespace TenantManagementService.Services
                                    branch_id = Crypto.url_encrypt(dr["branch_id"].ToString()),
                                    createdBy = Crypto.url_encrypt(dr["created_by"].ToString()),
                                    id = (dr["contact_type_id"].ToString()),
+                                   description = (dr["contact_type"].ToString()),
                                    number = dr["contact_number"].ToString(),
 
                                }).ToList();
@@ -761,7 +762,8 @@ namespace TenantManagementService.Services
                              {
                                  branch_id = Crypto.url_encrypt(dr["branch_id"].ToString()),
                                  createdBy = Crypto.url_encrypt(dr["created_by"].ToString()),
-                                 //id = Convert.ToInt32(dr["email_type_id"].ToString()),
+                                 id = Convert.ToInt32(dr["email_type_id"].ToString()),
+                                 description = (dr["email_type"].ToString()),
                                  email_address = dr["email_address"].ToString(),
 
                              }).ToList();

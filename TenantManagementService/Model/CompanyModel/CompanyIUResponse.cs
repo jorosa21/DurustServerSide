@@ -132,6 +132,8 @@ namespace TenantManagementService.Model.CompanyModel
 
         public string id { get; set; }
 
+        public string description { get; set; }
+
         public string number { get; set; }
 
         public string createdBy { get; set; }
@@ -143,6 +145,8 @@ namespace TenantManagementService.Model.CompanyModel
         public string branch_id { get; set; }
 
         public int id { get; set; }
+
+        public string description { get; set; }
 
         public string email_address { get; set; }
 
