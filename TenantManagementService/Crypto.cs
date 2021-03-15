@@ -104,6 +104,8 @@ namespace TenantManagementService
 
         public static string url_decrypt(string cipherText)
         {
+            if (cipherText == "0") return "0";
+
 
             cipherText = HttpUtility.UrlDecode(cipherText);
             cipherText = cipherText.Replace(' ', '+');

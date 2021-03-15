@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TenantManagementService.Model.CompanyModel;
 using TenantManagementService.Model.DropdownModel;
+using TenantManagementService.Model.ModuleModel;
 using TenantManagementService.Services;
 
 namespace TenantManagementService.Controllers
@@ -187,5 +188,33 @@ namespace TenantManagementService.Controllers
         }
 
 
-    }
+        [HttpPost("module_access_in")]
+        public ModuleResponse module_access_in(ModuleRequest model)
+        {
+
+            var result = _tenantmanagementServices.module_access_in(model);
+            return result;
+        }
+
+
+
+        [HttpPost("data_upload_access_in")]
+        public DataUploadAccessResponse data_upload_access_in(DataUploadAccessRequest model)
+        {
+
+            var result = _tenantmanagementServices.data_upload_access_in(model);
+            return result;
+        }
+
+
+        [HttpPost("report_access_in")]
+        public ReportAccessResponse report_access_in(ReportAccessRequest model)
+        {
+
+            var result = _tenantmanagementServices.report_access_in(model);
+            return result;
+        }
+
+
+    }   
 }

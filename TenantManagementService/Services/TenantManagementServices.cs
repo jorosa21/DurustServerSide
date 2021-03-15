@@ -12,6 +12,7 @@ using TenantManagementService.Helper;
 using TenantManagementService.Model;
 using TenantManagementService.Model.CompanyModel;
 using TenantManagementService.Model.DropdownModel;
+using TenantManagementService.Model.ModuleModel;
 
 namespace TenantManagementService.Services
 {
@@ -43,6 +44,14 @@ namespace TenantManagementService.Services
         List<ContactResponse> branch_contact_view(string instance_name, string user_name, string user_hash,  string branch_id);
 
         List<EmailResponse> branch_email_view(string instance_name, string user_name, string user_hash,  string branch_id);
+
+        List<ModuleResponse> module_access_view(string instance_name, string user_name, string user_hash, string access_level_id);
+
+        ModuleResponse module_access_in(ModuleRequest model);
+
+        DataUploadAccessResponse data_upload_access_in(DataUploadAccessRequest model);
+
+        ReportAccessResponse report_access_in(ReportAccessRequest model);
 
     }
 
@@ -790,8 +799,6 @@ namespace TenantManagementService.Services
         }
 
 
-
-
         public DropdownIUResponse DropdownIU(DropdownIURequest model)
         {
 
@@ -982,6 +989,277 @@ namespace TenantManagementService.Services
             return resp;
         }
 
+
+        public List<ModuleResponse> module_access_view(string instance_name, string user_name, string user_hash, string access_level_id)
+        {
+
+            instance_name = Crypto.url_decrypt(instance_name);
+            user_hash = Crypto.url_decrypt(user_hash);
+            user_name = Crypto.url_decrypt(user_name);
+
+            access_level_id = Crypto.url_decrypt(access_level_id);
+
+
+
+            string _con;
+            if (instance_name is null)
+            {
+                _con = connection._DB_Master;
+            }
+            else
+            {
+                _con = "Data Source=" + instance_name + ";Initial Catalog=mastersetupdb;User ID=" + user_name + ";Password=" + user_hash + ";MultipleActiveResultSets=True;";
+
+            }
+
+
+            List<ModuleResponse> resp = new List<ModuleResponse>();
+            DataTable dt = new DataTable();
+            SqlConnection oConn = new SqlConnection(_con);
+            SqlTransaction oTrans;
+            oConn.Open();
+            oTrans = oConn.BeginTransaction();
+            SqlCommand oCmd = new SqlCommand();
+            oCmd.Connection = oConn;
+            oCmd.Transaction = oTrans;
+            try
+            {
+
+                SqlDataAdapter da = new SqlDataAdapter();
+                da.SelectCommand = oCmd;
+                oCmd.CommandText = "module_access_view";
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Clear();
+                oCmd.Parameters.AddWithValue("@access_level_id", access_level_id);
+                da.Fill(dt);
+                resp = (from DataRow dr in dt.Rows
+                        select new ModuleResponse()
+                        {
+                            module_id = Crypto.url_encrypt(dr["id"].ToString()),
+                            module_name = dr["description"].ToString(),
+                            active = Convert.ToBoolean(dr["active"].ToString()),
+
+                        }).ToList();
+                oConn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
+            finally
+            {
+                oConn.Close();
+            }
+
+
+            return resp;
+        }
+
+
+        public ModuleResponse module_access_in(ModuleRequest model)
+        {
+
+            string instance_name = Crypto.url_decrypt(model.instance_name);
+            string user_hash = Crypto.url_decrypt(model.user_hash);
+            string user_name = Crypto.url_decrypt(model.user_name);
+
+            string module_id = model.module_id=="0" ? "0" :Crypto.url_decrypt(model.module_id);
+            string access_level_id = Crypto.url_decrypt(model.access_level_id);
+            string created_by = Crypto.url_decrypt(model.created_by);
+
+            string _con;
+            if (instance_name is null)
+            {
+                _con = connection._DB_Master;
+            }
+            else
+            {
+                _con = "Data Source=" + instance_name + ";Initial Catalog=mastersetupdb;User ID=" + user_name + ";Password=" + user_hash + ";MultipleActiveResultSets=True;";
+
+            }
+
+            ModuleResponse resp = new ModuleResponse();
+            //string _con = connection._DB_Master;
+            DataTable dt = new DataTable();
+            SqlConnection oConn = new SqlConnection(_con);
+            SqlTransaction oTrans;
+            oConn.Open();
+            oTrans = oConn.BeginTransaction();
+            SqlCommand oCmd = new SqlCommand();
+            oCmd.Connection = oConn;
+            oCmd.Transaction = oTrans;
+            try
+            {
+                oCmd.CommandText = "module_access_del";
+                oCmd.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Clear();
+                oCmd.Parameters.AddWithValue("@access_level_id", access_level_id);
+                oCmd.ExecuteNonQuery();
+
+                oCmd.CommandText = "module_access_in";
+                oCmd.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Clear();
+                oCmd.Parameters.AddWithValue("@module_id", module_id);
+                oCmd.Parameters.AddWithValue("@access_level_id", access_level_id);
+                oCmd.Parameters.AddWithValue("@created_by", created_by);
+                SqlDataReader sdr = oCmd.ExecuteReader();
+                while (sdr.Read())
+                {
+                    resp.module_id = Crypto.url_encrypt(sdr["module_id"].ToString());
+                    resp.access_level_id = Crypto.url_encrypt(sdr["access_level_id"].ToString());
+                }
+                sdr.Close();
+                oTrans.Commit();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
+            finally
+            {
+                oConn.Close();
+            }
+
+            return resp;
+        }
+
+        public ReportAccessResponse report_access_in(ReportAccessRequest model)
+        {
+
+            string instance_name = Crypto.url_decrypt(model.instance_name);
+            string user_hash = Crypto.url_decrypt(model.user_hash);
+            string user_name = Crypto.url_decrypt(model.user_name);
+
+            string report_id = model.report_id == "0" ? "0" : Crypto.url_decrypt(model.report_id);
+            string access_level_id = Crypto.url_decrypt(model.access_level_id);
+            string created_by = Crypto.url_decrypt(model.created_by);
+
+            string _con;
+            if (instance_name is null)
+            {
+                _con = connection._DB_Master;
+            }
+            else
+            {
+                _con = "Data Source=" + instance_name + ";Initial Catalog=mastersetupdb;User ID=" + user_name + ";Password=" + user_hash + ";MultipleActiveResultSets=True;";
+
+            }
+
+            ReportAccessResponse resp = new ReportAccessResponse();
+            //string _con = connection._DB_Master;
+            DataTable dt = new DataTable();
+            SqlConnection oConn = new SqlConnection(_con);
+            SqlTransaction oTrans;
+            oConn.Open();
+            oTrans = oConn.BeginTransaction();
+            SqlCommand oCmd = new SqlCommand();
+            oCmd.Connection = oConn;
+            oCmd.Transaction = oTrans;
+            try
+            {
+                oCmd.CommandText = "report_access_del";
+                oCmd.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Clear();
+                oCmd.Parameters.AddWithValue("@access_level_id", access_level_id);
+                oCmd.ExecuteNonQuery();
+
+                oCmd.CommandText = "report_access_in";
+                oCmd.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Clear();
+                oCmd.Parameters.AddWithValue("@report_id", report_id);
+                oCmd.Parameters.AddWithValue("@access_level_id", access_level_id);
+                oCmd.Parameters.AddWithValue("@created_by", created_by);
+                SqlDataReader sdr = oCmd.ExecuteReader();
+                while (sdr.Read())
+                {
+                    resp.report_id = Crypto.url_encrypt(sdr["report_id"].ToString());
+                    resp.access_level_id = Crypto.url_encrypt(sdr["access_level_id"].ToString());
+                }
+                sdr.Close();
+                oTrans.Commit();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
+            finally
+            {
+                oConn.Close();
+            }
+
+            return resp;
+        }
+
+        public DataUploadAccessResponse data_upload_access_in(DataUploadAccessRequest model)
+        {
+
+            string instance_name = Crypto.url_decrypt(model.instance_name);
+            string user_hash = Crypto.url_decrypt(model.user_hash);
+            string user_name = Crypto.url_decrypt(model.user_name);
+
+            string data_upload_id = model.data_upload_id == "0" ? "0" : Crypto.url_decrypt(model.data_upload_id);
+            string access_level_id = Crypto.url_decrypt(model.access_level_id);
+            string created_by = Crypto.url_decrypt(model.created_by);
+
+            string _con;
+            if (instance_name is null)
+            {
+                _con = connection._DB_Master;
+            }
+            else
+            {
+                _con = "Data Source=" + instance_name + ";Initial Catalog=mastersetupdb;User ID=" + user_name + ";Password=" + user_hash + ";MultipleActiveResultSets=True;";
+
+            }
+
+            DataUploadAccessResponse resp = new DataUploadAccessResponse();
+            //string _con = connection._DB_Master;
+            DataTable dt = new DataTable();
+            SqlConnection oConn = new SqlConnection(_con);
+            SqlTransaction oTrans;
+            oConn.Open();
+            oTrans = oConn.BeginTransaction();
+            SqlCommand oCmd = new SqlCommand();
+            oCmd.Connection = oConn;
+            oCmd.Transaction = oTrans;
+            try
+            {
+                oCmd.CommandText = "data_upload_access_del";
+                oCmd.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Clear();
+                oCmd.Parameters.AddWithValue("@access_level_id", access_level_id);
+                oCmd.ExecuteNonQuery();
+
+                oCmd.CommandText = "data_upload_access_in";
+                oCmd.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Clear();
+                oCmd.Parameters.AddWithValue("@data_upload_id", data_upload_id);
+                oCmd.Parameters.AddWithValue("@access_level_id", access_level_id);
+                oCmd.Parameters.AddWithValue("@created_by", created_by);
+                SqlDataReader sdr = oCmd.ExecuteReader();
+                while (sdr.Read())
+                {
+                    resp.data_upload_id = Crypto.url_encrypt(sdr["data_upload_id"].ToString());
+                    resp.access_level_id = Crypto.url_encrypt(sdr["access_level_id"].ToString());
+                }
+                sdr.Close();
+                oTrans.Commit();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+            }
+            finally
+            {
+                oConn.Close();
+            }
+
+            return resp;
+        }
+
+
+
     }
 
 }
+

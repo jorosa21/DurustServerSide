@@ -390,8 +390,83 @@
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
-    }
+    },
 
+
+    {
+
+      "DownstreamPathTemplate": "/api/TenantManagement/module_access_in",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "53188"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/TenantManagement/module_access_in",
+
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+
+    {
+
+      "DownstreamPathTemplate": "/api/TenantManagement/module_access_view",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "53188"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/TenantManagement/module_access_view",
+
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+
+    {
+
+      "DownstreamPathTemplate": "/api/TenantManagement/report_access_in",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "53188"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/TenantManagement/report_access_in",
+
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+
+    {
+
+      "DownstreamPathTemplate": "/api/TenantManagement/data_upload_access_in",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "53188"
+        }
+      ],
+      "UpstreamPathTemplate": "/api/TenantManagement/data_upload_access_in",
+
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }
 
   ]
 }
